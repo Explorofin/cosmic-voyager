@@ -15619,53 +15619,9 @@
   }
 
   function flavorKit(pid) {
-    const kits = {
-      cardano: [
-        { kind: "crate", label: "HOSKY" }, { kind: "coil", label: "SNEK" },
-        { kind: "veg", label: "epoch tomatoes" },
-        { kind: "flag", label: "POOL" }, { kind: "doubleA", label: "₳₳" }
-      ],
-      bitcoin: [
-        { kind: "pizza", label: "PIZZA DAY" }, { kind: "banner", label: "ORDINAL" },
-        { kind: "banner", label: "TAPROOT" }, { kind: "laser", label: "LASER" }
-      ],
-      ethereum: [
-        { kind: "jpeg", label: "JPEG" }, { kind: "jar", label: "ABI" },
-        { kind: "jpeg", label: "PUNK" }, { kind: "swirl", label: "SWAP" },
-        { kind: "ens", label: "ENS" }, { kind: "jar", label: "GAS" }
-      ],
-      solana: [
-        { kind: "fruit", label: "SPEED" }, { kind: "banner", label: "MINT" },
-        { kind: "clock", label: "SLOT" }, { kind: "fruit", label: "BONK" },
-        { kind: "banner", label: "FAST" }
-      ],
-      polkadot: [
-        { kind: "banner", label: "DOT" }, { kind: "banner", label: "RELAY" },
-        { kind: "packet", label: "XCM" }, { kind: "flag", label: "PARA" }
-      ],
-      doge: [
-        { kind: "barrel", label: "TREATS" }, { kind: "flag", label: "WOW" },
-        { kind: "barrel", label: "MUCH" }, { kind: "flag", label: "WOW" }
-      ],
-      ripple: [
-        { kind: "fish", label: "SETTLE" }, { kind: "wet", label: "WET LEDGER" },
-        { kind: "buoy", label: "BUOY" }, { kind: "banner", label: "ODL" },
-        { kind: "puddle", label: "" }
-      ],
-      cosmos: [
-        { kind: "packet", label: "IBC" }, { kind: "ring", label: "HUB" },
-        { kind: "packet", label: "ZONE" }, { kind: "osmo", label: "POOL" }
-      ],
-      litecoin: [
-        { kind: "corn", label: "SILVER" }, { kind: "banner", label: "Ł" },
-        { kind: "pick", label: "QUICK" }, { kind: "corn", label: "Ł" }
-      ],
-      avalanche: [
-        { kind: "chili", label: "HOT-IN" }, { kind: "banner", label: "TRIAD" },
-        { kind: "chili", label: "CHILI" }, { kind: "tent", label: "SUBNET" }
-      ]
-    };
-    return kits[pid] || [];
+    // Street flavor kits retired — no TAPROOT banners, WOW flags, or other procedural stub props.
+    // Hung landmarks / inv drops / painted shop props still draw via their own paths.
+    return [];
   }
   function dockTheme(pid) {
     const t = {
@@ -20908,6 +20864,11 @@
         dh = dw * (ph / Math.max(1, pw));
       }
       try { g.drawImage(painted, -dw / 2, -dh + 8, dw, dh); } catch (e) {}
+      g.restore();
+      return;
+    }
+    // No procedural street stubs (TAPROOT banners, WOW flags, pizza crates, etc.).
+    if (p.kind !== "invdrop") {
       g.restore();
       return;
     }

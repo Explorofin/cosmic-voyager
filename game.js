@@ -25948,7 +25948,8 @@
         el.textContent = "Pick a save.";
       }
     } else {
-      el.textContent = name ? ("New game · Scout · " + walletLine(0)) : "New game · Scout · 0₳";
+      // New game: no zero wallet / fiat — currency only on resume saves.
+      el.textContent = "New game · Scout";
     }
   }
   function pickSavedPilot(name) {

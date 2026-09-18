@@ -195,9 +195,9 @@
           <i class="launch-hint">Click a ship</i>
         </button>
       </div>
-      <aside id="customizePane" class="customize-pane" aria-label="Customize">
-        <h3>CUSTOMIZE</h3>
-        <p class="custom-intro">You and Epoch walk the market.</p>
+      <aside id="customizePane" class="customize-pane" aria-label="Player and Epoch">
+        <h3>YOU · EPOCH</h3>
+        <p class="custom-intro">Pick you or Epoch. Hoodie on you; hull skins when ADA is selected.</p>
         <div class="look-previews">
           <button type="button" class="look-prev on" id="lookPrevYou" data-custom="you" aria-pressed="true">
             <canvas id="playerLookThumb" width="120" height="160"></canvas>
@@ -208,13 +208,13 @@
             <span>EPOCH</span>
           </button>
         </div>
-        <div class="cycle-row" id="playerLookCycle">
+        <div class="cycle-row hidden" id="playerLookCycle" aria-hidden="true">
           <span class="cycle-lab">PLAYER LOOK</span>
           <button type="button" id="playerLookPrev" class="cycle-btn" aria-label="Previous player look">&lt;</button>
           <b id="playerLookVal">SCOUT</b>
           <button type="button" id="playerLookNext" class="cycle-btn" aria-label="Next player look">&gt;</button>
         </div>
-        <div class="cycle-row" id="epochLookCycle">
+        <div class="cycle-row hidden" id="epochLookCycle" aria-hidden="true">
           <span class="cycle-lab">EPOCH LOOK</span>
           <button type="button" id="epochLookPrev" class="cycle-btn" aria-label="Previous Epoch look">&lt;</button>
           <b id="epochLookVal">STOCK</b>
@@ -224,30 +224,30 @@
           <button type="button" class="dd-btn" id="adaHullDdBtn">HULL <b id="adaHullDdVal">ADA ROCKET</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="adaHullDdMenu"></div>
         </div>
-        <div class="dd" data-dd="look">
+        <div class="dd hidden" data-dd="look" aria-hidden="true">
           <button type="button" class="dd-btn" id="lookDdBtn">LOOK <b id="lookDdVal">SCOUT</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="lookDdMenu"></div>
         </div>
-        <div class="dd" data-dd="trait">
+        <div class="dd hidden" data-dd="trait" aria-hidden="true">
           <button type="button" class="dd-btn" id="traitDdBtn">TRAIT <b id="traitDdVal">CHATTER</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="traitDdMenu"></div>
         </div>
-        <div class="dd" data-dd="hat" style="display:none">
+        <div class="dd hidden" data-dd="hat" aria-hidden="true">
           <button type="button" class="dd-btn" id="hatDdBtn">HAT <b id="hatDdVal">NONE</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="hatDdMenu"></div>
         </div>
-        <div class="dd" data-dd="visor" style="display:none">
+        <div class="dd hidden" data-dd="visor" aria-hidden="true">
           <button type="button" class="dd-btn" id="visorDdBtn">VISOR <b id="visorDdVal">NONE</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="visorDdMenu"></div>
         </div>
-        <div class="dd" data-dd="suit">
+        <div class="dd hidden" data-dd="suit" aria-hidden="true">
           <button type="button" class="dd-btn" id="suitDdBtn">SUIT <b id="suitDdVal">WHITE</b> <i class="dd-caret">▾</i></button>
           <div class="dd-menu hidden" id="suitDdMenu"></div>
         </div>
-        <div class="custom-bits">
+        <div class="custom-bits" id="hoodieRow">
           <button type="button" id="tweakHoodie" class="skin-btn">HOODIE OFF</button>
         </div>
-        <p id="lookBlurb" class="look-blurb">Stock visor. You look like every other berth.</p>
+        <p id="lookBlurb" class="look-blurb">Hoodie on/off. Select ADA for hull skins.</p>
       </aside>
       <div class="select-info">
         <h2 id="selName">Cardano A-Wing</h2>

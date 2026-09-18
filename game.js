@@ -3915,7 +3915,7 @@
     { id: "shade", name: "SHADE", blurb: "Black ink. Shade knows.", visor: null, hat: "none", suit: "#0a0a0c", hoodie: false, glasses: false, base: "shade" }
   ];
   const TRAIT_KITS = [
-    { id: "chatter", name: "CHATTER", blurb: "Epoch never shuts up. Lane clouds neither." },
+    { id: "chatter", name: "CHATTER", blurb: "Epoch is your guide. Talk to them in market — WAIT HERE parks them (K calls back). EPOCH TALK turns tips off." },
     { id: "quickstep", name: "QUICKSTEP", blurb: "You walk like the slot is closing." },
     { id: "cafefirst", name: "CAFE FIRST", blurb: "The plan is sludge. Then paper. Then sludge." },
     { id: "papernose", name: "PAPERNOSE", blurb: "Booth jobs smell like a raise." },
@@ -26035,7 +26035,13 @@
         tmenu.appendChild(btn);
       });
     }
-    if (blurb) blurb.textContent = traitDef(G.trait).blurb;
+    if (blurb) {
+      if (customWho() !== "you") {
+        blurb.textContent = "Epoch is your guide. In the market, talk to Epoch and tap WAIT HERE to leave them parked (K calls them back). EPOCH TALK turns tips on/off.";
+      } else {
+        blurb.textContent = "Hoodie on/off. Select the ADA hull for ship skins.";
+      }
+    }
     if (typeof paintTweaks === "function") paintTweaks();
     paintLookCycles();
   }
@@ -26452,7 +26458,7 @@
   function paintScoreboard() {
     const el = $("scoreboardList");
     if (!el) return;
-    const list = loadScores().slice(0, 8);
+    const list = loadScores().slice(0, 24);
     if (!list.length) {
       el.innerHTML = "<li class='empty'>No runs posted</li>";
       return;

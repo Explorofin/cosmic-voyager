@@ -274,11 +274,11 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 
 .scoreboard {
   position: absolute;
-  left: max(7px, 1.5vw);
-  top: max(148px, 20vh);
+  left: max(12px, 1.2vw);
+  top: max(72px, 9vh);
   transform: none;
   width: min(196px, 20vw);
-  max-height: 78vh;
+  max-height: min(70vh, 520px);
   overflow: auto;
   padding: 14px 16px 12px;
   background: rgba(8, 14, 42, 0.16);
@@ -310,6 +310,14 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .scoreboard li span { color: var(--gold); font-variant-numeric: tabular-nums; }
 .scoreboard li.empty { opacity: 0.45; border: 0; font-size: 12px; }
 .scoreboard h3.subhead { margin-top: 14px; }
+#scoreboardList {
+  max-height: 6.6em; /* ~3 rows */
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+}
+#scoreboardList::-webkit-scrollbar { width: 5px; }
+#scoreboardList::-webkit-scrollbar-thumb { background: rgba(0,195,255,0.45); border-radius: 4px; }
 .scoreboard li.pilot { cursor: pointer; padding: 5px 6px; margin: 2px -6px; border: 1px solid transparent; border-radius: 3px; }
 .scoreboard li.pilot:hover { color: var(--cyan); border-color: rgba(0,195,255,0.28); }
 .scoreboard li.pilot.on {
@@ -320,12 +328,12 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .scoreboard li.pilot.on b { color: #3DDC84; }
 .customize-pane {
   position: absolute;
-  right: max(0px, calc((100vw - min(900px, 96vw)) / 4 + max(7px, 1.5vw) * 0.5 - min(268px, 26vw) / 2));
-  top: 50%;
-  transform: translateY(-42%);
-  width: min(268px, 26vw);
-  max-height: none;
-  overflow: hidden;
+  right: max(12px, 1.2vw);
+  top: max(72px, 9vh);
+  transform: none;
+  width: min(248px, 24vw);
+  max-height: min(78vh, 560px);
+  overflow: auto;
   padding: 14px 12px 12px;
   background: rgba(8, 14, 42, 0.16);
   border: 1px solid rgba(0, 195, 255, 0.22);
@@ -370,16 +378,16 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   box-shadow: 0 0 14px rgba(0,195,255,0.45), inset 0 0 10px rgba(0,195,255,0.12);
 }
 .look-prev.on span { opacity: 1; color: var(--gold); }
-#customizePane.custom-epoch #playerLookCycle,
-#customizePane.custom-epoch .dd[data-dd="look"],
-#customizePane.custom-epoch .dd[data-dd="trait"],
-#customizePane.custom-epoch .dd[data-dd="hat"],
-#customizePane.custom-epoch .dd[data-dd="visor"],
-#customizePane.custom-epoch .dd[data-dd="suit"],
+#customizePane .dd[data-dd="look"],
+#customizePane .dd[data-dd="trait"],
+#customizePane .dd[data-dd="hat"],
+#customizePane .dd[data-dd="visor"],
+#customizePane .dd[data-dd="suit"],
+#customizePane #playerLookCycle,
+#customizePane #epochLookCycle { display: none !important; }
 #customizePane.custom-epoch .custom-bits,
-#customizePane.custom-epoch #adaHullDd { display: none !important; }
-#customizePane:not(.custom-epoch) #epochLookCycle { opacity: 0.38; pointer-events: none; }
-#customizePane.custom-epoch #epochLookCycle { opacity: 1; pointer-events: auto; }
+#customizePane.custom-epoch #adaHullDd,
+#customizePane.custom-epoch #hoodieRow { display: none !important; }
 .cycle-row {
   display: grid; grid-template-columns: 1fr 22px minmax(0, 1fr) 22px;
   align-items: center; gap: 4px; margin: 6px 0;
@@ -448,7 +456,7 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .skin-btn .kit-icon { width: 16px; height: 16px; object-fit: contain; pointer-events: none; }
 .dd-swatch { width: 14px; height: 14px; flex: 0 0 14px; border: 1px solid rgba(255,255,255,0.25); display: inline-block; }
 @media (max-width: 1100px) {
-  .customize-pane { width: 200px; right: max(0px, calc((100vw - min(900px, 96vw)) / 4 + max(7px, 1.5vw) * 0.5 - 100px)); padding: 10px 8px; }
+  .customize-pane { width: 200px; right: max(8px, 1vw); top: max(68px, 8vh); padding: 10px 8px; }
 }
 .pilot-row { margin-bottom: 10px; }
 .pilot-row label { display: block; font-size: 11px; letter-spacing: 0.18em; color: var(--cyan); }
@@ -486,7 +494,7 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .resume-box { margin-bottom: 4px; }
 .resume-box h3 { letter-spacing: 0.2em; font-size: 11px; color: var(--cyan); margin-bottom: 8px; }
 @media (max-width: 980px) {
-  .scoreboard { left: 4px; width: 150px; padding: 10px 10px 8px; }
+  .scoreboard { left: 4px; top: max(64px, 8vh); width: 150px; padding: 10px 10px 8px; }
   .scoreboard li { font-size: 11px; }
 }
 
@@ -560,7 +568,17 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .skin-btn.active { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,195,255,0.4); color: var(--cyan); }
 .skin-btn.hangar { opacity: 0.7; }
 .skin-btn:hover { border-color: var(--cyan); }
-.select-info { position: absolute; bottom: 16px; text-align: center; max-width: 720px; transform: translateX(calc(-1 * max(7px, 1.5vw))); }
+.select-info {
+  position: absolute;
+  left: 50%;
+  top: max(64px, 7.5vh);
+  bottom: auto;
+  text-align: center;
+  max-width: min(520px, 46vw);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
 .look-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; justify-content: center; margin-top: 7px; pointer-events: auto; }
 .look-row .skin-lab { font-size: 10px; letter-spacing: 0.18em; color: var(--cyan); margin-right: 3px; }
 .look-btn { pointer-events: auto; background: rgba(5,10,36,0.75); color: var(--hud); border: 1px solid var(--line); padding: 3px 5px 2px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 44px; }

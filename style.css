@@ -372,10 +372,10 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   top: max(40px, 4.5vh);
   bottom: auto;
   transform: none;
-  width: min(220px, 22vw);
-  max-height: min(48vh, 360px);
+  width: min(148px, 14vw);
+  max-height: min(36vh, 260px);
   overflow: auto;
-  padding: 12px 12px 10px;
+  padding: 8px 8px 7px;
   background: rgba(8, 14, 42, 0.16);
   border: 1px solid rgba(0, 195, 255, 0.22);
   box-shadow: 0 0 18px rgba(0, 195, 255, 0.06), inset 0 0 14px rgba(0, 195, 255, 0.03);
@@ -391,10 +391,10 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   bottom: max(16px, 2.5vh);
   top: auto;
   transform: none;
-  width: min(220px, 22vw);
-  max-height: min(42vh, 320px);
+  width: min(148px, 14vw);
+  max-height: min(32vh, 240px);
   overflow: auto;
-  padding: 12px 12px 10px;
+  padding: 8px 8px 7px;
   background: rgba(8, 14, 42, 0.16);
   border: 1px solid rgba(0, 195, 255, 0.22);
   box-shadow: 0 0 18px rgba(0, 195, 255, 0.06), inset 0 0 14px rgba(0, 195, 255, 0.03);
@@ -436,13 +436,13 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   background: rgba(5,10,36,0.45); border: 1px solid rgba(0,195,255,0.22); padding: 4px 4px 4px;
   pointer-events: auto; cursor: pointer; color: inherit; font: inherit;
 }
-.look-prev canvas { width: auto; height: 7.7em; aspect-ratio: 120 / 160; max-width: 100%; object-fit: contain; pointer-events: none; }
-#lookPrevYou canvas { width: auto; max-width: 100%; height: 7.7em; aspect-ratio: 120 / 160; object-fit: contain; }
-#lookPrevEpoch canvas { width: auto; max-width: 100%; height: 7.7em; aspect-ratio: 120 / 160; object-fit: contain; }
+.look-prev canvas { width: auto; height: 5.2em; aspect-ratio: 120 / 160; max-width: 100%; object-fit: contain; pointer-events: none; }
+#lookPrevYou canvas { width: auto; max-width: 100%; height: 5.2em; aspect-ratio: 120 / 160; object-fit: contain; }
+#lookPrevEpoch canvas { width: auto; max-width: 100%; height: 5.2em; aspect-ratio: 120 / 160; object-fit: contain; }
 .you-pane .look-previews,
 .epoch-pane .look-previews { justify-content: center; }
 .you-pane .look-prev,
-.epoch-pane .look-prev { flex: 0 1 auto; min-width: 96px; max-width: 140px; }
+.epoch-pane .look-prev { flex: 0 1 auto; min-width: 72px; max-width: 110px; }
 .look-prev span { font-size: 8px; letter-spacing: 0.14em; color: var(--cyan); opacity: 0.8; line-height: 1; height: 1em; }
 .look-prev:hover { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,195,255,0.28); }
 .look-prev.on {
@@ -523,8 +523,8 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .skin-btn .kit-icon { width: 16px; height: 16px; object-fit: contain; pointer-events: none; }
 .dd-swatch { width: 14px; height: 14px; flex: 0 0 14px; border: 1px solid rgba(255,255,255,0.25); display: inline-block; }
 @media (max-width: 1100px) {
-  .customize-pane { width: 180px; right: max(8px, 1vw); top: max(36px, 4vh); padding: 10px 8px; }
-  .epoch-pane { width: 180px; right: max(8px, 1vw); bottom: max(12px, 2vh); padding: 10px 8px; }
+  .customize-pane { width: 132px; right: max(6px, 0.8vw); top: max(36px, 4vh); padding: 7px 6px; }
+  .epoch-pane { width: 132px; right: max(6px, 0.8vw); bottom: max(12px, 2vh); padding: 7px 6px; }
 }
 .pilot-row { margin-bottom: 10px; }
 .pilot-row label { display: block; font-size: 11px; letter-spacing: 0.18em; color: var(--cyan); }
@@ -1789,3 +1789,16 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   #hud .mission-side { bottom: 36px; max-height: 28vh; }
   .mission-side-mkt { bottom: 12px; max-height: 28vh; }
 }
+
+.hoodie-color-wrap {
+  display: flex; align-items: center; justify-content: center;
+  flex: 0 0 34px; margin: 0;
+}
+.hoodie-color-wrap.hidden, #hoodieColor.hidden { display: none !important; }
+#hoodieColor {
+  width: 30px; height: 30px; padding: 0; border: 1px solid rgba(0,195,255,0.45);
+  border-radius: 4px; background: transparent; cursor: pointer;
+}
+#hoodieRow { align-items: center; }
+.you-pane .look-blurb, .epoch-pane .look-blurb { font-size: 10px; min-height: 0; margin-top: 4px; }
+.you-pane h3, .epoch-pane h3 { margin-bottom: 6px; font-size: 10px; }

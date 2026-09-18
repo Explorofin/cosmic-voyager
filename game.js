@@ -4208,6 +4208,7 @@
       apron: k.apron || null,
       glasses: false,
       hoodie: ex.hoodie != null ? !!ex.hoodie : !!k.hoodie,
+      hoodieColor: ex.hoodieColor || null,
       frame: extra.frame || 0,
       facing: extra.facing,
       trait: trait,
@@ -19345,6 +19346,35 @@
     const bb = spriteOpaqueRect(img);
     try { g.drawImage(img, bb.sx, bb.sy, bb.sw, bb.sh, dx, dy, dw, dh); } catch (e) {}
   }
+  const hoodieTintCache = Object.create(null);
+  function blitSpriteHoodieTint(g, img, dx, dy, dw, dh, hex) {
+    if (!img) return;
+    if (!hex) { blitSprite(g, img, dx, dy, dw, dh); return; }
+    const bb = spriteOpaqueRect(img);
+    const key = String(img.src || img._cvKey || idObj(img)) + "|" + hex + "|" + bb.sw + "x" + bb.sh;
+    let c = hoodieTintCache[key];
+    if (!c) {
+      c = document.createElement("canvas");
+      c.width = Math.max(1, bb.sw);
+      c.height = Math.max(1, bb.sh);
+      const cg = c.getContext("2d");
+      try { cg.drawImage(img, bb.sx, bb.sy, bb.sw, bb.sh, 0, 0, c.width, c.height); } catch (e) { blitSprite(g, img, dx, dy, dw, dh); return; }
+      // Keep shading (luminance), swap hue/sat to the picked color.
+      cg.globalCompositeOperation = "color";
+      cg.fillStyle = hex;
+      cg.fillRect(0, 0, c.width, c.height);
+      cg.globalCompositeOperation = "destination-in";
+      try { cg.drawImage(img, bb.sx, bb.sy, bb.sw, bb.sh, 0, 0, c.width, c.height); } catch (e2) {}
+      hoodieTintCache[key] = c;
+    }
+    try { g.drawImage(c, dx, dy, dw, dh); } catch (e) {}
+  }
+  function idObj(o) {
+    if (!o) return "0";
+    if (o._tintId) return o._tintId;
+    o._tintId = "i" + (idObj._n = (idObj._n || 0) + 1);
+    return o._tintId;
+  }
   function personSpriteLive(img) {
     return !!(img && (img._streetPunched || !isStubArt(img)));
   }
@@ -19610,7 +19640,7 @@
       else if (base === "courier") hoodieImg = IM.hoodieCourierV8 || null;
       else if (base === "rig") hoodieImg = IM.hoodieRigV8 || null;
       else hoodieImg = IM.hoodieScoutV8 || null;
-      if (hoodieImg) blitSprite(g, hoodieImg, -ox, -oy, dw, dh);
+      if (hoodieImg) blitSpriteHoodieTint(g, hoodieImg, -ox, -oy, dw, dh, opt.hoodieColor || null);
     }
     const hat = opt.hat;
     const hatV2 = hat && hat !== "none" ? kitHatV2(hat) : null;
@@ -19853,7 +19883,8 @@
       g.beginPath(); g.moveTo(-3, 6); g.lineTo(-3 - swing * 0.35, 12); g.stroke();
       g.beginPath(); g.moveTo(3, 6); g.lineTo(3 + swing * 0.35, 12); g.stroke();
     }
-    g.fillStyle = hoodie ? "#1d1c28" : suit;
+    const hoodCol = (hoodie && opt.hoodieColor) ? opt.hoodieColor : (hoodie ? "#1d1c28" : suit);
+    g.fillStyle = hoodCol;
     g.beginPath(); g.arc(0, -1, 7.2, 0, 6.28); g.fill();
     if (robe && !hoodie) {
       g.fillStyle = apron || vest || "#2a2040";
@@ -19872,11 +19903,11 @@
       g.globalAlpha = 1;
     }
     if (hoodie) {
-      g.fillStyle = "#14141c";
+      g.fillStyle = opt.hoodieColor || "#14141c";
       g.beginPath(); g.arc(0, -8, 7.4, Math.PI, 0); g.fill();
       g.fillRect(-7.4, -8, 14.8, 5);
     }
-    g.fillStyle = hoodie ? "#2a2030" : "#d8e4f8";
+    g.fillStyle = hoodie ? (opt.hoodieColor || "#2a2030") : "#d8e4f8";
     g.beginPath(); g.arc(0, -8.5, hoodie ? 6.2 : 6.6, 0, 6.28); g.fill();
     if (!visorIsOff(opt.visor)) {
       g.fillStyle = visor;
@@ -25830,9 +25861,11 @@
     if (spr && (spr.width || spr.naturalWidth)) {
       const iw = spr.width || spr.naturalWidth, ih = spr.height || spr.naturalHeight;
       const noseUp = id === "atom";
-      const sc = noseUp
+      let sc = noseUp
         ? Math.min((art.height - 8) / iw, (art.width - 8) / ih)
         : Math.min((art.height - 8) / ih, (art.width - 8) / iw);
+      // BTC Launch floater only: 20% smaller (orbit thumbs keep their own scale).
+      if (id === "btc") sc *= 0.8;
       const w = iw * sc, h = ih * sc;
       if (noseUp) {
         g.save();
@@ -26882,6 +26915,12 @@
       $("tweakHoodie").appendChild(document.createTextNode(hoodieOn ? "HOODIE ON" : "HOODIE OFF"));
       $("tweakHoodie").classList.toggle("active", hoodieOn);
     }
+    const hoodPick = $("hoodieColor");
+    if (hoodPick) {
+      hoodPick.classList.toggle("hidden", !hoodieOn);
+      const curCol = (ex.hoodieColor && /^#[0-9a-fA-F]{6}$/.test(ex.hoodieColor)) ? ex.hoodieColor : "#3a4a6a";
+      if (hoodPick.value !== curCol) hoodPick.value = curCol;
+    }
   }
   if ($("tweakGlasses")) $("tweakGlasses").addEventListener("click", function () {
     G.lookExtra = G.lookExtra || {};
@@ -26895,9 +26934,17 @@
     G.lookExtra = G.lookExtra || {};
     const now = G.lookExtra.hoodie != null ? G.lookExtra.hoodie : !!lookDef(G.look).hoodie;
     G.lookExtra.hoodie = !now;
+    if (G.lookExtra.hoodie && !G.lookExtra.hoodieColor) G.lookExtra.hoodieColor = "#3a4a6a";
     paintLookRow();
     paintTweaks();
     beep(480, 0.05, "sine", 0.04);
+  });
+  if ($("hoodieColor")) $("hoodieColor").addEventListener("input", function () {
+    G.lookExtra = G.lookExtra || {};
+    G.lookExtra.hoodie = true;
+    G.lookExtra.hoodieColor = $("hoodieColor").value;
+    paintLookRow();
+    paintTweaks();
   });
   if ($("playerLookPrev")) $("playerLookPrev").addEventListener("click", function () {
     selectLook(cycleKitId(LOOK_KITS, G.look || "scout", -1));

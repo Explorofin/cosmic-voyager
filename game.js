@@ -26690,7 +26690,8 @@
       let sc = noseUp
         ? Math.min((art.height - 8) / iw, (art.width - 8) / ih)
         : Math.min((art.height - 8) / ih, (art.width - 8) / iw);
-      // BTC Launch floater: 10% smaller.
+      // All Launch ships ~5% larger in the floater; BTC still 10% under that base.
+      sc *= 1.05;
       if (id === "btc") sc *= 0.9;
       const w = iw * sc, h = ih * sc;
       if (noseUp) {

@@ -26737,6 +26737,18 @@
     try { localStorage.setItem(SCORE_KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
   }
 
+  function fmtComma(n) {
+    n = Math.floor(Number(n) || 0);
+    const neg = n < 0;
+    let s = String(Math.abs(n));
+    let out = "";
+    while (s.length > 3) {
+      out = "," + s.slice(-3) + out;
+      s = s.slice(0, -3);
+    }
+    return (neg ? "-" : "") + s + out;
+  }
+
   function paintScoreboard() {
     const el = $("scoreboardList");
     if (!el) return;
@@ -26745,7 +26757,7 @@
       el.innerHTML = "<li class='empty'>No runs posted</li>";
       return;
     }
-    el.innerHTML = list.map(r => "<li><b>" + (r.ini || "???") + "</b><span>" + (r.score | 0) + "</span></li>").join("");
+    el.innerHTML = list.map(r => "<li><b>" + (r.ini || "???") + "</b><span>" + fmtComma(r.score | 0) + "</span></li>").join("");
   }
 
   function hideIniPrompt() {
@@ -26756,7 +26768,7 @@
   function showIniPrompt() {
     const el = $("iniPrompt");
     if (!el) { goSelect(); return; }
-    if ($("iniScore")) $("iniScore").textContent = String(runScore());
+    if ($("iniScore")) $("iniScore").textContent = fmtComma(runScore());
     const inp = $("iniInput");
     if (inp) { inp.value = lastInitials(); }
     el.classList.remove("hidden");

@@ -640,10 +640,11 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .select-info {
   position: absolute;
   left: 50%;
-  top: max(64px, 7.5vh);
+  /* Sit above the orbit ring, not overlapping top ship nodes */
+  top: max(6px, 0.6vh);
   bottom: auto;
   text-align: center;
-  max-width: min(520px, 46vw);
+  max-width: min(420px, 42vw);
   transform: translateX(-50%);
   pointer-events: none;
   z-index: 3;
@@ -657,9 +658,23 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 .look-btn:hover { border-color: var(--cyan); }
 .look-blurb { margin-top: 4px !important; font-size: 11px; letter-spacing: 0.04em; opacity: 0.72; min-height: 1.15em; }
 .trait-row { margin-top: 4px; }
-.select-info h2 { color: var(--cyan); letter-spacing: 0.12em; }
-.select-info p { margin-top: 6px; opacity: 0.8; }
-.select-info .keys { opacity: 0.45; font-size: 12px; letter-spacing: 0.1em; }
+.select-info h2 {
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  font-size: clamp(13px, 1.7vw, 17px);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+}
+.select-info p {
+  margin-top: 2px;
+  opacity: 0.72;
+  font-size: clamp(10px, 1.15vw, 12px);
+  line-height: 1.25;
+  max-height: 2.6em;
+  overflow: hidden;
+}
+.select-info .keys { opacity: 0.45; font-size: 10px; letter-spacing: 0.1em; }
 
 .panel { width: min(460px, 92vw); background: var(--panel); border: 1px solid var(--line); padding: 28px 28px 22px; text-align: center; }
 .panel h2 { letter-spacing: 0.16em; margin: 8px 0 12px; }

@@ -41,7 +41,7 @@
     ltc:  { id: "ltc",  name: "Litecoin",  color: COL.ltc,  hull: "#2a2c2e", tick: "Ł" },
     avax: { id: "avax", name: "Avalanche", color: COL.avax, hull: "#2a0a0a", tick: "A" }
   };
-  const FACTION_IDS = ["ada", "btc", "eth", "sol", "pol", "doge", "xrp", "atom", "ltc", "avax"];
+  const FACTION_IDS = ["btc", "ada", "eth", "sol", "pol", "doge", "xrp", "atom", "ltc", "avax"];
 
   const SHIPS = {
     ada:  { id: "ada",  name: "Cardano A-Wing", blurb: "Balanced Ouroboros craft. Unique Shift shield with orbiting motes. Tab energy pulse. Home is Cardano Prime.", hull: 120, shield: 90, energy: 110, turn: 2.4, thrust: 360, maxSp: 295, fire: 0.2, dmg: 14, shotSp: 640, shotLife: 1.05, special: "shield", shot: "pulse" },
@@ -3888,7 +3888,7 @@
   const keys = Object.create(null);
   const mouse = { x: 0, y: 0, down: false };
   let mode = "loading";
-  let selectedId = "ada";
+  let selectedId = "btc";
   let lastT = 0;
   let shake = 0;
   let cam = { x: WORLD * 0.5, y: WORLD * 0.5 };
@@ -3920,7 +3920,7 @@
     player: null, ships: [], bullets: [], rocks: [], pickups: [], parts: [], fx: [], beacons: [], drones: [],
     visited: {}, credits: 0, xp: 0, adaRep: 10, outlaw: 0, guard: { n: 0, faction: null },
     upgrades: { engine: 0, weapons: 0, hull: 0, shield: 0 },
-    mission: null, jobs: [], offered: [], done: {}, lastDock: "cardano", homeFaction: "ada",
+    mission: null, jobs: [], offered: [], done: {}, lastDock: "cardano", homeFaction: "btc",
     cargo: { items: [] }, sealed: null, ammo: { pulse: 0, spread: 0, long: 0 },
     lootArmorClass: 0, lootShieldClass: 0, lootWeaponClass: 0,
     boardT: 0, boardTarget: null, lootOpen: false, lootRoll: null,
@@ -26190,7 +26190,8 @@
         btn.appendChild(cv);
       }
       const tag = document.createElement("span");
-      tag.textContent = k.name.toUpperCase();
+      // Yacht is a surprise — no hull-skin advertising; cryptic menu label until chosen.
+      tag.textContent = (k.id === "yacht" && cur !== "yacht") ? "???" : k.name.toUpperCase();
       btn.appendChild(tag);
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -26317,10 +26318,6 @@
     }
     if (blurb) {
       blurb.textContent = "Epoch is your guide. In the market, talk to Epoch and tap WAIT HERE to leave them parked (K calls them back). EPOCH TALK turns tips on/off.";
-    }
-    const youBlurb = $("youLookBlurb");
-    if (youBlurb) {
-      youBlurb.textContent = "Select the ADA hull for ship skins.";
     }
     if (typeof paintTweaks === "function") paintTweaks();
     paintLookCycles();
@@ -26788,9 +26785,12 @@
     G.lookExtra.hat = "none";
     G.lookExtra.hoodie = false;
     G.lookExtra.hoodieColor = null;
-    // Select default: ADA Rocket (side). Yacht stays available in the hull menu.
+    // Select default: ADA Rocket (side). Yacht stays a surprise in the ADA hull menu.
     ADA.skinId = "side";
     try { localStorage.setItem(SKIN_KEY, "side"); } catch (e) {}
+    // Default pick: BTC at top of the orbit.
+    selectedId = "btc";
+    G.homeFaction = "btc";
     buildSelect();
     paintSelectInfo();
     paintScoreboard();
@@ -27505,7 +27505,7 @@
     try { paintEpochLog(); } catch (e) {}
     goSelect();
     try {
-      paintLaunchArt("ada");
+      paintLaunchArt(selectedId || "btc");
       FACTION_IDS.forEach(function (fid) {
         if (typeof refreshOrbitThumb === "function") refreshOrbitThumb(fid);
       });

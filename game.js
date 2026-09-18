@@ -26690,8 +26690,8 @@
       let sc = noseUp
         ? Math.min((art.height - 8) / iw, (art.width - 8) / ih)
         : Math.min((art.height - 8) / ih, (art.width - 8) / iw);
-      // BTC Launch floater only: 24% smaller total (prior 20% + another 5%).
-      if (id === "btc") sc *= 0.76;
+      // BTC Launch floater only: 20% smaller (orbit bubbles use paintScoutThumb).
+      if (id === "btc") sc *= 0.8;
       const w = iw * sc, h = ih * sc;
       if (noseUp) {
         g.save();
@@ -26947,7 +26947,7 @@
     gx.setTransform(1, 0, 0, 1, 0, 0);
     gx.clearRect(0, 0, size, size);
     // Match launchArt fit math so bubbles stay sharp (was tiny pad + soft CSS upscale).
-    // BTC orbit bubbles only: 5% smaller than restored pre-pad hulls (not launch, not flight).
+    // BTC orbit bubbles only: ~10% smaller than other ring ships (not launch, not flight).
     const spr = hullSprite(id, 1);
     if (spr && (spr.width || spr.naturalWidth)) {
       const iw = spr.width || spr.naturalWidth, ih = spr.height || spr.naturalHeight;
@@ -26956,7 +26956,7 @@
       let sc = noseUp
         ? Math.min((size - pad * 2) / iw, (size - pad * 2) / ih)
         : Math.min((size - pad * 2) / ih, (size - pad * 2) / iw);
-      if (id === "btc") sc *= 0.95;
+      if (id === "btc") sc *= 0.90;
       const dw = iw * sc, dh = ih * sc;
       gx.save();
       gx.translate(size / 2, size / 2);

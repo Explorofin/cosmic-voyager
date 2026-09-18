@@ -25866,7 +25866,7 @@
     const dd = $("adaHullDd");
     const menu = $("adaHullDdMenu");
     const val = $("adaHullDdVal");
-    const show = selectedId === "ada" && customWho() === "you";
+    const show = selectedId === "ada";
     if (dd) dd.classList.toggle("hidden", !show);
     if (!show) {
       if (menu) menu.innerHTML = "";
@@ -25937,6 +25937,9 @@
     const you = customWho() === "you";
     const pane = $("customizePane");
     if (pane) pane.classList.toggle("custom-epoch", !you);
+    const ep = $("epochPane");
+    if (ep) ep.classList.toggle("custom-on", !you);
+    if (pane) pane.classList.toggle("custom-on", you);
     if ($("lookPrevYou")) {
       $("lookPrevYou").classList.toggle("on", you);
       $("lookPrevYou").setAttribute("aria-pressed", you ? "true" : "false");
@@ -26019,11 +26022,11 @@
       });
     }
     if (blurb) {
-      if (customWho() !== "you") {
-        blurb.textContent = "Epoch is your guide. In the market, talk to Epoch and tap WAIT HERE to leave them parked (K calls them back). EPOCH TALK turns tips on/off.";
-      } else {
-        blurb.textContent = "Hoodie on/off. Select the ADA hull for ship skins.";
-      }
+      blurb.textContent = "Epoch is your guide. In the market, talk to Epoch and tap WAIT HERE to leave them parked (K calls them back). EPOCH TALK turns tips on/off.";
+    }
+    const youBlurb = $("youLookBlurb");
+    if (youBlurb) {
+      youBlurb.textContent = "Hoodie on/off. Select the ADA hull for ship skins.";
     }
     if (typeof paintTweaks === "function") paintTweaks();
     paintLookCycles();
@@ -26031,12 +26034,14 @@
   function selectLook(id) {
     G.look = id;
     pendingLook = id;
+    G.customTarget = "you";
     paintLookRow();
     beep(480, 0.05, "sine", 0.04);
   }
   function selectEpochLook(id) {
     G.epochLook = id;
     pendingEpochLook = id;
+    G.customTarget = "epoch";
     paintLookRow();
     beep(500, 0.05, "sine", 0.04);
   }
@@ -26069,7 +26074,8 @@
       gx.translate(ec.width / 2, ec.height * 0.82);
       const sc = Math.min(ec.width / 28, ec.height / 46);
       gx.scale(sc, sc);
-      drawPerson(gx, 0, 0, epochPersonOpt({ scale: 1, wheelFace: 1, wheelAng: 0.4, lean: 0 }));
+      // Select-screen thumb: always FRONT walker view (not side/three/back from live EPOCH.facing).
+      drawPerson(gx, 0, 0, epochPersonOpt({ scale: 1, wheelFace: 1, wheelAng: 0.4, lean: 0, facing: Math.PI / 2 }));
       gx.restore();
     }
   }

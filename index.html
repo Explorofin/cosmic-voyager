@@ -170,7 +170,7 @@
       <div class="lockup mini">
         <h1 class="cv-title" aria-label="COSMIC VOYAGER"><span class="cv-letter cv-l0"><img src="assets/images/ui/cv_ast_C.png" alt=""></span><span class="cv-letter cv-l1"><img src="assets/images/ui/cv_ast_O.png" alt=""></span><span class="cv-letter cv-l2"><img src="assets/images/ui/cv_ast_S.png" alt=""></span><span class="cv-letter cv-l3"><img src="assets/images/ui/cv_ast_M.png" alt=""></span><span class="cv-letter cv-l4"><img src="assets/images/ui/cv_ast_I.png" alt=""></span><span class="cv-letter cv-l5"><img src="assets/images/ui/cv_ast_C_1.png" alt=""></span><span class="cv-sp" aria-hidden="true"></span><span class="cv-letter cv-l6"><img src="assets/images/ui/cv_ast_V.png" alt=""></span><span class="cv-letter cv-l7"><img src="assets/images/ui/cv_ast_O_1.png" alt=""></span><span class="cv-letter cv-l8"><img src="assets/images/ui/cv_ast_Y.png" alt=""></span><span class="cv-letter cv-l9"><img src="assets/images/ui/cv_ast_A.png" alt=""></span><span class="cv-letter cv-l10"><img src="assets/images/ui/cv_ast_G.png" alt=""></span><span class="cv-letter cv-l11"><img src="assets/images/ui/cv_ast_E.png" alt=""></span><span class="cv-letter cv-l12"><img src="assets/images/ui/cv_ast_R.png" alt=""></span></h1>
       </div>
-      <aside id="scoreboard" class="scoreboard roster" aria-label="Pilot and scores">
+      <aside id="scoreboard" class="scoreboard roster select-menu" aria-label="Pilot and play mode">
         <div class="pilot-row">
           <label for="pilotName">PILOT</label>
           <input id="pilotName" maxlength="16" placeholder="Your name" autocomplete="off" spellcheck="false" />
@@ -184,6 +184,8 @@
           <h3>SAVES</h3>
           <ol id="rosterList"></ol>
         </div>
+      </aside>
+      <aside id="highScores" class="high-scores" aria-label="High scores">
         <h3 class="subhead">HIGH SCORES</h3>
         <ol id="scoreboardList"></ol>
       </aside>
@@ -195,30 +197,20 @@
           <i class="launch-hint">Click a ship</i>
         </button>
       </div>
-      <aside id="customizePane" class="customize-pane" aria-label="Player and Epoch">
-        <h3>YOU · EPOCH</h3>
-        <p class="custom-intro">Pick you or Epoch. Hoodie on you; hull skins when ADA is selected.</p>
+      <aside id="customizePane" class="customize-pane you-pane" aria-label="You">
+        <h3>YOU</h3>
+        <p class="custom-intro">Hoodie on/off. Hull skins when ADA is selected.</p>
         <div class="look-previews">
           <button type="button" class="look-prev on" id="lookPrevYou" data-custom="you" aria-pressed="true">
             <canvas id="playerLookThumb" width="120" height="160"></canvas>
             <span>YOU</span>
           </button>
-          <button type="button" class="look-prev" id="lookPrevEpoch" data-custom="epoch" aria-pressed="false">
-            <canvas id="epochLookThumb" width="120" height="160"></canvas>
-            <span>EPOCH</span>
-          </button>
         </div>
-        <div class="cycle-row hidden" id="playerLookCycle" aria-hidden="true">
-          <span class="cycle-lab">PLAYER LOOK</span>
+        <div class="cycle-row" id="playerLookCycle" aria-hidden="false">
+          <span class="cycle-lab">LOOK</span>
           <button type="button" id="playerLookPrev" class="cycle-btn" aria-label="Previous player look">&lt;</button>
           <b id="playerLookVal">SCOUT</b>
           <button type="button" id="playerLookNext" class="cycle-btn" aria-label="Next player look">&gt;</button>
-        </div>
-        <div class="cycle-row hidden" id="epochLookCycle" aria-hidden="true">
-          <span class="cycle-lab">EPOCH LOOK</span>
-          <button type="button" id="epochLookPrev" class="cycle-btn" aria-label="Previous Epoch look">&lt;</button>
-          <b id="epochLookVal">STOCK</b>
-          <button type="button" id="epochLookNext" class="cycle-btn" aria-label="Next Epoch look">&gt;</button>
         </div>
         <div class="dd hidden" data-dd="hull" id="adaHullDd">
           <button type="button" class="dd-btn" id="adaHullDdBtn">HULL <b id="adaHullDdVal">ADA ROCKET</b> <i class="dd-caret">▾</i></button>
@@ -247,7 +239,23 @@
         <div class="custom-bits" id="hoodieRow">
           <button type="button" id="tweakHoodie" class="skin-btn">HOODIE OFF</button>
         </div>
-        <p id="lookBlurb" class="look-blurb">Hoodie on/off. Select ADA for hull skins.</p>
+        <p id="youLookBlurb" class="look-blurb">Hoodie on/off. Select ADA for hull skins.</p>
+      </aside>
+      <aside id="epochPane" class="epoch-pane" aria-label="Epoch">
+        <h3>EPOCH</h3>
+        <div class="look-previews">
+          <button type="button" class="look-prev" id="lookPrevEpoch" data-custom="epoch" aria-pressed="false">
+            <canvas id="epochLookThumb" width="120" height="160"></canvas>
+            <span>EPOCH</span>
+          </button>
+        </div>
+        <div class="cycle-row" id="epochLookCycle" aria-hidden="false">
+          <span class="cycle-lab">LOOK</span>
+          <button type="button" id="epochLookPrev" class="cycle-btn" aria-label="Previous Epoch look">&lt;</button>
+          <b id="epochLookVal">LAMP</b>
+          <button type="button" id="epochLookNext" class="cycle-btn" aria-label="Next Epoch look">&gt;</button>
+        </div>
+        <p id="lookBlurb" class="look-blurb">Epoch is your guide. In the market, talk to Epoch and tap WAIT HERE to leave them parked (K calls them back). EPOCH TALK turns tips on/off.</p>
       </aside>
       <div class="select-info">
         <h2 id="selName">Cardano A-Wing</h2>

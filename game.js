@@ -3930,7 +3930,7 @@
     epochFollow: true, epochSuggest: true, customTarget: "you", orbitAng: 0, pilot: "", look: "scout", epochLook: "lamp", trait: "chatter", explore: 3, lookExtra: { visor: "none", hat: "none" }, curios: [], foundLoft: false, navMark: null, quantumHop: false, radioHack: false, intel: [], helpArrow: false, helpKey: "", epochLog: [], hopGhosts: [],
     gotLoupe: false, loupeHeld: false, loupeFound: [], loupeDone: false, loupeNeedEpoch: "",
     iffDecode: false, iffInstalled: false, hasRadarMapper: false, radarInstalled: false,
-    radarBoostT: 0, escapeArmed: false, freeFuelOnce: false,
+    radarBoostT: 0, escapeArmed: false, freeFuelOnce: false, refitLandTipShown: false,
     vitals: { fed: 100, alert: 100 },
     starshipJoyT: 0, cafeBuffT: 0, cafeBuffKind: "",
     stamp: { cafeSip: false, curtainDone: false, midnightAfter: false, wrongStamp: false, basementOpen: false, act: 1, deepHub: false, deepLeaf: false },
@@ -8809,10 +8809,22 @@
       const tag = epochPlanetTag(dest);
       const near = dest && p && dist(p, dest) < dest.r + 280;
       let line;
-      if (tag && near) line = autopilot ? ("Docking at " + tag + ".") : (tag + " — E.");
-      else if (tag) line = p.hull < 22 ? ("Berth. " + tag + ". You're leaking.") : ("Dock " + tag + ". Hull's paper.");
-      else line = "Berth. You're leaking.";
+      if (tag && near) line = autopilot ? ("Docking at " + tag + " — then REFIT.") : (tag + " — E, then REFIT.");
+      else if (tag) line = p.hull < 22 ? ("Berth " + tag + ", then REFIT. You're leaking.") : ("Dock " + tag + ", walk REFIT. Hull's paper.");
+      else line = "Berth, then REFIT. You're leaking.";
       add(1000, "hull", line, "fleeDock", { planet: dest, foe: nearestHostile(520) });
+    }
+    if (inMarket && p) {
+      const needRefit = ((p.maxHull - p.hull) > 0.5) || ((p.maxShield - p.shield) > 0.5);
+      if (needRefit) {
+        const mec = apStallByKind("mechanic");
+        if (mec) {
+          const crit = epochHullCritical(p);
+          add(crit ? 980 : 720, "refit-service", crit ? "REFIT. Seal it before we leave." : "REFIT. Patch hull and shields.", "walkShop", {
+            stall: mec, planet: here
+          });
+        }
+      }
     }
     if (!inMarket && p) {
       const foe = nearestHostile(420);
@@ -14766,10 +14778,22 @@
         "  E " + (p.energy | 0) + "/" + (p.maxEnergy | 0) + "</span>";
     }
     const mul = priceMul();
-    $("svcRepair").innerHTML = "<div>Repair hull — Sealed (harbor patches on arrival)</div>";
-    $("svcRefuel").innerHTML = "<div>Refit energy / shield — Banks full (harbor patches on arrival)</div>";
+    if (p) {
+      const needH = (p.maxHull - p.hull) > 0.5;
+      const needS = (p.maxShield - p.shield) > 0.5;
+      const needE = (p.maxEnergy - p.energy) > 0.5;
+      $("svcRepair").innerHTML = needH || needS
+        ? "<div>Hull / shields — walk into <strong>REFIT</strong> on the street (free seal)</div>"
+        : "<div>Hull / shields — sound (service at <strong>REFIT</strong>)</div>";
+      $("svcRefuel").innerHTML = needE
+        ? "<div>Energy — pad sip on land (refill pending)</div>"
+        : "<div>Energy — full (pad sip on land)</div>";
+    } else {
+      $("svcRepair").innerHTML = "<div>Hull / shields — service at <strong>REFIT</strong></div>";
+      $("svcRefuel").innerHTML = "<div>Energy — pad sip on land</div>";
+    }
     if ($("hullClass")) {
-      $("hullClass").innerHTML = "<div>" + classLabel(G.tier || 1) + " berthed. Hull trades at <strong>REFIT</strong> on the street.</div>";
+      $("hullClass").innerHTML = "<div>" + classLabel(G.tier || 1) + " berthed. Energy on the pad; hull &amp; shields at <strong>REFIT</strong>.</div>";
     }
     const names = UPG_LABEL;
     let uh = "";
@@ -17070,6 +17094,13 @@
     beep(480, 0.05, "sine", 0.035);
     setTimeout(function () { beep(620, 0.06, "sine", 0.03); }, 70);
     if (stall.name && !loft) toast(stall.name);
+    if (shopKind(stall) === "mechanic") {
+      const svc = applyRefitService(true);
+      if (svc) {
+        try { toast(svc); } catch (e) {}
+        try { dockSay(svc); } catch (e) {}
+      }
+    }
     paintMarketHud();
     return true;
   }
@@ -17149,7 +17180,7 @@
     const pack = {
       cardano: [
         ["meme", "HOSKY Cart", "MEMES", "Stickers of dogs that never shipped. Costume crime, five ADA."],
-        ["cafe", "Stake Cafe", "CAFE", "Bitter pool-side sludge. Harbor patched you. This is ritual."],
+        ["cafe", "Stake Cafe", "CAFE", "Bitter pool-side sludge. Pad topped energy. This is ritual."],
         ["fuel", "Kennel Pump", "FUEL", "A sip of propellant. Tastes like pledge rumors."],
         ["souvenir", "Prime Keeps", "KEEPS", "A postcard of the ring. Your mother will not understand it."],
         ["sand", "Sand Keep", "KEEP", "A keep of grain. The moat is a dish. Tide pending."]
@@ -17386,7 +17417,7 @@
       advice: [
         "Hull first. Motors lie. Boost is a rumor you pay for.",
         "If it sparks, that's a feature. If it leaks, that's an invoice.",
-        "Harbor patched you. I sell the parts that fail next.",
+        "REFIT seals the hull. I sell the parts that fail next.",
         "Don't boost into a berth. The lift already judged you."
       ],
       news: [
@@ -17996,7 +18027,7 @@
           "Steam signed the guest book. It smudged.",
           "Sludge pool: bitter, ritual, no refunds.",
           "Left a name. The urn filed it under 'regular'.",
-          "Harbor patched you. This cup is the invoice.",
+          "Pad topped your energy. This cup is the invoice.",
           "Wrote 'sit' in the foam. It sat.",
           "Guestbook page 69. Scientists still hate this.",
           "Tipped steam. Steam tipped a rumor back.",
@@ -18773,7 +18804,15 @@
 
   function refitShipyardHtml() {
     const from = clamp(G.tier || 1, 1, 7);
-    let html = "<div class='tag'>SHIPYARD</div>";
+    const pl = G.player;
+    const needFix = !!(pl && ((pl.maxHull - pl.hull) > 0.5 || (pl.maxShield - pl.shield) > 0.5));
+    let html = "<div class='tag'>SERVICE</div>";
+    if (needFix) {
+      html += "<div class='hull-class'><button type='button' data-act='repair'>Seal hull &amp; shields — free</button></div>";
+    } else {
+      html += "<div class='hull-class'>Hull and shields sound.</div>";
+    }
+    html += "<div class='tag'>SHIPYARD</div>";
     html += "<p>Trade-in ~55% of class cost. Sell scrap ~40% → Scout T1. Upgrades stay fitted.</p>";
     for (let t = 1; t <= 7; t++) {
       if (t === from) {
@@ -18848,7 +18887,7 @@
     if (!el || !stall) return;
     let html = "";
     if (stall.kind === "mechanic") {
-      html = "<div class='tag'>MECHANIC</div><h3>REFIT BOOTH</h3><p>Shipyard trades, paid upgrades, and HOLD installs. Harbor already patched you on the way in.</p>" + clerkLineHtml() + shopBlockHtml();
+      html = "<div class='tag'>MECHANIC</div><h3>REFIT BOOTH</h3><p>Shipyard trades, paid upgrades, and HOLD installs. Walk in for free hull and shield service — pad only tops energy.</p>" + clerkLineHtml() + shopBlockHtml();
       html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "</div>";
     } else if (stall.kind === "ledger") {
       html = "<div class='tag'>READ-ONLY</div><h3>LEDGER AWNING</h3><p>earned " + moneyUsd(G.earned) + "  ·  spent " + moneyUsd(G.spent) + "</p>" + clerkLineHtml() + ledgerBlockHtml(8);
@@ -26033,6 +26072,49 @@
   }
 
 
+  function applyBerthEnergy() {
+    const pl = G.player;
+    if (!pl || pl.dead) return "";
+    const need = (pl.maxEnergy - pl.energy) > 0.5;
+    pl.energy = pl.maxEnergy;
+    let msg = need ? "Pad sip — energy full." : "";
+    if (G.freeFuelOnce) {
+      G.freeFuelOnce = false;
+      msg = (msg ? msg + " " : "") + "Scoop chip covered the pad fee.";
+    }
+    return msg;
+  }
+  function applyRefitService(quiet) {
+    const pl = G.player;
+    if (!pl || pl.dead) return "";
+    const hullFix = (pl.maxHull - pl.hull) > 0.5;
+    const shieldFix = (pl.maxShield - pl.shield) > 0.5;
+    if (!hullFix && !shieldFix) {
+      if (!quiet) return "Hull and shields already sound.";
+      return "";
+    }
+    pl.hull = pl.maxHull;
+    pl.shield = pl.maxShield;
+    let msg = "";
+    if (hullFix && shieldFix) msg = "REFIT service — hull sealed, shields banked.";
+    else if (hullFix) msg = "REFIT service — hull sealed.";
+    else msg = "REFIT service — shields banked.";
+    try { paintDock(); } catch (e) {}
+    try { saveGame(); } catch (e) {}
+    return msg;
+  }
+  function maybeFirstLandRefitTip() {
+    if (G.refitLandTipShown) return;
+    G.refitLandTipShown = true;
+    const tip = "Pad tops up energy only. Walk into REFIT on the street to seal hull and shields.";
+    try { dockSay(tip); } catch (e) {}
+    try { toast(tip); } catch (e) {}
+    try {
+      if (typeof epochSay === "function") epochSay("Energy on the pad. Hull and shields? REFIT bay.", false);
+    } catch (e) {}
+    try { saveGame(); } catch (e) {}
+  }
+
   function openDock(force) {
     clearGuardians();
     try { paintMissionSidePanel(); } catch (e) {}
@@ -26051,28 +26133,14 @@
     if (paper) paper.classList.add("hidden");
     clearKeys();
     harborMissionTick();
-    const pl = G.player;
-    let patched = "";
-    if (pl) {
-      const hullFix = (pl.maxHull - pl.hull) > 0.5;
-      const bankFix = (pl.maxEnergy - pl.energy) > 0.5 || (pl.maxShield - pl.shield) > 0.5;
-      pl.hull = pl.maxHull;
-      pl.shield = pl.maxShield;
-      pl.energy = pl.maxEnergy;
-      if (hullFix && bankFix) patched = "Harbor patch — hull sealed, banks filled.";
-      else if (hullFix) patched = "Hull sealed.";
-      else if (bankFix) patched = "Banks full.";
-      if (G.freeFuelOnce) {
-        G.freeFuelOnce = false;
-        patched = (patched ? patched + " " : "") + "Scoop chip covered the pad fee.";
-      }
-    }
+    let patched = applyBerthEnergy();
     refreshOffers();
     buildMarket(here);
     resizeMarket();
     paintDock();
     if (autopilot) resetApMarket(0.55);
     if (patched) dockSay(patched);
+    maybeFirstLandRefitTip();
     saveGame();
     chime();
   }
@@ -26156,7 +26224,7 @@
       radarInstalled: !!G.radarInstalled,
       radarBoostT: G.radarBoostT || 0,
       escapeArmed: !!G.escapeArmed,
-      freeFuelOnce: !!G.freeFuelOnce,
+      freeFuelOnce: !!G.freeFuelOnce, refitLandTipShown: !!G.refitLandTipShown,
       vitals: (function () {
         ensureVitals();
         return { fed: G.vitals.fed, alert: G.vitals.alert };
@@ -26280,6 +26348,7 @@
     G.radarBoostT = d.radarBoostT != null ? Math.max(0, +d.radarBoostT) : 0;
     G.escapeArmed = !!d.escapeArmed;
     G.freeFuelOnce = !!d.freeFuelOnce;
+    G.refitLandTipShown = !!d.refitLandTipShown;
     {
       const vv = (d.vitals && typeof d.vitals === "object") ? d.vitals : {};
       G.vitals = {
@@ -26384,6 +26453,7 @@
     G.radarBoostT = 0;
     G.escapeArmed = false;
     G.freeFuelOnce = false;
+    G.refitLandTipShown = false;
     G.vitals = { fed: 100, alert: 100 };
     G.starshipJoyT = 0;
     G.cafeBuffT = 0;
@@ -27835,8 +27905,15 @@
     const t = raw.closest("[data-act],[data-up],[data-take]");
     if (!t) return;
     if (t.dataset.take) { acceptMission(t.dataset.take); return; }
-    if (t.dataset.act === "repair" || t.dataset.act === "refuel") {
-      dockSay("Harbor already patched that on arrival.");
+    if (t.dataset.act === "repair") {
+      const msg = applyRefitService(false);
+      dockSay(msg || "Hull and shields already sound.");
+      try { paintTalkCard(MARKET.talk || MARKET.inside); } catch (e) {}
+      return;
+    }
+    if (t.dataset.act === "refuel") {
+      const msg = applyBerthEnergy();
+      dockSay(msg || "Energy already full — pad sip is free on land.");
       return;
     }
     if (t.hasAttribute("disabled")) {

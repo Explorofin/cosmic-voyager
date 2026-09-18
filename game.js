@@ -26265,7 +26265,7 @@
     G.visited = d.visited || {};
     G.lastDock = d.lastDock || "cardano";
     G.homeFaction = (d.homeFaction === "xmr" ? "atom" : (d.homeFaction || "ada"));
-    selectedId = d.selectedId || "ada";
+    selectedId = d.selectedId || "btc";
     G.won = !!d.won;
     G.mission = d.mission || null;
     G.jobs = Array.isArray(d.jobs) ? d.jobs.slice() : (d.mission ? [d.mission] : []);
@@ -26371,7 +26371,7 @@
       G.orbitAng = ORBIT.ang;
     }
     if (!FACTIONS[G.homeFaction]) G.homeFaction = "ada";
-    if (!FACTIONS[selectedId]) selectedId = "ada";
+    if (!FACTIONS[selectedId]) selectedId = "btc";
     try { paintEpochLog(); } catch (e) {}
     try { paintHelpBtn(); } catch (e) {}
     try { ensureCargo(); applyPlayerStats(); } catch (e) {}
@@ -27231,7 +27231,7 @@
     ids.forEach((id, i) => {
       const node = document.createElement("button");
       node.type = "button";
-      node.className = "ship-node" + (id === "ada" ? " ada-home" : "") + (id === selectedId ? " active" : "");
+      node.className = "ship-node" + (id === selectedId ? " active" : "");
       node.dataset.id = id;
       const cv = document.createElement("canvas");
       // Hi-DPI bitmap so CSS ~108px circle stays crisp (was 96).

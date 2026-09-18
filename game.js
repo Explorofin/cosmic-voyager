@@ -902,7 +902,7 @@
   const IM = {};
   // Hung-asset lock: do not empty locked lots; do not swap locked facades.
   // Locked files cannot revert, get punched, or lose to leftovers.
-  const HUNG_LOCK =   {
+  const HUNG_LOCK = {
   "comment": "Hung-asset lock. Do not empty locked lots. Do not swap locked facades. Locked files cannot revert, get punched, or lose to leftovers. New paintings are new filenames only. facade_hangar.png is classic only \u2014 never Cardano REFIT. facade_sand.png is a locked stub \u2014 Cardano Sand Keep uses facade_cardano_sand_v2 only.",
   "assets": [
     {
@@ -1926,6 +1926,246 @@
       "sitBottomFrac": 1.0,
       "sitLockedAt": "2026-09-18T00:00:43Z",
       "note": "Sandcastle sit locked @ 0% flush floor (Ryan 2026-09-17)"
+    },
+    {
+      "id": "balcony-cardano",
+      "path": "assets/images/world/interior_cardano_balcony_v1.png",
+      "sha256": "1801a19bff4d6b2655446f77fcb75c3e43e6094e25358b4635908eba26273570",
+      "role": "balcony-cardano",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-bitcoin",
+      "path": "assets/images/world/interior_bitcoin_balcony_v1.png",
+      "sha256": "662cf6da3b19d0cb232ff480d9f075f14a216c31c35fd2b85d9760ea4b25a150",
+      "role": "balcony-bitcoin",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-ethereum",
+      "path": "assets/images/world/interior_ethereum_balcony_v1.png",
+      "sha256": "9ac9f9bb0e62fe699d1a6bd35fc8d94fbc523bd81f8b6dac4b2662bed8692c79",
+      "role": "balcony-ethereum",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-solana",
+      "path": "assets/images/world/interior_solana_balcony_v1.png",
+      "sha256": "73b0ba64ff0c3a641d6186e5d9b80e1c4c03f1c5d077ffebf596cd95e50276e6",
+      "role": "balcony-solana",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-polkadot",
+      "path": "assets/images/world/interior_polkadot_balcony_v1.png",
+      "sha256": "21234d503c55cc9da58cdf73f67fceb217360e7157a510218845a6680326217a",
+      "role": "balcony-polkadot",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-doge",
+      "path": "assets/images/world/interior_doge_balcony_v1.png",
+      "sha256": "169d39b16a2b2db53b030d928f3ac065df87b5b43a3b6c1cc17653f59637054d",
+      "role": "balcony-doge",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-ripple",
+      "path": "assets/images/world/interior_ripple_balcony_v1.png",
+      "sha256": "6ada6270c6310396d677776f1ed1e7489335fcd1571190eeabd0feb636fd76e0",
+      "role": "balcony-ripple",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-cosmos",
+      "path": "assets/images/world/interior_cosmos_balcony_v1.png",
+      "sha256": "0e76117bcf783705d03e8b3af627f0a493848440c91e5046442e09ae8f677b9a",
+      "role": "balcony-cosmos",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-litecoin",
+      "path": "assets/images/world/interior_litecoin_balcony_v1.png",
+      "sha256": "67556255161c3acd370270843d449127558a131ab37680b539807d4f3d84fbcc",
+      "role": "balcony-litecoin",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-avalanche",
+      "path": "assets/images/world/interior_avalanche_balcony_v1.png",
+      "sha256": "0bb6f808dd0068e57f0e6ab8a0fd34e9263805ebf22f95f85368baf95da71b33",
+      "role": "balcony-avalanche",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "btcHullT1",
+      "path": "assets/images/hulls/btc/t1.png",
+      "sha256": "bf5fa22e3926089ea6949063dcb4ead8ac0068c018b27f08d96b1b9176a004ab",
+      "role": "btc-hull-t1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT1Clear",
+      "path": "assets/images/hulls/btc/t1_clear.png",
+      "sha256": "bf5fa22e3926089ea6949063dcb4ead8ac0068c018b27f08d96b1b9176a004ab",
+      "role": "btc-hull-t1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT2",
+      "path": "assets/images/hulls/btc/t2.png",
+      "sha256": "025dfb3b7b76f4bd33140a4932829fe4fe0e0c3508dddf7c954d96c75b1b4384",
+      "role": "btc-hull-t2",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT2Clear",
+      "path": "assets/images/hulls/btc/t2_clear.png",
+      "sha256": "025dfb3b7b76f4bd33140a4932829fe4fe0e0c3508dddf7c954d96c75b1b4384",
+      "role": "btc-hull-t2",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT3",
+      "path": "assets/images/hulls/btc/t3.png",
+      "sha256": "f86ea342797a4a315095ad29d529b4df036a9875a9837a9c4e292d8d4420d153",
+      "role": "btc-hull-t3",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT3Clear",
+      "path": "assets/images/hulls/btc/t3_clear.png",
+      "sha256": "f86ea342797a4a315095ad29d529b4df036a9875a9837a9c4e292d8d4420d153",
+      "role": "btc-hull-t3",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT4",
+      "path": "assets/images/hulls/btc/t4.png",
+      "sha256": "11f91241b318025c7d0804e97f34b3c37c444c92a23e635e5e62496b0eac3cb1",
+      "role": "btc-hull-t4",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT4Clear",
+      "path": "assets/images/hulls/btc/t4_clear.png",
+      "sha256": "11f91241b318025c7d0804e97f34b3c37c444c92a23e635e5e62496b0eac3cb1",
+      "role": "btc-hull-t4",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT5",
+      "path": "assets/images/hulls/btc/t5.png",
+      "sha256": "959118b90ea40905ac247bf082dd512c9fdda4139c89243e22cebd34dcb76a9d",
+      "role": "btc-hull-t5",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT5Clear",
+      "path": "assets/images/hulls/btc/t5_clear.png",
+      "sha256": "959118b90ea40905ac247bf082dd512c9fdda4139c89243e22cebd34dcb76a9d",
+      "role": "btc-hull-t5",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT6",
+      "path": "assets/images/hulls/btc/t6.png",
+      "sha256": "dce2d5618c45ffe3b31ba8d70cc347bb2dad00f703d624fe6154d18092ccb5b0",
+      "role": "btc-hull-t6",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT6Clear",
+      "path": "assets/images/hulls/btc/t6_clear.png",
+      "sha256": "dce2d5618c45ffe3b31ba8d70cc347bb2dad00f703d624fe6154d18092ccb5b0",
+      "role": "btc-hull-t6",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT7",
+      "path": "assets/images/hulls/btc/t7.png",
+      "sha256": "34819ab96a63354ad3eef7d40d22ed2ff4cdc4ebf4a9d86f7e94234af8507b18",
+      "role": "btc-hull-t7",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+    },
+    {
+      "id": "btcHullT7Clear",
+      "path": "assets/images/hulls/btc/t7_clear.png",
+      "sha256": "34819ab96a63354ad3eef7d40d22ed2ff4cdc4ebf4a9d86f7e94234af8507b18",
+      "role": "btc-hull-t7",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-18T16:14:21Z",
+      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
     }
   ],
   "lots": {
@@ -2090,6 +2330,40 @@
         finish(null);
       }
     });
+  }
+  function preferClearSrc(src) {
+    if (!src || typeof src !== "string") return src;
+    if (src.indexOf("_clear") >= 0) return src;
+    const clearSrc = src.replace(/\.png$/i, "_clear.png");
+    return clearSrc;
+  }
+  async function loadImagePreferClear(src) {
+    if (!src) return null;
+    if (src.indexOf("_clear") >= 0) return loadImage(src);
+    const cleared = await loadImage(preferClearSrc(src));
+    if (cleared) return cleared;
+    return loadImage(src);
+  }
+  function imageAlreadyClear(img) {
+    if (!img) return false;
+    try {
+      const w = img.naturalWidth || img.width || 0;
+      const h = img.naturalHeight || img.height || 0;
+      if (!w || !h) return false;
+      // Sample a coarse grid — if many near-zero alphas, treat as baked clear.
+      const c = document.createElement("canvas");
+      const sw = Math.min(48, w), sh = Math.min(48, h);
+      c.width = sw; c.height = sh;
+      const x = c.getContext("2d", { willReadFrequently: true });
+      x.drawImage(img, 0, 0, sw, sh);
+      const p = x.getImageData(0, 0, sw, sh).data;
+      let clear = 0, n = sw * sh;
+      for (let i = 3; i < p.length; i += 4) if (p[i] < 12) clear++;
+      return clear / n >= 0.12;
+    } catch (e) { return false; }
+  }
+  function yieldFrame() {
+    return new Promise(function (r) { setTimeout(r, 0); });
   }
 
   function punchPixels(img, drop, maxDim) {
@@ -2397,15 +2671,6 @@
   }
 
   async function loadAssets(onProg, phase) {
-    phase = phase || "all";
-    if (phase === "rest") {
-      if (HANGAR_DONE) {
-        try { await HANGAR_DONE; } catch (e) {}
-      }
-      if (!BOOT_JOBS || REST_STARTED) return;
-      REST_STARTED = true;
-      return loadAssetsRest(onProg, BOOT_JOBS);
-    }
     const list = [
       ["adaRocket", "assets/images/ADA_rocket.png"],
       ["adaWide", "assets/images/ADA_wide.png"],
@@ -3053,108 +3318,165 @@
         });
       });
     });
-    BOOT_JOBS = {
-      list: list,
-      hullJobs: hullJobs,
-      worldList: worldList,
-      STREET_V2_KEYS: STREET_V2_KEYS,
-      STREET_CLEAR_KEYS: STREET_CLEAR_KEYS
+    phase = phase || "all";
+    onProg = onProg || function () {};
+    // Hangar-first: logos + ADA skins + T1 hulls + scout/kit. Rest warms in background.
+    const hullEssential = hullJobs.filter(function (j) { return j.tier === 1; });
+    const hullRest = hullJobs.filter(function (j) { return j.tier !== 1; });
+    const worldEssentialKeys = {
+      walkerScoutV2: 1, walkerScoutV2Three: 1, walkerScoutV2Side: 1, walkerScoutV2Back: 1,
+      kitHatCapV2: 1, kitHatAntennaV2: 1, kitHatFlapV2: 1, kitHatBeanieV2: 1, kitHatBowlerV2: 1,
+      groundTile: 1, pathTile: 1
     };
-    await loadAssetsHangar(onProg, BOOT_JOBS);
-    if (phase === "hangar") return;
-    await loadAssetsRest(onProg, BOOT_JOBS);
-  }
+    const worldEssential = [];
+    const worldRest = [];
+    for (let wi = 0; wi < worldList.length; wi++) {
+      if (worldEssentialKeys[worldList[wi][0]]) worldEssential.push(worldList[wi]);
+      else worldRest.push(worldList[wi]);
+    }
+    const doCore = (phase === "all" || phase === "essential");
+    const doRest = (phase === "all" || phase === "rest");
+    const workHull = doCore && doRest ? hullJobs : (doCore ? hullEssential : hullRest);
+    const workWorld = doCore && doRest ? worldList : (doCore ? worldEssential : worldRest);
+    const denom = (doCore ? list.length + ADA_SKINS.length : 0) + workHull.length + workWorld.length + 1;
+    let done = 0;
+    function tick(label) {
+      done += 1;
+      onProg(Math.min(1, done / denom), label || "art");
+    }
 
-  function shouldSkipRuntimePunch(key, src, raw, hung) {
-    if (hung && hung.skipPunch) return true;
-    if (isClearAsset(key, src)) return true;
-    if (alreadyClear(raw)) return true;
-    return false;
-  }
-  function stampOrRaw(img, punch) {
-    try { return punch(img) || img; } catch (e) { return img || null; }
-  }
-  function applyAdaSkin(def, raw) {
-    let canv = null, keep = 1, ok = !!raw;
-    try {
-      if (raw) {
-        if (def.punch === "black") canv = punchBlack(raw);
-        else if (def.punch === "beige") canv = punchBeige(raw);
-        else if (def.punch === "none") {
-          if (alreadyClear(raw) || isClearAsset(def.id, def.src)) {
+    if (doCore) {
+      await mapPool(list, FETCH_CONCURRENCY, async function (row) {
+        try { IM[row[0]] = await loadImagePreferClear(row[1]); } catch (e) { IM[row[0]] = null; }
+        tick(row[0]);
+      });
+      if (!ADA.skins) ADA.skins = {};
+      for (let i = 0; i < ADA_SKINS.length; i++) {
+        const def = ADA_SKINS[i];
+        let raw = null;
+        try { raw = await loadImagePreferClear(def.src); } catch (e) {}
+        tick(def.id);
+        let canv = null, keep = 1, ok = !!raw;
+        try {
+        if (raw) {
+          // Prefer baked alpha — only run ADA skin punch if the plate is still opaque.
+          if (imageAlreadyClear(raw) && (def.punch === "none" || !def.punch)) {
             canv = raw;
-            keep = 1;
-          } else {
+          } else if (def.punch === "black") canv = punchBlack(raw);
+          else if (def.punch === "beige") canv = punchBeige(raw);
+          else if (def.punch === "none") {
             const n = punchPixels(raw, function (_r, _g, _b, a) { return a < 12; });
             canv = n && n.canvas;
             keep = n ? n.keep : 1;
+          } else if (def.punch === "monument") {
+            const m = punchMonument(raw);
+            canv = m && m.canvas;
+            keep = m ? m.keep : 0;
+          } else canv = punchAuto(raw);
+        }
+        if (!canv && def.fallback) {
+          const fb = ADA.skins[def.fallback];
+          canv = fb && fb.canvas;
+          ok = !!canv;
+        }
+        let fly = def.inflight;
+        if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
+        if (fly && !canv) fly = false;
+        const prev = ADA.skins[def.id];
+        ADA.skins[def.id] = {
+          canvas: canv ? (imageAlreadyClear(canv) ? canv : punchFlame(canv)) : canv,
+          inflight: !!fly, ok: ok && !!canv, keep: keep,
+          tiers: (prev && prev.tiers) ? prev.tiers : [null, null, null, null, null, null, null, null]
+        };
+        } catch (e) {
+          ADA.skins[def.id] = { canvas: canv || raw || null, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
+        }
+      }
+    }
+
+    await mapPool(workHull, FETCH_CONCURRENCY, async function (job) {
+      try {
+        const clearSrc = job.src.replace(/\.png$/i, "_clear.png");
+        let raw = await loadImage(clearSrc);
+        if (!raw) raw = await loadImage(job.src);
+        tick((job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
+        // Hulls are already alpha-baked on disk — never re-run punchOutlineKeep.
+        const canv = raw || null;
+        if (job.faction === "ada") {
+          const skin = ADA.skins[job.skin];
+          if (skin) {
+            if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
+            skin.tiers[job.tier] = canv;
           }
-        } else if (def.punch === "monument") {
-          const m = punchMonument(raw);
-          canv = m && m.canvas;
-          keep = m ? m.keep : 0;
-        } else canv = punchAuto(raw);
-      }
-      if (!canv && def.fallback) {
-        const fb = ADA.skins[def.fallback];
-        canv = fb && fb.canvas;
-        ok = !!canv;
-      }
-      let fly = def.inflight;
-      if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
-      if (fly && !canv) fly = false;
-      ADA.skins[def.id] = { canvas: canv ? (alreadyClear(canv) ? canv : punchFlame(canv)) : canv, inflight: !!fly, ok: ok && !!canv, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
-    } catch (e) {
-      ADA.skins[def.id] = { canvas: canv || raw || null, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
-    }
-  }
-  function assignHull(job, raw) {
-    const skip = shouldSkipRuntimePunch(job.skin || job.faction, job.src, raw, null);
-    const canv = raw ? (skip ? raw : (punchOutlineKeep(raw) || raw)) : null;
-    if (job.faction === "ada") {
-      const skin = ADA.skins[job.skin];
-      if (skin) {
-        if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
-        skin.tiers[job.tier] = canv;
-      }
-    } else {
-      if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
-      HULLS[job.faction][job.tier] = canv;
-    }
-  }
-  function finishHangarStamps() {
-    try {
+        } else {
+          if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
+          HULLS[job.faction][job.tier] = canv;
+        }
+      } catch (e) {}
+    });
+
+    if (doCore) {
       ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
-    } catch (e) {
-      ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || IM.adaRocket || IM.adaWide || IM.adaPng || null;
+      ADA.ready = !!ADA.sprite;
+      if (!ADA.skinId) ADA.skinId = "side";
+      try {
+        ADA.skinId = validAdaSkin(localStorage.getItem(SKIN_KEY));
+        localStorage.setItem(SKIN_KEY, ADA.skinId);
+      } catch (e) {}
+      function stampLogo(img, punchFn) {
+        if (!img) return null;
+        if (imageAlreadyClear(img)) return img;
+        return (punchFn && punchFn(img)) || img;
+      }
+      IM.btcStamp = stampLogo(IM.btc, punchBlack);
+      IM.ethStamp = stampLogo(IM.eth, punchBlack);
+      IM.solStamp = stampLogo(IM.sol, punchBlack);
+      IM.dogeStamp = stampLogo(IM.doge, punchBlack);
+      IM.polStamp = stampLogo(IM.pol, punchBlack);
+      IM.xrpStamp = stampLogo(IM.xrp, punchBlack);
+      IM.atomStamp = stampLogo(IM.atom, punchBlack);
+      IM.ltcStamp = stampLogo(IM.ltc, punchBlack);
+      IM.avaxStamp = stampLogo(IM.avax, punchBlack);
+      IM.hoskyStamp = imageAlreadyClear(IM.hosky) ? IM.hosky : (punchHosky(IM.hosky) || punchBlack(IM.hosky) || IM.hosky);
     }
-    ADA.ready = !!ADA.sprite;
-    ADA.skinId = "side";
-    try {
-      ADA.skinId = validAdaSkin(localStorage.getItem(SKIN_KEY));
-      localStorage.setItem(SKIN_KEY, ADA.skinId);
-    } catch (e) {}
-    IM.btcStamp = stampOrRaw(IM.btc, punchBlack);
-    IM.ethStamp = stampOrRaw(IM.eth, punchBlack);
-    IM.solStamp = stampOrRaw(IM.sol, punchBlack);
-    IM.dogeStamp = stampOrRaw(IM.doge, punchBlack);
-    IM.polStamp = stampOrRaw(IM.pol, punchBlack);
-    IM.xrpStamp = stampOrRaw(IM.xrp, punchBlack);
-    IM.atomStamp = stampOrRaw(IM.atom, punchBlack);
-    IM.ltcStamp = stampOrRaw(IM.ltc, punchBlack);
-    IM.avaxStamp = stampOrRaw(IM.avax, punchBlack);
-    IM.hoskyStamp = stampOrRaw(IM.hosky, punchHosky) || stampOrRaw(IM.hosky, punchBlack);
-    IM.kitHat = {
-      none: null,
-      cap: IM.kitHatCapV2,
-      antenna: IM.kitHatAntennaV2,
-      flap: IM.kitHatFlapV2,
-      beanie: IM.kitHatBeanieV2,
-      bowler: IM.kitHatBowlerV2
-    };
-    try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
-  }
-  function finishWorldMaps(jobs) {
+
+    await mapPool(workWorld, FETCH_CONCURRENCY, async function (row) {
+      const key = row[0], src = row[1], punch = row[2];
+      try {
+        const raw = await loadImagePreferClear(src);
+        tick(key);
+        const hung = hungLockById(key);
+        const isFacade = key.indexOf("facade") === 0;
+        const srcIsClear = src.indexOf("_clear") >= 0 || (raw && imageAlreadyClear(raw));
+        const skipPunch = !punch || (hung && hung.skipPunch) || srcIsClear || STREET_CLEAR_KEYS.indexOf(key) >= 0;
+        if (skipPunch) {
+          IM[key] = raw;
+          if (raw && STREET_V2_KEYS.indexOf(key) >= 0) raw._streetPunched = true;
+        } else {
+          IM[key] = raw
+            ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
+            : null;
+        }
+        if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
+      } catch (e) {
+        IM[key] = null;
+      }
+    });
+
+    if (doRest || phase === "all") {
+      for (let sk = 0; sk < STREET_V2_KEYS.length; sk++) {
+        const skey = STREET_V2_KEYS[sk];
+        if (!IM[skey]) continue;
+        if (STREET_CLEAR_KEYS.indexOf(skey) >= 0 || IM[skey]._streetPunched || imageAlreadyClear(IM[skey])) {
+          IM[skey]._streetPunched = true;
+          continue;
+        }
+        IM[skey] = punchStreetWalker(IM[skey]);
+        if ((sk & 3) === 3) await yieldFrame();
+      }
+    }
+
+
     IM.facade = {
       hangar: IM.facadeHangar, arcade: IM.facadeArcade, crane: IM.facadeCrane,
       cantilever: IM.facadeCantilever, hexface: IM.facadeHexface, sails: IM.facadeSails,
@@ -3169,107 +3491,7 @@
       bowler: IM.kitHatBowlerV2
     };
     try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
-  }
-  function placeWorldRaw(key, src, punchFlag, raw, streetClear) {
-    try {
-      const hung = hungLockById(key);
-      const skip = !punchFlag || shouldSkipRuntimePunch(key, src, raw, hung) || (streetClear && streetClear.indexOf(key) >= 0);
-      const isFacade = key.indexOf("facade") === 0;
-      IM[key] = (!skip && raw)
-        ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
-        : raw;
-      if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
-      if (skip && IM[key]) IM[key]._streetPunched = true;
-    } catch (e) {
-      IM[key] = raw || null;
-    }
-  }
-
-  async function loadAssetsHangar(onProg, jobs) {
-    const hangarList = jobs.list.filter(function (row) { return isHangarListKey(row[0]); });
-    const hangarHulls = jobs.hullJobs.filter(function (j) { return j.tier === 1; });
-    const hangarWorld = jobs.worldList.filter(function (row) { return isHangarWorldKey(row[0]); });
-    const denom = hangarList.length + ADA_SKINS.length + hangarHulls.length + hangarWorld.length || 1;
-    let done = 0;
-    function tick(label) {
-      done++;
-      if (onProg) onProg(done / denom, label);
-    }
-    ADA.skins = ADA.skins || {};
-    await mapPool(hangarList, FETCH_CONCURRENCY, async function (row) {
-      if (IM[row[0]]) { tick(row[0]); return; }
-      try { IM[row[0]] = await loadImage(row[1]); } catch (e) { IM[row[0]] = null; }
-      tick(row[0]);
-    });
-    await mapPool(ADA_SKINS, 2, async function (def) {
-      if (ADA.skins[def.id] && ADA.skins[def.id].canvas) { tick(def.id); return; }
-      let raw = null;
-      try { raw = await loadImage(def.src); } catch (e) {}
-      applyAdaSkin(def, raw);
-      tick(def.id);
-    });
-    await mapPool(hangarHulls, FETCH_CONCURRENCY, async function (job) {
-      const label = (job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier;
-      try {
-        const raw = await loadImage(job.src);
-        assignHull(job, raw);
-      } catch (e) {}
-      tick(label);
-    });
-    await mapPool(hangarWorld, FETCH_CONCURRENCY, async function (row) {
-      const key = row[0], src = row[1], punch = row[2];
-      if (IM[key]) { tick(key); return; }
-      try {
-        const raw = await loadImage(src);
-        placeWorldRaw(key, src, punch, raw, jobs.STREET_CLEAR_KEYS);
-      } catch (e) { IM[key] = null; }
-      tick(key);
-    });
-    finishHangarStamps();
-  }
-
-  async function loadAssetsRest(onProg, jobs) {
-    if (!jobs) return;
-    const restList = jobs.list.filter(function (row) { return !isHangarListKey(row[0]) && !IM[row[0]]; });
-    const restHulls = jobs.hullJobs.filter(function (j) {
-      if (j.faction === "ada") {
-        const skin = ADA.skins[j.skin];
-        return !(skin && skin.tiers && skin.tiers[j.tier]);
-      }
-      return !(HULLS[j.faction] && HULLS[j.faction][j.tier]);
-    });
-    const restWorld = jobs.worldList.filter(function (row) { return !IM[row[0]]; });
-    await mapPool(restList, FETCH_CONCURRENCY, async function (row) {
-      try { IM[row[0]] = await loadImage(row[1]); } catch (e) { IM[row[0]] = null; }
-    });
-    await mapPool(restHulls, FETCH_CONCURRENCY, async function (job) {
-      try {
-        const raw = await loadImage(job.src);
-        assignHull(job, raw);
-      } catch (e) {}
-    });
-    await mapPool(restWorld, FETCH_CONCURRENCY, async function (row) {
-      const key = row[0], src = row[1], punch = row[2];
-      try {
-        const raw = await loadImage(src);
-        placeWorldRaw(key, src, punch, raw, jobs.STREET_CLEAR_KEYS);
-      } catch (e) { IM[key] = null; }
-    });
-    const streetKeys = jobs.STREET_V2_KEYS || [];
-    const streetClear = jobs.STREET_CLEAR_KEYS || [];
-    for (let sk = 0; sk < streetKeys.length; sk++) {
-      const skey = streetKeys[sk];
-      try {
-        if (!IM[skey]) continue;
-        if (streetClear.indexOf(skey) >= 0 || isClearAsset(skey) || alreadyClear(IM[skey]) || IM[skey]._streetPunched) {
-          IM[skey]._streetPunched = true;
-          continue;
-        }
-        IM[skey] = punchStreetWalker(IM[skey]);
-      } catch (e) {}
-      if ((sk & 3) === 3) await bootYield();
-    }
-    finishWorldMaps(jobs);
+    tick("ready");
   }
 
   function punchHosky(img) {
@@ -27035,8 +27257,6 @@
   }
 
   async function boot() {
-    // Real bar from hangar-phase onProg. No fake 2s fill. Select opens as soon
-    // as logos / T1 hulls / skins are in; the rest punches in the background.
     let entered = false;
     let loopStarted = false;
     function enterSelect() {
@@ -27052,27 +27272,33 @@
         try { requestAnimationFrame(loop); } catch (e) {}
       }
     }
-    setLoadProgress(0, "art");
-    const hangar = loadAssets(function (frac, label) {
-      setLoadProgress(frac, label || "art");
-    }, "hangar").catch(function (err) {
-      try { console.warn("loadAssets hangar", err); } catch (e) {}
-    });
-    HANGAR_DONE = hangar;
-    const HARD_MS = 12000;
-    const hardTimer = setTimeout(function () {
-      setLoadProgress(1, "continuing");
-      enterSelect();
-    }, HARD_MS);
-    try {
-      await hangar;
-      setLoadProgress(1, "hangar");
-    } catch (e) {
-      try { console.warn("boot", e); } catch (e2) {}
-    }
-    clearTimeout(hardTimer);
+    setLoadProgress(0, "hangar");
+    const ESSENTIAL_BUDGET_MS = 12000;
+    let timedOut = false;
+    await Promise.race([
+      loadAssets(function (frac, label) {
+        setLoadProgress(frac, label || "hangar");
+      }, "essential").catch(function (err) {
+        try { console.warn("loadAssets essential", err); } catch (e) {}
+      }),
+      new Promise(function (resolve) {
+        setTimeout(function () {
+          timedOut = true;
+          setLoadProgress(1, "hangar");
+          const st = $("loadStatus");
+          if (st) st.textContent = "Opening hangar…";
+          resolve();
+        }, ESSENTIAL_BUDGET_MS);
+      })
+    ]);
+    const st = $("loadStatus");
+    if (st) st.textContent = timedOut ? "Hangar open — warming world art…" : "Hangar ready.";
+    setLoadProgress(1, "ready");
     enterSelect();
-    loadAssets(function () {}, "rest").catch(function (err) {
+    // Continue world / higher-tier hulls while the player picks a ship.
+    loadAssets(function () {}, "rest").then(function () {
+      try { buildSelect(); paintLookRow(); paintCrewThumbs(); } catch (e) {}
+    }).catch(function (err) {
       try { console.warn("loadAssets rest", err); } catch (e) {}
     });
   }

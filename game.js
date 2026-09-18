@@ -27279,29 +27279,30 @@
         try { requestAnimationFrame(loop); } catch (e) {}
       }
     }
+    function onProg(frac, label) {
+      setLoadProgress(frac, label || "art");
+    }
     setLoadProgress(0, "art");
     // Real bar: onProg is the share of list + skins + hullJobs + worldList.
-    // Do not ignore the callback, and do not paint a fake 2s / 100% fill.
-    const assets = loadAssets(function (frac, label) {
-      setLoadProgress(frac, label || "art");
-    }, "all").catch(function (err) {
-      try { console.warn("loadAssets", err); } catch (e) {}
+    // Hangar-first: open select after logos / skins / T1 / scout+kit; rest
+    // keeps ticking the same bar. Never ignore onProg. Never fake 100%.
+    const hangar = loadAssets(onProg, "essential").catch(function (err) {
+      try { console.warn("loadAssets essential", err); } catch (e) {}
     });
     const ASSET_BUDGET_MS = 18000;
-    await Promise.race([
-      assets,
-      new Promise(function (resolve) {
-        setTimeout(function () {
-          const st = $("loadStatus");
-          if (st) st.textContent = "Warming thrusters…";
-          resolve();
-        }, ASSET_BUDGET_MS);
-      })
-    ]);
+    const hardTimer = setTimeout(function () {
+      const st = $("loadStatus");
+      if (st) st.textContent = "Warming thrusters…";
+      enterSelect();
+    }, ASSET_BUDGET_MS);
+    try { await hangar; } catch (e) {}
+    clearTimeout(hardTimer);
     enterSelect();
-    assets.then(function () {
+    loadAssets(onProg, "rest").then(function () {
       try { buildSelect(); paintLookRow(); paintCrewThumbs(); } catch (e) {}
-    }).catch(function () {});
+    }).catch(function (err) {
+      try { console.warn("loadAssets rest", err); } catch (e) {}
+    });
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

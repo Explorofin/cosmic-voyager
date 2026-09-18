@@ -20601,6 +20601,8 @@
         return take("facadeCardanoMechanicV3b", IM.facadeCardanoMechanicV3b);
       return null;
     }
+    // Sand: never classic stub fallthrough — painted sand_v2 or nothing.
+    if (kind === "sand" || s.shopType === "sand" || s.shape === "sand") return null;
     const classic = classicFacadeFor(s.shape, s.shopType, s.label);
     return take("classic:" + (kind || s.shopType || s.kind || s.shape || s.label || "x"), classic);
   }
@@ -20725,10 +20727,8 @@
         g.fillRect(-hw + 12 + i * 28, -rise + 28, 22, 3);
       }
     } else if (kind === "sand") {
-      g.fillStyle = "#d4b06a";
-      g.beginPath(); g.moveTo(-hw + 8, hh); g.lineTo(-hw + 18, -rise * 0.35); g.lineTo(0, -rise - 4); g.lineTo(hw - 18, -rise * 0.28); g.lineTo(hw - 8, hh); g.fill();
-      g.fillStyle = "#c4a058";
-      g.fillRect(-16, -rise * 0.2, 32, rise * 0.2 + hh);
+      // No procedural sand keep — painted facade only, or nothing.
+      return;
     } else if (kind === "mechanic" || s.label === "WASH" || s.label === "REFIT") {
       g.fillStyle = wall;
       g.fillRect(-hw + 2, -rise + 18, s.w - 4, rise + hh - 14);
@@ -20844,12 +20844,7 @@
         g.fillStyle = "rgba(0,195,255,0.45)";
         for (let i = 0; i < 3; i++) g.fillRect(-10, 4 + i * 3, 20, 1.4);
       }
-      if (shape === "sand") {
-        g.fillStyle = neon;
-        g.globalAlpha = 0.38;
-        g.beginPath(); g.ellipse(0, hh - 2, hw * 0.92, 7, 0, 0, 6.28); g.fill();
-        g.globalAlpha = 1;
-      }
+      // No under-facade sand ellipse stub on any planet.
       g.restore();
       return;
     }
@@ -23313,6 +23308,8 @@
       const k = keys[i];
       if (k && !used[k] && IM[k] && !isStubArt(IM[k]) && facadeLooksReal(IM[k])) return IM[k];
     }
+    // No classic stub leftovers for sand / reserved slots.
+    if (shopType === "sand" || shape === "sand") return null;
     return facadeMayShow(classic) ? classic : null;
   }
   const TOWER_CANVAS = {};

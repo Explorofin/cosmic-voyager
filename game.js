@@ -1,4 +1,4 @@
-/* Cosmic Voyager v1 — a Cardano space opera. Crypto is costume only. */
+/* Cosmic Voyager v1 — a blockchain space opera. Crypto is costume only. */
 (function () {
   "use strict";
 
@@ -3004,21 +3004,24 @@
     }
     for (let i = 0; i < hullJobs.length; i++) {
       const job = hullJobs[i];
-      const raw = await loadImage(job.src);
-      onProg((list.length + ADA_SKINS.length + i + 1) / denom, (job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
-      // Outline-keep only: cut outside the silhouette. Never punchKeepFrame on 7-tier hulls.
-      // punchFlame is a cropper for baked exhaust; Voyager Flames owns that iteratively with Ryan.
-      const canv = raw ? (punchOutlineKeep(raw) || raw) : null;
-      if (job.faction === "ada") {
-        const skin = ADA.skins[job.skin];
-        if (skin) {
-          if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
-          skin.tiers[job.tier] = canv;
+      try {
+        const raw = await loadImage(job.src);
+        onProg((list.length + ADA_SKINS.length + i + 1) / denom, (job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
+        // Outline-keep only: cut outside the silhouette. Never punchKeepFrame on 7-tier hulls.
+        // punchFlame is a cropper for baked exhaust; Voyager Flames owns that iteratively with Ryan.
+        const canv = raw ? (punchOutlineKeep(raw) || raw) : null;
+        if (job.faction === "ada") {
+          const skin = ADA.skins[job.skin];
+          if (skin) {
+            if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
+            skin.tiers[job.tier] = canv;
+          }
+        } else {
+          if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
+          HULLS[job.faction][job.tier] = canv;
         }
-      } else {
-        if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
-        HULLS[job.faction][job.tier] = canv;
-      }
+      } catch (e) {}
+      if ((i & 3) === 3) await new Promise(function (r) { setTimeout(r, 0); });
     }
     ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
     ADA.ready = !!ADA.sprite;
@@ -3039,14 +3042,20 @@
     IM.hoskyStamp = punchHosky(IM.hosky) || punchBlack(IM.hosky) || IM.hosky;
     for (let i = 0; i < worldList.length; i++) {
       const key = worldList[i][0], src = worldList[i][1], punch = worldList[i][2];
-      const raw = await loadImage(src);
-      onProg((list.length + ADA_SKINS.length + hullJobs.length + i + 1) / denom, key);
-      const isFacade = key.indexOf("facade") === 0;
-      const hung = hungLockById(key);
-      IM[key] = punch && raw && !(hung && hung.skipPunch)
-        ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
-        : raw;
-      if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
+      try {
+        const raw = await loadImage(src);
+        onProg((list.length + ADA_SKINS.length + hullJobs.length + i + 1) / denom, key);
+        const isFacade = key.indexOf("facade") === 0;
+        const hung = hungLockById(key);
+        IM[key] = punch && raw && !(hung && hung.skipPunch)
+          ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
+          : raw;
+        if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
+      } catch (e) {
+        IM[key] = null;
+      }
+      // Yield so the tab stays responsive during long punch runs (esp. GitHub Pages).
+      if ((i & 7) === 7) await new Promise(function (r) { setTimeout(r, 0); });
     }
     for (let sk = 0; sk < STREET_V2_KEYS.length; sk++) {
       const skey = STREET_V2_KEYS[sk];
@@ -26815,7 +26824,10 @@
   }
 
   async function boot() {
-    const assets = loadAssets(() => {});
+    // Asset punch can take a long time (or hang) after the bar hits 100% — never block select forever.
+    const assets = loadAssets(() => {}).catch(function (err) {
+      try { console.warn("loadAssets", err); } catch (e) {}
+    });
     const start = performance.now();
     const DURATION = 2000;
     while (true) {
@@ -26831,9 +26843,15 @@
     }
     const fillDone = $("loadFill");
     if (fillDone) fillDone.style.width = "100%";
-    await assets;
-    loadGame();
-    paintEpochLog();
+    const sub = document.querySelector("#screen-loading .sub");
+    if (sub) sub.textContent = "Warming thrusters…";
+    const ASSET_BUDGET_MS = 18000;
+    await Promise.race([
+      assets,
+      new Promise(function (resolve) { setTimeout(resolve, ASSET_BUDGET_MS); })
+    ]);
+    try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
+    try { paintEpochLog(); } catch (e) {}
     goSelect();
     requestAnimationFrame(loop);
   }

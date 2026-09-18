@@ -10410,6 +10410,20 @@
         st.shopType === "sand" || st.shopType === "souvenir";
     });
   }
+
+  function apDigRumorLowdown() {
+    if (!autopilot) return false;
+    if (!MARKET.rumorId || MARKET.rumorToldMore) return false;
+    const ok = doRumorTellMore();
+    if (ok) {
+      AP_MKT.wait = Math.max(AP_MKT.wait || 0, READ_HOLD * 1.35);
+      AP_MKT.said = "rumor-" + (MARKET.rumorId || "x");
+      if (typeof epochSay === "function") {
+        epochSay(pick(["Lowdown filed.", "They talked. Listen.", "Hint's warm."]), false);
+      }
+    }
+    return ok;
+  }
   function apDoLinger(dt, walkOffPad) {
     const ex = exploreLevel();
     AP_MKT.exploreT = (AP_MKT.exploreT || 0) + dt;
@@ -10428,8 +10442,13 @@
       apWalkToward(c.x, c.y, dt);
       if (Math.hypot(MARKET.walker.x - c.x, MARKET.walker.y - c.y) < 28) {
         if (!MARKET.talk) {
-          openTalk({ kind: "vendor", name: c.name || "Walker", walker: true });
-          AP_MKT.wait = READ_HOLD;
+          const walkerStall = { kind: "vendor", name: c.name || "Walker", walker: true };
+          openTalk(walkerStall);
+          doClerkTalk(walkerStall);
+          apDigRumorLowdown();
+          AP_MKT.wait = Math.max(READ_HOLD, READ_HOLD * (MARKET.rumorToldMore ? 1.6 : 1.15));
+        } else if (MARKET.rumorId && !MARKET.rumorToldMore && AP_MKT.tryT > 0.35) {
+          apDigRumorLowdown();
         }
         const key = "crowd-" + (c.id || c.name || "x");
         if (AP_MKT.intelKey !== key) {
@@ -10473,7 +10492,13 @@
           else if (st.kind === "ledger") w += 7;
           else if (st.kind === "midnight") w += 6;
           else if (st.shopType === "meme" || st.shopType === "sand") w += 6;
-          else if (st.shopType === "fuel" || st.shopType === "cafe") w += 4;
+          else if (st.shopType === "cafe") {
+            w += 4;
+            try {
+              ensureArtifactHunt();
+              if (!G.artifactHunt.started) w += 6; // rumor bartenders
+            } catch (eR) {}
+          } else if (st.shopType === "fuel") w += 4;
           else if (towerClimbable(st)) w += 5;
           else if (st.kind === "shop") w += 2;
           if ((MARKET.planetId || "") === "cardano" && stampAct1Incomplete()) {
@@ -10591,11 +10616,14 @@
       if (ex >= 6 && !MARKET.apChatDid && AP_MKT.tryT > 0.45) {
         MARKET.apChatDid = true;
         doClerkTalk(MARKET.inside);
-        AP_MKT.wait = READ_HOLD;
+        apDigRumorLowdown();
+        AP_MKT.wait = Math.max(READ_HOLD, READ_HOLD * (MARKET.rumorToldMore ? 1.6 : 1.15));
         if (ex >= 11 && AP_MKT.intelKey !== ("in-" + (MARKET.inside.name || "shop"))) {
           AP_MKT.intelKey = "in-" + (MARKET.inside.name || "shop");
           collectIntel(nextIntelLine(MARKET.inside), MARKET.inside);
         }
+      } else if (ex >= 6 && MARKET.apChatDid && MARKET.rumorId && !MARKET.rumorToldMore && AP_MKT.tryT > 0.9) {
+        apDigRumorLowdown();
       }
       const insideDwell = ex >= 11 ? dwell : Math.max(1.2, dwell * 0.55);
       if (AP_MKT.tryT > insideDwell && !talkHoldOpen()) {
@@ -10611,13 +10639,22 @@
     const alwaysTalk = ex >= 11 || (ex >= 6 && !AP_MKT.lingerTalked);
     if (alwaysTalk && !MARKET.talk) {
       openTalk(dest);
+      // Dig rumors from cafe / shops / street vendors (not booth paper).
+      if (dest.kind === "shop" || dest.kind === "mechanic" || dest.kind === "ledger" || dest.kind === "loft" || dest.kind === "midnight" || dest.kind === "vendor") {
+        doClerkTalk(dest);
+        apDigRumorLowdown();
+      }
       AP_MKT.lingerTalked = true;
-      AP_MKT.wait = READ_HOLD;
+      AP_MKT.wait = Math.max(READ_HOLD, READ_HOLD * (MARKET.rumorToldMore ? 1.6 : 1.15));
       if (dest.kind === "contact") AP_MKT.didShade = true;
       if (ex >= 11 && AP_MKT.intelKey !== (dest.name || dest.kind)) {
         AP_MKT.intelKey = dest.name || dest.kind;
         collectIntel(nextIntelLine(dest), dest);
       }
+      return;
+    }
+    if (AP_MKT.lingerTalked && MARKET.rumorId && !MARKET.rumorToldMore) {
+      apDigRumorLowdown();
       return;
     }
     if (talkHoldOpen()) return;
@@ -16980,7 +17017,151 @@
       ]
     }
   };
+
+  // --- Street / cafe rumors (artifacts + easter eggs) ---
+  const STREET_RUMORS = [
+    {
+      id: "balconyNote",
+      tease: "Someone taped scrap on a tower rail. Board won't stamp that job.",
+      more: "Climb the loft. Upper corner — BALCONY · E. Read the scrap for Artifact Run."
+    },
+    {
+      id: "artifacts",
+      tease: "Real stamps aren't on the official board. Relics remember.",
+      more: "HOLD artifacts: deep leaf crumbs, sand-keep finds, vault hush, starship trophies. Five fills the balcony scrap job."
+    },
+    {
+      id: "loupe",
+      tease: "Glass that reads the scrap. Without it you're guessing.",
+      more: "Get the loupe (explore high / Epoch nags). Hold L, stare at balcony scrap or cipher marks until it cracks."
+    },
+    {
+      id: "tomato",
+      tease: "Doge rail's got a can that shouldn't orbit.",
+      more: "Doge tower balcony. LOOK · F on the rail. Tomato can once — if the void feels generous."
+    },
+    {
+      id: "stamp",
+      tease: "Wrong stamp. Curtain. After hours. Basement board.",
+      more: "Cardano only: cafe sip → CURTAIN · E → Midnight AFTER HOURS · E → info booth basement. Upstairs board lies."
+    },
+    {
+      id: "deepKeep",
+      tease: "Keep's hollow. Hallway under the sand.",
+      more: "Inside Sand Keep — KEEP BASEMENT · E. Hub doors to leaf rooms. Crumbs pay the Missing Stamp chase."
+    },
+    {
+      id: "starship",
+      tease: "Bay that isn't on the map. Costume launch.",
+      more: "Meme cart or sand lane — HATCH · E. Joyride or CLAIM keycard depending on the planet."
+    },
+    {
+      id: "shade",
+      tease: "Shade denies the scrap job. That's how you know it's real.",
+      more: "Alley Shade — ASK / INTEL. Illegal paper. Artifact scrap is special; Shade still won't stamp it."
+    },
+    {
+      id: "vault",
+      tease: "Ledger's got a door the glow doesn't advertise.",
+      more: "Ledger counter area — Secret Room / Cold Vault · E. Off the public tape."
+    }
+  ];
+  function rumorStillUseful(r) {
+    if (!r) return false;
+    try {
+      if (r.id === "balconyNote") {
+        ensureArtifactHunt();
+        return !G.artifactHunt.started;
+      }
+      if (r.id === "artifacts") {
+        ensureArtifactHunt();
+        return !!(G.artifactHunt.started && !G.artifactHunt.done);
+      }
+      if (r.id === "loupe") return !G.gotLoupe;
+      if (r.id === "tomato") {
+        ensureArtifactHunt();
+        return !G.artifactHunt.tomatoGot;
+      }
+      if (r.id === "stamp") {
+        return (MARKET.planetId || "") === "cardano" && typeof stampAct1Incomplete === "function" && stampAct1Incomplete();
+      }
+      if (r.id === "deepKeep") {
+        const p = MARKET.planetId || "";
+        return p && p !== "cardano";
+      }
+      if (r.id === "starship") return typeof exploreLevel === "function" ? exploreLevel() >= 6 : true;
+      if (r.id === "shade") return true;
+      if (r.id === "vault") return true;
+    } catch (e) {}
+    return true;
+  }
+  function pickStreetRumor(forceId) {
+    if (forceId) {
+      for (let i = 0; i < STREET_RUMORS.length; i++) {
+        if (STREET_RUMORS[i].id === forceId) return STREET_RUMORS[i];
+      }
+    }
+    const pool = STREET_RUMORS.filter(rumorStillUseful);
+    if (!pool.length) return STREET_RUMORS[(Math.random() * STREET_RUMORS.length) | 0];
+    return pool[(Math.random() * pool.length) | 0];
+  }
+  function clearRumorState() {
+    MARKET.rumorId = null;
+    MARKET.rumorToldMore = false;
+  }
+  function armRumor(r) {
+    if (!r) { clearRumorState(); return null; }
+    MARKET.rumorId = r.id;
+    MARKET.rumorToldMore = false;
+    return r;
+  }
+  function rumorChanceForStall(stall) {
+    if (!stall) return 0.28;
+    if (stall.walker) return 0.42;
+    const k = shopKind(stall);
+    if (k === "cafe") return 0.55;
+    if (k === "fuel" || k === "sand" || k === "meme") return 0.38;
+    if (k === "loft" || k === "midnight") return 0.40;
+    if (k === "mechanic" || k === "ledger") return 0.28;
+    if (stall.kind === "vendor" || stall.kind === "contact") return 0.35;
+    return 0.30;
+  }
+  function maybeArmRumorLine(stall, preferRumor) {
+    const chance = preferRumor ? 1 : rumorChanceForStall(stall);
+    if (Math.random() > chance) {
+      // Keep prior rumor only if still showing same talk; else clear when normal chatter wins.
+      if (!preferRumor) clearRumorState();
+      return null;
+    }
+    return armRumor(pickStreetRumor());
+  }
+  function tellMoreBtnHtml() {
+    if (!MARKET.rumorId || MARKET.rumorToldMore) return "";
+    return "<button type='button' data-act='tellMore'>TELL ME MORE</button>";
+  }
+  function doRumorTellMore() {
+    const id = MARKET.rumorId;
+    if (!id) {
+      dockSay("Nothing else. Ask again later.");
+      return false;
+    }
+    const r = pickStreetRumor(id);
+    if (!r) return false;
+    MARKET.rumorToldMore = true;
+    const line = r.more;
+    MARKET.clerkLine = line;
+    if (MARKET.talk) paintTalkCard(MARKET.talk);
+    dockSay(line);
+    try {
+      if (typeof collectIntel === "function") collectIntel(line, { name: "rumor-" + id, kind: "rumor" });
+    } catch (e) {}
+    beep(560, 0.055, "sine", 0.04);
+    try { saveGame(); } catch (e2) {}
+    return true;
+  }
+
   function roomChatKey(kind) {
+
     if (ROOM_CHAT[kind]) return kind;
     if (kind === "shop") return "souvenir";
     return "souvenir";
@@ -17007,7 +17188,8 @@
   function doClerkTalk(stall) {
     if (!stall) return false;
     if (stall.kind === "midnightVendor") {
-      const line = nextRoomQuote("chat-mid-" + stall.midId, stall.lines || []);
+      const rum = maybeArmRumorLine(stall, false);
+      const line = rum ? rum.tease : nextRoomQuote("chat-mid-" + stall.midId, stall.lines || []);
       MARKET.clerkLine = line;
       MARKET.talk = stall;
       paintTalkCard(stall);
@@ -17015,7 +17197,18 @@
       beep(520, 0.05, "sine", 0.035);
       return true;
     }
-    const line = nextClerkLine(shopKind(stall));
+    if (stall.walker) {
+      const rum = maybeArmRumorLine(stall, Math.random() < 0.55);
+      const line = rum ? rum.tease : (typeof vendorLine === "function" ? vendorLine(planetById(G.lastDock) || PLANETS[0]) : nextClerkLine("cafe"));
+      MARKET.clerkLine = line;
+      MARKET.talk = stall;
+      paintTalkCard(stall);
+      dockSay(line);
+      beep(520, 0.05, "sine", 0.035);
+      return true;
+    }
+    const rum = maybeArmRumorLine(stall, false);
+    const line = rum ? rum.tease : nextClerkLine(shopKind(stall));
     MARKET.clerkLine = line;
     MARKET.talk = stall;
     paintTalkCard(stall);
@@ -17177,6 +17370,7 @@
     html += clerkLineHtml();
     html += "<div class='talk-actions'>";
     html += talkBtnHtml();
+    html += tellMoreBtnHtml();
     if (spec === "cafe") {
       cafeDrinks().forEach(function (d) {
         html += "<button type='button' data-act='cafedrink' data-id='" + d.id + "'>" + d.name.toUpperCase() + "  ·  " + money(cafeDrinkCost(d)) + "</button>";
@@ -18116,10 +18310,10 @@
     let html = "";
     if (stall.kind === "mechanic") {
       html = "<div class='tag'>MECHANIC</div><h3>REFIT BOOTH</h3><p>Shipyard trades, paid upgrades, and HOLD installs. Harbor already patched you on the way in.</p>" + clerkLineHtml() + shopBlockHtml();
-      html += "<div class='talk-actions'>" + talkBtnHtml() + "</div>";
+      html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "</div>";
     } else if (stall.kind === "ledger") {
       html = "<div class='tag'>READ-ONLY</div><h3>LEDGER AWNING</h3><p>earned " + moneyUsd(G.earned) + "  ·  spent " + moneyUsd(G.spent) + "</p>" + clerkLineHtml() + ledgerBlockHtml(8);
-      html += "<div class='talk-actions'>" + talkBtnHtml() + "<button type='button' data-act='roomtoy'>SEND FUNNY TX</button></div>";
+      html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "<button type='button' data-act='roomtoy'>SEND FUNNY TX</button></div>";
     } else if (stall.kind === "vendor" || stall.kind === "mission" || stall.kind === "clerk") {
       const here = planetById(G.lastDock) || PLANETS[0];
       const raw = stall.mission;
@@ -18153,14 +18347,22 @@
         html += "</div>";
       } else if (stall.kind === "vendor") {
         const legal = officialJobs(here)[0];
+        if (stall.walker) {
+          html = "<div class='tag'>STREET</div><h3>" + stall.name + "</h3>";
+          html += clerkLineHtml() || ("<p>" + (vendorLine(here)) + "</p>");
+          html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "<button type='button' data-act='close'>CLOSE</button></div>";
+        } else {
         html = "<div class='tag'>VENDOR</div><h3>" + stall.name + "</h3>";
         html += "<p>" + (vendorLine(here)) + "</p>";
         html += "<p>Official contracts are posted at the information booth on the path. I don't stamp those.</p>";
         if (legal) html += "<p>Heard the booth's pushing " + jobShort(legal) + ".</p>";
         html += namesHtml;
         if (jobCount() >= 3) html += "<p>Board's full — cash one or abandon.</p>";
+        html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml();
         if (jobCount()) {
-          html += "<div class='talk-actions'><button type='button' data-act='turnin'>TURN IN</button>" + abandonBtn + "</div>";
+          html += "<button type='button' data-act='turnin'>TURN IN</button>" + abandonBtn;
+        }
+        html += "</div>";
         }
       } else {
         const tag = !m ? "CLERK" : (m.legal === false ? "illegal" : (m.diff || "job")) + (m.finale ? "  FINALE" : "");
@@ -18221,13 +18423,14 @@
       html += "<p class='talk-pay'>" + sk.item + "  ·  " + moneyUsd(shopSnackCostAda(sk)) + "</p>";
       html += "<div class='talk-actions'>";
       html += talkBtnHtml();
+      html += tellMoreBtnHtml();
       html += "<button type='button' data-act='snack' data-cost='" + shopSnackCostAda(sk) + "' data-item='" + sk.item + "' data-msg='" + sk.msg + "'>BUY " + moneyUsd(shopSnackCostAda(sk)) + "</button>";
       html += "</div>";
     } else if (stall.kind === "midnight") {
       html = "<div class='tag'>NIGHT / DUST</div><h3>Don't log this</h3>";
       html += "<p>NIGHT sits in the open. Holding it makes DUST. DUST is shielded fuel — pays, decays, doesn't list. Don't ask who generated it.</p>";
       html += clerkLineHtml();
-      html += "<div class='talk-actions'>" + talkBtnHtml() + "</div>";
+      html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "</div>";
     } else if (stall.kind === "secret") {
       if (secretAnnexFromStarship()) {
         const sp = STARSHIP_SECRETS[MARKET.planetId || ""] || {};
@@ -18266,7 +18469,7 @@
       html = "<div class='tag'>" + (loftSpec.label || "LOFT") + "</div><h3>" + loftSpec.name + "</h3>";
       html += "<p>Off the map. The tower kept you anyway.</p>";
       html += clerkLineHtml();
-      html += "<div class='talk-actions'>" + talkBtnHtml() + "<button type='button' data-act='roomtoy'>TUNE RADIO</button>";
+      html += "<div class='talk-actions'>" + talkBtnHtml() + tellMoreBtnHtml() + "<button type='button' data-act='roomtoy'>TUNE RADIO</button>";
       if ((MARKET.planetId || "cardano") === "cardano") {
         html += MARKET.secretAnnex
           ? ("<button type='button' data-act='secretAnnex'>BACK TO " + (secretAnnexFromLedger() ? "LEDGER" : "LOFT") + "</button>")
@@ -27117,6 +27320,10 @@
     if (t.dataset.act === "decipher") { doLoupeDecipher(); return; }
     if (t.dataset.act === "clerkTalk") {
       doClerkTalk(MARKET.talk || MARKET.inside);
+      return;
+    }
+    if (t.dataset.act === "tellMore") {
+      doRumorTellMore();
       return;
     }
     if (t.dataset.act === "shadeAsk") {

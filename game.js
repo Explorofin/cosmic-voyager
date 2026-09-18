@@ -6910,7 +6910,7 @@
       for (let i = 0; i < spec.rings; i++) {
         pushSpecialFx({
           kind: "pulseRing", x: ship.x, y: ship.y, color: COL.cyan,
-          life: 0.32 + i * 0.05, max: 0.36 + i * 0.05,
+          life: 0.42 + i * 0.06, max: 0.46 + i * 0.06,
           r0: 16 + i * 10, r1: spec.r * (0.72 + i * 0.14), wide: i === 0
         });
       }
@@ -7873,7 +7873,7 @@
       }
     }
     if (ship.crashT > 0) {
-      ship.crashT -= dt;
+      ship.crashT = Math.max(0, ship.crashT - dt);
       if (!ship.crashHit) ship.crashHit = [];
       const crashList = specialCombatants();
       for (let i = 0; i < crashList.length; i++) {
@@ -7887,7 +7887,7 @@
       }
     }
     if (ship.dashT > 0) {
-      ship.dashT -= dt;
+      ship.dashT = Math.max(0, ship.dashT - dt);
       const life = ship.afterLife || 0.25;
       ship.after.push({ x: ship.x, y: ship.y, a: ship.a, life: life, tint: ship.afterTint, glow: !!ship.afterGlow });
       if (ship.afterGhosts) {
@@ -27963,6 +27963,6 @@
     requestAnimationFrame(loop);
   }
 
-  window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS, doSpecial: doSpecial, specialParams: specialParams };
+  window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS, doSpecial: doSpecial, specialParams: specialParams, update: update, render: render };
   boot();
 })();

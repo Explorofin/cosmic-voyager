@@ -6544,9 +6544,10 @@
       kind = w.id;
     } else {
       // NPC ammo = their faction shot profile (heavy bites harder than needle)
-      const shotMul = def.shot === "heavy" ? 1.15 : def.shot === "spread" ? 0.55 : def.shot === "needle" ? 0.7 : 1;
-      let foul = 1.12;
-      if (ship.pirate || ship.missionShip) foul = 1.32;
+      // 2026-09-18: foul bumped so sitting still actually drains you.
+      const shotMul = def.shot === "heavy" ? 1.18 : def.shot === "spread" ? 0.62 : def.shot === "needle" ? 0.78 : 1.05;
+      let foul = 1.55;
+      if (ship.pirate || ship.missionShip) foul = 1.85;
       dmg = def.dmg * foul * shotMul * T.dmg * (dmgMul || 1);
       sp = def.shotSp * (0.82 + (ship.tier || 1) * 0.055) * T.sp;
       life = def.shotLife * (0.58 + (ship.tier || 1) * 0.09) * T.life;
@@ -6593,8 +6594,9 @@
 
   function tryFire(ship, dt) {
     const def = SHIPS[ship.faction];
-    let rate = ship.player ? (WEPS[G.weapon] || WEPS[0]).fire : def.fire * (ship.tier <= 2 ? 1.12 : 0.92);
-    if (!ship.player && (ship.pirate || ship.missionShip)) rate *= 0.78;
+    // Lower rate = faster fire. NPCs bite quicker after 2026-09-18 retune.
+    let rate = ship.player ? (WEPS[G.weapon] || WEPS[0]).fire : def.fire * (ship.tier <= 2 ? 0.88 : 0.78);
+    if (!ship.player && (ship.pirate || ship.missionShip)) rate *= 0.65;
     if (ship.player && ship.faction === "sol" && keys.Shift) rate *= 0.55;
     ship.fireCd -= dt;
     if (ship.fireCd > 0) return;

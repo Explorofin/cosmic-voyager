@@ -3337,6 +3337,13 @@
     }
     const doCore = (phase === "all" || phase === "essential");
     const doRest = (phase === "all" || phase === "rest");
+    const listEssential = [];
+    const listRest = [];
+    for (let li = 0; li < list.length; li++) {
+      if (isHangarListKey(list[li][0])) listEssential.push(list[li]);
+      else listRest.push(list[li]);
+    }
+    const workList = doCore && doRest ? list : (doCore ? listEssential : listRest);
     const workHull = doCore && doRest ? hullJobs : (doCore ? hullEssential : hullRest);
     const workWorld = doCore && doRest ? worldList : (doCore ? worldEssential : worldRest);
     // Intro bar is the real share of list + skins + hulls + world — never a fake 2s fill.
@@ -3349,13 +3356,30 @@
     if (phase === "all" || phase === "essential") onProg(0, "art");
 
     if (doCore) {
-      await mapPool(list, FETCH_CONCURRENCY, async function (row) {
+      if (!ADA.skins) ADA.skins = {};
+      for (let si = 0; si < ADA_SKINS.length; si++) {
+        const id = ADA_SKINS[si].id;
+        if (!ADA.skins[id]) {
+          ADA.skins[id] = { canvas: null, inflight: false, ok: false, keep: 1, tiers: [null, null, null, null, null, null, null, null] };
+        }
+      }
+    }
+    const fetchJobs = [];
+    for (let li = 0; li < workList.length; li++) fetchJobs.push({ kind: "list", row: workList[li] });
+    if (doCore) {
+      for (let si = 0; si < ADA_SKINS.length; si++) fetchJobs.push({ kind: "skin", def: ADA_SKINS[si] });
+    }
+    for (let hi = 0; hi < workHull.length; hi++) fetchJobs.push({ kind: "hull", job: workHull[hi] });
+    for (let wi = 0; wi < workWorld.length; wi++) fetchJobs.push({ kind: "world", row: workWorld[wi] });
+    await mapPool(fetchJobs, FETCH_CONCURRENCY, async function (item) {
+      if (item.kind === "list") {
+        const row = item.row;
         try { IM[row[0]] = await loadImagePreferClear(row[1]); } catch (e) { IM[row[0]] = null; }
         tick(row[0]);
-      });
-      if (!ADA.skins) ADA.skins = {};
-      for (let i = 0; i < ADA_SKINS.length; i++) {
-        const def = ADA_SKINS[i];
+        return;
+      }
+      if (item.kind === "skin") {
+        const def = item.def;
         let raw = null;
         try { raw = await loadImagePreferClear(def.src); } catch (e) {}
         tick(def.id);
@@ -3392,30 +3416,55 @@
           tiers: (prev && prev.tiers) ? prev.tiers : [null, null, null, null, null, null, null, null]
         };
         } catch (e) {
-          ADA.skins[def.id] = { canvas: canv || raw || null, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
+          ADA.skins[def.id] = { canvas: canv || raw || null, inflight: false, ok: false, keep: keep, tiers: (ADA.skins[def.id] && ADA.skins[def.id].tiers) || [null, null, null, null, null, null, null, null] };
         }
+        return;
       }
-    }
-
-    await mapPool(workHull, FETCH_CONCURRENCY, async function (job) {
-      try {
-        const clearSrc = job.src.replace(/\.png$/i, "_clear.png");
-        let raw = await loadImage(clearSrc);
-        if (!raw) raw = await loadImage(job.src);
-        tick((job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
-        // Hulls are already alpha-baked on disk — never re-run punchOutlineKeep.
-        const canv = raw || null;
-        if (job.faction === "ada") {
-          const skin = ADA.skins[job.skin];
-          if (skin) {
-            if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
-            skin.tiers[job.tier] = canv;
+      if (item.kind === "hull") {
+        const job = item.job;
+        try {
+          const clearSrc = job.src.replace(/\.png$/i, "_clear.png");
+          let raw = await loadImage(clearSrc);
+          if (!raw) raw = await loadImage(job.src);
+          tick((job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
+          // Hulls are already alpha-baked on disk — never re-run punchOutlineKeep.
+          const canv = raw || null;
+          if (job.faction === "ada") {
+            const skin = ADA.skins[job.skin];
+            if (skin) {
+              if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
+              skin.tiers[job.tier] = canv;
+            }
+          } else {
+            if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
+            HULLS[job.faction][job.tier] = canv;
           }
+        } catch (e) {}
+        return;
+      }
+      const row = item.row;
+      const key = row[0], src = row[1], punch = row[2];
+      try {
+        const raw = await loadImagePreferClear(src);
+        tick(key);
+        const hung = hungLockById(key);
+        const isFacade = key.indexOf("facade") === 0;
+        const srcIsClear = src.indexOf("_clear") >= 0 || (raw && imageAlreadyClear(raw));
+        // Hangar phase stores raw. Punch (with hung skipPunch) runs on rest/all.
+        const allowPunch = doRest || phase === "all";
+        const skipPunch = !allowPunch || !punch || (hung && hung.skipPunch) || srcIsClear || STREET_CLEAR_KEYS.indexOf(key) >= 0;
+        if (skipPunch) {
+          IM[key] = raw;
+          if (raw && STREET_V2_KEYS.indexOf(key) >= 0) raw._streetPunched = true;
         } else {
-          if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
-          HULLS[job.faction][job.tier] = canv;
+          IM[key] = raw
+            ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
+            : null;
         }
-      } catch (e) {}
+        if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
+      } catch (e) {
+        IM[key] = null;
+      }
     });
 
     if (doCore) {
@@ -3446,29 +3495,6 @@
       IM.avaxStamp = stampLogo(IM.avax, punchBlack);
       IM.hoskyStamp = imageAlreadyClear(IM.hosky) ? IM.hosky : (punchHosky(IM.hosky) || punchBlack(IM.hosky) || IM.hosky);
     }
-
-    await mapPool(workWorld, FETCH_CONCURRENCY, async function (row) {
-      const key = row[0], src = row[1], punch = row[2];
-      try {
-        const raw = await loadImagePreferClear(src);
-        tick(key);
-        const hung = hungLockById(key);
-        const isFacade = key.indexOf("facade") === 0;
-        const srcIsClear = src.indexOf("_clear") >= 0 || (raw && imageAlreadyClear(raw));
-        const skipPunch = !punch || (hung && hung.skipPunch) || srcIsClear || STREET_CLEAR_KEYS.indexOf(key) >= 0;
-        if (skipPunch) {
-          IM[key] = raw;
-          if (raw && STREET_V2_KEYS.indexOf(key) >= 0) raw._streetPunched = true;
-        } else {
-          IM[key] = raw
-            ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
-            : null;
-        }
-        if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
-      } catch (e) {
-        IM[key] = null;
-      }
-    });
 
     if (doRest || phase === "all") {
       for (let sk = 0; sk < STREET_V2_KEYS.length; sk++) {
@@ -27283,12 +27309,13 @@
     function onProg(frac, label) {
       setLoadProgress(frac, label || "art");
     }
-    // Fill / percent / status come only from loadAssets(onProg). Timeout
-    // never-sticks to select — it does not paint the bar.
+    // Fill / percent / status come only from loadAssets(onProg). Hangar is
+    // small and parallel, so the last-resort timer is short and does not
+    // paint the bar.
     const hangar = loadAssets(onProg, "essential").catch(function (err) {
       try { console.warn("loadAssets essential", err); } catch (e) {}
     });
-    const ASSET_BUDGET_MS = 18000;
+    const ASSET_BUDGET_MS = 8000;
     const hardTimer = setTimeout(function () {
       enterSelect();
     }, ASSET_BUDGET_MS);

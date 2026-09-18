@@ -1597,11 +1597,13 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 }
 
 
-/* Right-side missions panel — Epoch cloud DNA */
+/* Lower-left missions panel — space + market */
 .mission-side {
   position: fixed;
-  right: 16px;
-  top: 96px;
+  left: 16px;
+  bottom: 16px;
+  top: auto;
+  right: auto;
   z-index: 11;
   width: min(248px, 32vw);
   max-height: min(42vh, 360px);
@@ -1678,18 +1680,19 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   opacity: 0.55;
   letter-spacing: 0.06em;
 }
-/* Market: sit in the right column under Epoch log (not fixed) */
+/* Market uses the same lower-left fixed slot as space */
 .mission-side-mkt {
-  position: static;
-  right: auto;
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
   top: auto;
-  width: min(244px, 100%);
-  max-height: 220px;
+  right: auto;
+  width: min(248px, 32vw);
+  max-height: min(42vh, 360px);
   pointer-events: none;
-  align-self: stretch;
+  z-index: 12;
 }
 #hud .mission-side { pointer-events: none; }
-/* Keep radar clear — panel sits above it */
 @media (max-height: 640px) {
-  .mission-side { top: 78px; max-height: 28vh; }
+  .mission-side, .mission-side-mkt { bottom: 12px; max-height: 28vh; }
 }

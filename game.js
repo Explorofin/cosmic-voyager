@@ -3346,6 +3346,7 @@
       BOOT_TICK += 1;
       onProg(Math.min(1, BOOT_TICK / Math.max(1, fullDenom)), label || "art");
     }
+    if (phase === "all" || phase === "essential") onProg(0, "art");
 
     if (doCore) {
       await mapPool(list, FETCH_CONCURRENCY, async function (row) {
@@ -27282,17 +27283,13 @@
     function onProg(frac, label) {
       setLoadProgress(frac, label || "art");
     }
-    setLoadProgress(0, "art");
-    // Real bar: onProg is the share of list + skins + hullJobs + worldList.
-    // Hangar-first: open select after logos / skins / T1 / scout+kit; rest
-    // keeps ticking the same bar. Never ignore onProg. Never fake 100%.
+    // Fill / percent / status come only from loadAssets(onProg). Timeout
+    // never-sticks to select — it does not paint the bar.
     const hangar = loadAssets(onProg, "essential").catch(function (err) {
       try { console.warn("loadAssets essential", err); } catch (e) {}
     });
     const ASSET_BUDGET_MS = 18000;
     const hardTimer = setTimeout(function () {
-      const st = $("loadStatus");
-      if (st) st.textContent = "Warming thrusters…";
       enterSelect();
     }, ASSET_BUDGET_MS);
     try { await hangar; } catch (e) {}

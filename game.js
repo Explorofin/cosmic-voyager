@@ -2258,6 +2258,7 @@
   let BOOT_JOBS = null;
   let HANGAR_DONE = null;
   let REST_STARTED = false;
+  let BOOT_TICK = 0;
   function bootYield() {
     return new Promise(function (r) { setTimeout(r, 0); });
   }
@@ -3338,11 +3339,12 @@
     const doRest = (phase === "all" || phase === "rest");
     const workHull = doCore && doRest ? hullJobs : (doCore ? hullEssential : hullRest);
     const workWorld = doCore && doRest ? worldList : (doCore ? worldEssential : worldRest);
-    const denom = (doCore ? list.length + ADA_SKINS.length : 0) + workHull.length + workWorld.length + 1;
-    let done = 0;
+    // Intro bar is the real share of list + skins + hulls + world — never a fake 2s fill.
+    const fullDenom = list.length + ADA_SKINS.length + hullJobs.length + worldList.length;
+    if (phase === "all" || phase === "essential") BOOT_TICK = 0;
     function tick(label) {
-      done += 1;
-      onProg(Math.min(1, done / denom), label || "art");
+      BOOT_TICK += 1;
+      onProg(Math.min(1, BOOT_TICK / Math.max(1, fullDenom)), label || "art");
     }
 
     if (doCore) {
@@ -3416,7 +3418,11 @@
     });
 
     if (doCore) {
-      ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
+      try {
+        ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
+      } catch (e) {
+        ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || IM.adaRocket || IM.adaWide || IM.adaPng || null;
+      }
       ADA.ready = !!ADA.sprite;
       if (!ADA.skinId) ADA.skinId = "side";
       try {
@@ -3491,7 +3497,7 @@
       bowler: IM.kitHatBowlerV2
     };
     try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
-    tick("ready");
+    if (doRest || phase === "all") onProg(1, "ready");
   }
 
   function punchHosky(img) {
@@ -27246,10 +27252,11 @@
     if (pct) pct.textContent = Math.round(f * 100) + "%";
     const st = $("loadStatus");
     if (st) {
-      if (!label || label === "art") st.textContent = "Loading art…";
-      else if (label === "ready" || label === "hangar") st.textContent = "Opening hangar…";
-      else if (label === "continuing") st.textContent = "Opening hangar (art still warming)…";
-      else st.textContent = "Loading " + label + "…";
+      if (!label || label === "art" || label === "ready" || label === "hangar" || label === "continuing") {
+        st.textContent = "Warming thrusters…";
+      } else {
+        st.textContent = "Loading " + label + "…";
+      }
     }
     const lines = document.querySelectorAll("#loadStack p");
     const shown = Math.min(lines.length, Math.floor(f * lines.length + 0.001) + 1);
@@ -27272,35 +27279,29 @@
         try { requestAnimationFrame(loop); } catch (e) {}
       }
     }
-    setLoadProgress(0, "hangar");
-    const ESSENTIAL_BUDGET_MS = 12000;
-    let timedOut = false;
+    setLoadProgress(0, "art");
+    // Real bar: onProg is the share of list + skins + hullJobs + worldList.
+    // Do not ignore the callback, and do not paint a fake 2s / 100% fill.
+    const assets = loadAssets(function (frac, label) {
+      setLoadProgress(frac, label || "art");
+    }, "all").catch(function (err) {
+      try { console.warn("loadAssets", err); } catch (e) {}
+    });
+    const ASSET_BUDGET_MS = 18000;
     await Promise.race([
-      loadAssets(function (frac, label) {
-        setLoadProgress(frac, label || "hangar");
-      }, "essential").catch(function (err) {
-        try { console.warn("loadAssets essential", err); } catch (e) {}
-      }),
+      assets,
       new Promise(function (resolve) {
         setTimeout(function () {
-          timedOut = true;
-          setLoadProgress(1, "hangar");
           const st = $("loadStatus");
-          if (st) st.textContent = "Opening hangar…";
+          if (st) st.textContent = "Warming thrusters…";
           resolve();
-        }, ESSENTIAL_BUDGET_MS);
+        }, ASSET_BUDGET_MS);
       })
     ]);
-    const st = $("loadStatus");
-    if (st) st.textContent = timedOut ? "Hangar open — warming world art…" : "Hangar ready.";
-    setLoadProgress(1, "ready");
     enterSelect();
-    // Continue world / higher-tier hulls while the player picks a ship.
-    loadAssets(function () {}, "rest").then(function () {
+    assets.then(function () {
       try { buildSelect(); paintLookRow(); paintCrewThumbs(); } catch (e) {}
-    }).catch(function (err) {
-      try { console.warn("loadAssets rest", err); } catch (e) {}
-    });
+    }).catch(function () {});
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

@@ -26721,17 +26721,18 @@
     g.clearRect(0, 0, art.width, art.height);
     g.translate(art.width / 2, art.height / 2 + 4);
     const t = G.tier || 1;
-    const boxW = art.width - 8, boxH = art.height - 8;
+    // Square launchArt (240×240) — CSS must stay 1:1 or ships look vertically stretched.
+    const boxW = art.width - 4, boxH = art.height - 4;
 
     function drawLaunchSpr(spr, facId) {
       const b = opaqueBounds(spr);
       if (!b || !b.w || !b.h) return false;
       const noseUp = facId === "atom";
-      // Fit opaque bbox (not full PNG padding), then +5%; BTC still −10% on that base.
+      // Fit opaque bbox, then +10% so they read large in the floater; BTC still −10% on that base.
       let sc = noseUp
         ? Math.min(boxH / b.w, boxW / b.h)
         : Math.min(boxH / b.h, boxW / b.w);
-      sc *= 1.05;
+      sc *= 1.10;
       if (facId === "btc") sc *= 0.9;
       const dw = b.iw * sc, dh = b.ih * sc;
       const ox = -(b.x + b.w / 2) * sc;

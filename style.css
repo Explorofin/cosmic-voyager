@@ -1798,10 +1798,10 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 }
 #hud .mission-side {
   pointer-events: none;
-  bottom: 42px; /* clear WASD / hint strip */
+  bottom: 62px; /* clear WASD / hint strip */
 }
 @media (max-height: 640px) {
-  #hud .mission-side { bottom: 36px; max-height: 28vh; }
+  #hud .mission-side { bottom: 54px; max-height: 28vh; }
   .mission-side-mkt { bottom: 12px; max-height: 28vh; }
 }
 

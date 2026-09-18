@@ -21652,10 +21652,6 @@
       drawFacadeFitted(g, facade, s, 1);
       const signMode = facadeSignMode(facade);
       if (signMode === "lintel") drawBldgLintel(g, s, trim, dark, rise);
-      if (s.kind === "ledger") {
-        g.fillStyle = "rgba(0,195,255,0.45)";
-        for (let i = 0; i < 3; i++) g.fillRect(-10, 4 + i * 3, 20, 1.4);
-      }
       // No under-facade sand ellipse stub on any planet.
       g.restore();
       return;
@@ -21998,10 +21994,7 @@
 
     drawBldgLabel(g, s, trim, dark, rise);
 
-    if (s.kind === "ledger") {
-      g.fillStyle = "rgba(0,195,255,0.45)";
-      for (let i = 0; i < 3; i++) g.fillRect(-10, 4 + i * 3, 20, 1.4);
-    } else if (s.kind === "shop" && s.shopType === "cafe" && lod >= 1) {
+    if (s.kind === "shop" && s.shopType === "cafe" && lod >= 1) {
       g.fillStyle = "rgba(244,247,255,0.28)";
       g.beginPath(); g.arc(-8, 6, 3, 0, 6.28); g.fill();
     } else if (s.kind === "shop" && s.shopType === "fuel") {
@@ -26077,6 +26070,16 @@
     if (!pl || pl.dead) return "";
     const need = (pl.maxEnergy - pl.energy) > 0.5;
     pl.energy = pl.maxEnergy;
+    // Pilot Fed/Alert: soft pad rest so cafe is optional, not forced.
+    try {
+      ensureVitals();
+      const beforeF = G.vitals.fed, beforeA = G.vitals.alert;
+      G.vitals.fed = Math.min(100, G.vitals.fed + 35);
+      G.vitals.alert = Math.min(100, G.vitals.alert + 30);
+      if (G.vitals.fed > beforeF || G.vitals.alert > beforeA) {
+        /* cafe still gives a bigger bump as a ritual bonus */
+      }
+    } catch (e) {}
     let msg = need ? "Pad sip — energy full." : "";
     if (G.freeFuelOnce) {
       G.freeFuelOnce = false;

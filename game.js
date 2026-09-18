@@ -3327,6 +3327,7 @@
     const worldEssentialKeys = {
       walkerScoutV2: 1, walkerScoutV2Three: 1, walkerScoutV2Side: 1, walkerScoutV2Back: 1,
       kitHatCapV2: 1, kitHatAntennaV2: 1, kitHatFlapV2: 1, kitHatBeanieV2: 1, kitHatBowlerV2: 1,
+      kitHatBeanieScoutV3: 1, kitGlassesV2: 1, kitGlassesScoutV3: 1, hoodieScoutV8: 1,
       groundTile: 1, pathTile: 1
     };
     const worldEssential = [];
@@ -3346,12 +3347,15 @@
     const workList = doCore && doRest ? list : (doCore ? listEssential : listRest);
     const workHull = doCore && doRest ? hullJobs : (doCore ? hullEssential : hullRest);
     const workWorld = doCore && doRest ? worldList : (doCore ? worldEssential : worldRest);
-    // Intro bar is the real share of list + skins + hulls + world — never a fake 2s fill.
+    // Essential bar is the real hangar share. Rest is quiet (no fake fill).
+    const hangarDenom = listEssential.length + ADA_SKINS.length + hullEssential.length + worldEssential.length;
     const fullDenom = list.length + ADA_SKINS.length + hullJobs.length + worldList.length;
+    const barDenom = phase === "essential" ? hangarDenom : fullDenom;
     if (phase === "all" || phase === "essential") BOOT_TICK = 0;
     function tick(label) {
       BOOT_TICK += 1;
-      onProg(Math.min(1, BOOT_TICK / Math.max(1, fullDenom)), label || "art");
+      if (phase === "rest") return;
+      onProg(Math.min(1, BOOT_TICK / Math.max(1, barDenom)), label || "art");
     }
     if (phase === "all" || phase === "essential") onProg(0, "art");
 
@@ -3524,7 +3528,8 @@
       bowler: IM.kitHatBowlerV2
     };
     try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
-    if (doRest || phase === "all") onProg(1, "ready");
+    if (phase === "essential") onProg(1, "hangar");
+    if (phase === "all") onProg(1, "ready");
   }
 
   function punchHosky(img) {
@@ -27322,7 +27327,8 @@
     try { await hangar; } catch (e) {}
     clearTimeout(hardTimer);
     enterSelect();
-    loadAssets(onProg, "rest").then(function () {
+    // Background remainder is quiet — thumbs refresh when it finishes.
+    loadAssets(function () {}, "rest").then(function () {
       try { buildSelect(); paintLookRow(); paintCrewThumbs(); } catch (e) {}
     }).catch(function (err) {
       try { console.warn("loadAssets rest", err); } catch (e) {}

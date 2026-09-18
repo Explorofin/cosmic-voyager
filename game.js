@@ -2679,7 +2679,8 @@
     });
     FACTION_IDS.forEach(function (id) {
       if (id === "ada") return;
-      HULLS[id] = [null, null, null, null, null, null, null, null];
+      // Never wipe existing T1 (or any) slots — rest-phase re-entry used to blank select thumbs.
+      if (!HULLS[id]) HULLS[id] = [null, null, null, null, null, null, null, null];
       for (let t = 1; t <= 7; t++) {
         hullJobs.push({ faction: id, skin: null, tier: t, src: "assets/images/hulls/" + id + "/t" + t + ".png" });
       }
@@ -3247,8 +3248,28 @@
     phase = phase || "all";
     onProg = onProg || function () {};
     // Hangar-first: logos + ADA skins + T1 hulls + scout/kit. Rest warms in background.
-    const hullEssential = hullJobs.filter(function (j) { return j.tier === 1; });
-    const hullRest = hullJobs.filter(function (j) { return j.tier !== 1; });
+    // Essential must NOT wipe prior HULLS — and should load ship thumbs before combat fluff.
+    if (phase === "essential") {
+      const logoKeys = {
+        adaRocket: 1, adaWide: 1, adaPng: 1, btc: 1, eth: 1, sol: 1, doge: 1, pol: 1,
+        xrp: 1, atom: 1, ltc: 1, avax: 1, hosky: 1
+      };
+      const slim = [];
+      for (let li = 0; li < list.length; li++) if (logoKeys[list[li][0]]) slim.push(list[li]);
+      list.length = 0;
+      for (let li = 0; li < slim.length; li++) list.push(slim[li]);
+    }
+    const hullEssential = hullJobs.filter(function (j) {
+      // Select orbit needs every faction T1 + ADA Rocket (side) T1 first; yacht T1 can wait with rest.
+      if (j.tier !== 1) return false;
+      if (j.faction === "ada" && j.skin && j.skin !== "side") return false;
+      return true;
+    });
+    const hullRest = hullJobs.filter(function (j) {
+      if (j.tier !== 1) return true;
+      if (j.faction === "ada" && j.skin && j.skin !== "side") return true;
+      return false;
+    });
     const worldEssentialKeys = {
       walkerScoutV2: 1, walkerScoutV2Three: 1, walkerScoutV2Side: 1, walkerScoutV2Back: 1,
       walkerBrass: 1, walkerCourier: 1, walkerRig: 1, walkerShade: 1,
@@ -3331,11 +3352,11 @@
           const skin = ADA.skins[job.skin];
           if (skin) {
             if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
-            skin.tiers[job.tier] = canv;
+            if (canv || !skin.tiers[job.tier]) skin.tiers[job.tier] = canv;
           }
         } else {
           if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
-          HULLS[job.faction][job.tier] = canv;
+          if (canv || !HULLS[job.faction][job.tier]) HULLS[job.faction][job.tier] = canv;
         }
       } catch (e) {}
       if ((i & 3) === 3) await yieldFrame();
@@ -3344,11 +3365,15 @@
     if (doCore) {
       ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
       ADA.ready = !!ADA.sprite;
-      if (!ADA.skinId) ADA.skinId = "side";
+      // Default is ADA Rocket (side), not yacht.
+      ADA.skinId = "side";
       try {
-        ADA.skinId = validAdaSkin(localStorage.getItem(SKIN_KEY));
+        const stored = localStorage.getItem(SKIN_KEY);
+        // Only keep yacht if player explicitly saved it; otherwise Rocket.
+        ADA.skinId = validAdaSkin(stored);
+        if (!stored) ADA.skinId = "side";
         localStorage.setItem(SKIN_KEY, ADA.skinId);
-      } catch (e) {}
+      } catch (e) { ADA.skinId = "side"; }
       function stampLogo(img, punchFn) {
         if (!img) return null;
         if (imageAlreadyClear(img)) return img;
@@ -26762,7 +26787,9 @@
     G.lookExtra.hat = "none";
     G.lookExtra.hoodie = false;
     G.lookExtra.hoodieColor = null;
-    ADA.skinId = validAdaSkin(ADA.skinId);
+    // Select default: ADA Rocket (side). Yacht stays available in the hull menu.
+    ADA.skinId = "side";
+    try { localStorage.setItem(SKIN_KEY, "side"); } catch (e) {}
     buildSelect();
     paintSelectInfo();
     paintScoreboard();
@@ -27476,6 +27503,13 @@
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
     goSelect();
+    try {
+      paintLaunchArt("ada");
+      FACTION_IDS.forEach(function (fid) {
+        if (typeof refreshOrbitThumb === "function") refreshOrbitThumb(fid);
+      });
+      paintCrewThumbs();
+    } catch (eThumb) {}
     paintLaunchButton();
     requestAnimationFrame(loop);
     loadAssets(function (frac) {

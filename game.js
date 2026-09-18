@@ -3252,7 +3252,9 @@
     if (phase === "essential") {
       const logoKeys = {
         adaRocket: 1, adaWide: 1, adaPng: 1, btc: 1, eth: 1, sol: 1, doge: 1, pol: 1,
-        xrp: 1, atom: 1, ltc: 1, avax: 1, hosky: 1
+        xrp: 1, atom: 1, ltc: 1, avax: 1, hosky: 1,
+        // Collect-mission crumbs must be warm before rest — else hash draws a yellow glow stub.
+        pickup_hash_crumb_v1: 1, projectile_hash_chunk_v1: 1
       };
       const slim = [];
       for (let li = 0; li < list.length; li++) if (logoKeys[list[li][0]]) slim.push(list[li]);
@@ -3927,7 +3929,7 @@
     pilotStr: 2, pilotLife: 2, duel: null,
     time: 0, finaleStarted: false, won: false,
     ledger: [], earned: 0, spent: 0, tier: 1, weapon: 0, memeTimer: 0, heat: false,
-    epochFollow: true, epochSuggest: true, customTarget: "you", orbitAng: 0, pilot: "", look: "scout", epochLook: "lamp", trait: "chatter", explore: 3, lookExtra: { visor: "none", hat: "none" }, curios: [], foundLoft: false, navMark: null, quantumHop: false, radioHack: false, intel: [], helpArrow: false, helpKey: "", epochLog: [], hopGhosts: [],
+    epochFollow: true, epochSuggest: true, customTarget: "you", orbitAng: 0, pilot: "", look: "scout", epochLook: "lamp", trait: "chatter", explore: 3, lookExtra: { visor: "none", hat: "none" }, curios: [], foundLoft: false, navMark: null, quantumHop: false, radioHack: false, intel: [], helpArrow: true, helpKey: "", epochLog: [], hopGhosts: [],
     gotLoupe: false, loupeHeld: false, loupeFound: [], loupeDone: false, loupeNeedEpoch: "",
     iffDecode: false, iffInstalled: false, hasRadarMapper: false, radarInstalled: false,
     radarBoostT: 0, escapeArmed: false, freeFuelOnce: false, refitLandTipShown: false,
@@ -11679,6 +11681,7 @@
       resetApMarket(0.25);
       epochSpeakAction(epochBestAction(), true);
     } else EPOCH.lastAp = false;
+      try { paintHelpBtn(); } catch (e) {}
   }
 
   function paintHintBar() {
@@ -12705,6 +12708,17 @@
     }
     if (G.mission) {
       const m = G.mission;
+      if (m.type === "collect" && G.player) {
+        const kind = m.item || "hosky";
+        let best = null, bd = 1e9;
+        for (let i = 0; i < (G.pickups || []).length; i++) {
+          const pk = G.pickups[i];
+          if (!pk || pk.kind !== kind) continue;
+          const d = Math.hypot(pk.x - G.player.x, pk.y - G.player.y);
+          if (d < bd) { bd = d; best = pk; }
+        }
+        if (best) return { kind: "xy", x: best.x, y: best.y, key: "collect-" + m.id, color: COL.gold };
+      }
       if (m.type === "kill" || m.type === "defend" || m.type === "brawl" || m.type === "survive") {
         const foe = nearestHostile(1400);
         if (foe) return { kind: "foe", foe: foe, key: "fight-" + m.id, color: COL.danger };
@@ -12727,8 +12741,12 @@
     }
     return null;
   }
+  function helpArrowsLive() {
+    // Manual pilots always get direction chevrons; HELP toggle still forces them on during autopilot.
+    return (mode === "play" || mode === "tut") && (!!G.helpArrow || !autopilot);
+  }
   function drawHelpArrow() {
-    if (!G.helpArrow || (mode !== "play" && mode !== "tut")) return;
+    if (!helpArrowsLive()) return;
     const obj = helpObjective();
     if (!obj) return;
     G.helpKey = obj.key;
@@ -12759,12 +12777,15 @@
     drawChevron(ctx, e.x, e.y, e.a, col, pulse);
   }
   function noteHelpComplete(key) {
-    if (!G.helpArrow) return;
+    if (!helpArrowsLive()) return;
     const hk = String(G.helpKey || "");
     if (!key || hk === key || hk.indexOf(String(key)) >= 0 || String(key).indexOf(hk) >= 0) {
-      G.helpArrow = false;
       G.helpKey = "";
-      paintHelpBtn();
+      // Manual play keeps chevrons on for the next objective; HELP toggle can still turn them off.
+      if (G.helpArrow && autopilot) {
+        G.helpArrow = false;
+        paintHelpBtn();
+      }
     }
   }
   function toggleHelpArrow() {
@@ -12779,8 +12800,14 @@
   function paintHelpBtn() {
     const el = $("helpArrowBtn");
     if (!el) return;
-    el.classList.toggle("on", !!G.helpArrow);
-    el.setAttribute("aria-pressed", G.helpArrow ? "true" : "false");
+    const on = !!G.helpArrow || !autopilot;
+    el.classList.toggle("on", on);
+    el.setAttribute("aria-pressed", on ? "true" : "false");
+    const lab = el.childNodes.length ? null : null;
+    // Keep label HELP; title hint for manual auto-guide
+    el.title = autopilot
+      ? (G.helpArrow ? "Help arrows on" : "Help arrows off — click to guide")
+      : "Direction arrows on (autopilot off)";
   }
   function contractMapDest() {
     const m = G.mission;
@@ -13951,34 +13978,23 @@
     const bob = Math.sin(t * 2.4 + (s.x + s.y) * 0.01) * 2.2;
     const spin = (p && p.ang != null) ? p.ang : t * 0.7;
     const crumb = IM.pickup_hash_crumb_v1;
-    const img = (crumb && (crumb.width || crumb.naturalWidth)) ? crumb : IM.projectile_hash_chunk_v1;
+    const chunk = IM.projectile_hash_chunk_v1;
+    let img = null;
+    if (crumb && (crumb.width || crumb.naturalWidth)) img = crumb;
+    else if (chunk && (chunk.width || chunk.naturalWidth)) img = chunk;
+    // No yellow glow stub — if crumb art isn't warm yet, skip draw (pickup still collectible).
+    if (!img) return;
     ctx.save();
     ctx.translate(s.x, s.y + bob);
-    // soft orange glow
     const g = ctx.createRadialGradient(0, 0, 2, 0, 0, 22);
-    g.addColorStop(0, "rgba(247,147,26,0.55)");
-    g.addColorStop(0.45, "rgba(224,138,40,0.22)");
+    g.addColorStop(0, "rgba(247,147,26,0.45)");
+    g.addColorStop(0.45, "rgba(224,138,40,0.18)");
     g.addColorStop(1, "rgba(247,147,26,0)");
     ctx.fillStyle = g;
     ctx.beginPath(); ctx.arc(0, 0, 22, 0, 6.28); ctx.fill();
     ctx.rotate(spin);
-    if (img && (img.width || img.naturalWidth)) {
-      const sz = crumb && img === crumb ? 30 : 28;
-      try { ctx.drawImage(img, -sz / 2, -sz / 2, sz, sz); } catch (e) {}
-    } else {
-      // procedural crystal fallback
-      ctx.fillStyle = "#c86a12";
-      ctx.beginPath();
-      ctx.moveTo(0, -11); ctx.lineTo(8, -3); ctx.lineTo(6, 9); ctx.lineTo(-6, 9); ctx.lineTo(-8, -3);
-      ctx.closePath(); ctx.fill();
-      ctx.fillStyle = COL.btc;
-      ctx.beginPath();
-      ctx.moveTo(0, -11); ctx.lineTo(5, -1); ctx.lineTo(0, 4); ctx.lineTo(-5, -1);
-      ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = "rgba(255,230,180,0.55)"; ctx.lineWidth = 1.2; ctx.stroke();
-      ctx.fillStyle = "rgba(255,255,255,0.45)";
-      ctx.beginPath(); ctx.moveTo(-2, -8); ctx.lineTo(1, -4); ctx.lineTo(-3, -2); ctx.closePath(); ctx.fill();
-    }
+    const sz = (img === crumb) ? 30 : 28;
+    try { ctx.drawImage(img, -sz / 2, -sz / 2, sz, sz); } catch (e) {}
     ctx.rotate(-spin);
     ctx.fillStyle = "#3a2410";
     ctx.font = "bold 6px sans-serif"; ctx.textAlign = "center";
@@ -14030,8 +14046,10 @@
         ctx.fillStyle = "#3a1030";
         ctx.beginPath(); ctx.arc(s.x - 3, s.y - 2, 1.4, 0, 6.28); ctx.arc(s.x + 3, s.y - 2, 1.4, 0, 6.28); ctx.fill();
         ctx.beginPath(); ctx.arc(s.x, s.y + 3, 3, 0.15, Math.PI - 0.15); ctx.stroke();
+      } else if (p.kind === "scrap") {
+        // No yellow stub circle — scrap is ledger only until hung crumb art exists.
       } else {
-        ctx.fillStyle = COL.gold; ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, 6.28); ctx.fill();
+        /* unknown pickup kinds: draw nothing (no gold stub circle) */
       }
     }
     for (const b of G.beacons) {

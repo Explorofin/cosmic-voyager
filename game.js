@@ -2013,12 +2013,27 @@
   const ADA = { sprite: null, ready: false, skins: {}, skinId: "side" };
   const HULLS = {};
 
+  const IMG_LOAD_MS = 8000;
+  function bootYield() {
+    return new Promise(function (r) { setTimeout(r, 0); });
+  }
   function loadImage(src) {
     return new Promise((resolve) => {
-      const im = new Image();
-      im.onload = () => resolve(im);
-      im.onerror = () => resolve(null);
-      im.src = src;
+      let done = false;
+      const finish = function (img) {
+        if (done) return;
+        done = true;
+        resolve(img || null);
+      };
+      try {
+        const im = new Image();
+        im.onload = function () { finish(im); };
+        im.onerror = function () { finish(null); };
+        im.src = src;
+        setTimeout(function () { finish(null); }, IMG_LOAD_MS);
+      } catch (e) {
+        finish(null);
+      }
     });
   }
 
@@ -2127,13 +2142,19 @@
     // Never flood near-black from the borders (that ate Midnight's panels).
     if (!img) return null;
     try {
-      const w = img.naturalWidth || img.width || 0;
-      const h = img.naturalHeight || img.height || 0;
-      if (!w || !h) return null;
+      const srcW = img.naturalWidth || img.width || 0;
+      const srcH = img.naturalHeight || img.height || 0;
+      if (!srcW || !srcH) return null;
+      // Full-res morph on 1.5k–4k plates freezes the tab after the load bar.
+      // Hull thumbs stay under this cap; hung plates punch at preview size.
+      const cap = 960;
+      const scale = Math.max(srcW, srcH) > cap ? cap / Math.max(srcW, srcH) : 1;
+      const w = Math.max(8, (srcW * scale) | 0);
+      const h = Math.max(8, (srcH * scale) | 0);
       const c = document.createElement("canvas");
       c.width = w; c.height = h;
       const x = c.getContext("2d");
-      x.drawImage(img, 0, 0);
+      x.drawImage(img, 0, 0, w, h);
       const data = x.getImageData(0, 0, w, h);
       const p = data.data;
       const n = w * h;
@@ -2970,37 +2991,48 @@
     });
     const denom = list.length + ADA_SKINS.length + hullJobs.length + worldList.length;
     for (let i = 0; i < list.length; i++) {
-      IM[list[i][0]] = await loadImage(list[i][1]);
-      onProg((i + 1) / denom, list[i][0]);
+      try {
+        IM[list[i][0]] = await loadImage(list[i][1]);
+        onProg((i + 1) / denom, list[i][0]);
+      } catch (e) {
+        IM[list[i][0]] = null;
+      }
+      if ((i & 3) === 3) await bootYield();
     }
     ADA.skins = {};
     for (let i = 0; i < ADA_SKINS.length; i++) {
       const def = ADA_SKINS[i];
-      const raw = await loadImage(def.src);
-      onProg((list.length + i + 1) / denom, def.id);
-      let canv = null, keep = 1, ok = !!raw;
-      if (raw) {
-        if (def.punch === "black") canv = punchBlack(raw);
-        else if (def.punch === "beige") canv = punchBeige(raw);
-        else if (def.punch === "none") {
-          const n = punchPixels(raw, function (_r, _g, _b, a) { return a < 12; });
-          canv = n && n.canvas;
-          keep = n ? n.keep : 1;
-        } else if (def.punch === "monument") {
-          const m = punchMonument(raw);
-          canv = m && m.canvas;
-          keep = m ? m.keep : 0;
-        } else canv = punchAuto(raw);
+      let canv = null, keep = 1, ok = false;
+      try {
+        const raw = await loadImage(def.src);
+        onProg((list.length + i + 1) / denom, def.id);
+        ok = !!raw;
+        if (raw) {
+          if (def.punch === "black") canv = punchBlack(raw);
+          else if (def.punch === "beige") canv = punchBeige(raw);
+          else if (def.punch === "none") {
+            const n = punchPixels(raw, function (_r, _g, _b, a) { return a < 12; });
+            canv = n && n.canvas;
+            keep = n ? n.keep : 1;
+          } else if (def.punch === "monument") {
+            const m = punchMonument(raw);
+            canv = m && m.canvas;
+            keep = m ? m.keep : 0;
+          } else canv = punchAuto(raw);
+        }
+        if (!canv && def.fallback) {
+          const fb = ADA.skins[def.fallback];
+          canv = fb && fb.canvas;
+          ok = !!canv;
+        }
+        let fly = def.inflight;
+        if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
+        if (fly && !canv) fly = false;
+        ADA.skins[def.id] = { canvas: canv ? punchFlame(canv) : canv, inflight: !!fly, ok: ok && !!canv, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
+      } catch (e) {
+        ADA.skins[def.id] = { canvas: canv, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
       }
-      if (!canv && def.fallback) {
-        const fb = ADA.skins[def.fallback];
-        canv = fb && fb.canvas;
-        ok = !!canv;
-      }
-      let fly = def.inflight;
-      if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
-      if (fly && !canv) fly = false;
-      ADA.skins[def.id] = { canvas: canv ? punchFlame(canv) : canv, inflight: !!fly, ok: ok && !!canv, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
+      await bootYield();
     }
     for (let i = 0; i < hullJobs.length; i++) {
       const job = hullJobs[i];
@@ -3021,25 +3053,32 @@
           HULLS[job.faction][job.tier] = canv;
         }
       } catch (e) {}
-      if ((i & 3) === 3) await new Promise(function (r) { setTimeout(r, 0); });
+      if ((i & 3) === 3) await bootYield();
     }
-    ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
+    try {
+      ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
+    } catch (e) {
+      ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || IM.adaRocket || IM.adaWide || IM.adaPng || null;
+    }
     ADA.ready = !!ADA.sprite;
     ADA.skinId = "side";
     try {
       ADA.skinId = validAdaSkin(localStorage.getItem(SKIN_KEY));
       localStorage.setItem(SKIN_KEY, ADA.skinId);
     } catch (e) {}
-    IM.btcStamp = punchBlack(IM.btc) || IM.btc;
-    IM.ethStamp = punchBlack(IM.eth) || IM.eth;
-    IM.solStamp = punchBlack(IM.sol) || IM.sol;
-    IM.dogeStamp = punchBlack(IM.doge) || IM.doge;
-    IM.polStamp = punchBlack(IM.pol) || IM.pol;
-    IM.xrpStamp = punchBlack(IM.xrp) || IM.xrp;
-    IM.atomStamp = punchBlack(IM.atom) || IM.atom;
-    IM.ltcStamp = punchBlack(IM.ltc) || IM.ltc;
-    IM.avaxStamp = punchBlack(IM.avax) || IM.avax;
-    IM.hoskyStamp = punchHosky(IM.hosky) || punchBlack(IM.hosky) || IM.hosky;
+    function stampOrRaw(img, punch) {
+      try { return punch(img) || img; } catch (e) { return img; }
+    }
+    IM.btcStamp = stampOrRaw(IM.btc, punchBlack);
+    IM.ethStamp = stampOrRaw(IM.eth, punchBlack);
+    IM.solStamp = stampOrRaw(IM.sol, punchBlack);
+    IM.dogeStamp = stampOrRaw(IM.doge, punchBlack);
+    IM.polStamp = stampOrRaw(IM.pol, punchBlack);
+    IM.xrpStamp = stampOrRaw(IM.xrp, punchBlack);
+    IM.atomStamp = stampOrRaw(IM.atom, punchBlack);
+    IM.ltcStamp = stampOrRaw(IM.ltc, punchBlack);
+    IM.avaxStamp = stampOrRaw(IM.avax, punchBlack);
+    IM.hoskyStamp = stampOrRaw(IM.hosky, punchHosky) || stampOrRaw(IM.hosky, punchBlack);
     for (let i = 0; i < worldList.length; i++) {
       const key = worldList[i][0], src = worldList[i][1], punch = worldList[i][2];
       try {
@@ -3055,13 +3094,16 @@
         IM[key] = null;
       }
       // Yield so the tab stays responsive during long punch runs (esp. GitHub Pages).
-      if ((i & 7) === 7) await new Promise(function (r) { setTimeout(r, 0); });
+      if ((i & 3) === 3) await bootYield();
     }
     for (let sk = 0; sk < STREET_V2_KEYS.length; sk++) {
       const skey = STREET_V2_KEYS[sk];
-      if (!IM[skey]) continue;
-      if (STREET_CLEAR_KEYS.indexOf(skey) >= 0) { IM[skey]._streetPunched = true; continue; }
-      IM[skey] = punchStreetWalker(IM[skey]);
+      try {
+        if (!IM[skey]) continue;
+        if (STREET_CLEAR_KEYS.indexOf(skey) >= 0) { IM[skey]._streetPunched = true; continue; }
+        IM[skey] = punchStreetWalker(IM[skey]);
+      } catch (e) {}
+      if ((sk & 3) === 3) await bootYield();
     }
     IM.facade = {
       hangar: IM.facadeHangar, arcade: IM.facadeArcade, crane: IM.facadeCrane,
@@ -26146,10 +26188,10 @@
   }
 
   function goSelect() {
-    hideIniPrompt();
+    try { hideIniPrompt(); } catch (e) {}
     mode = "select";
-    showScreen("select");
-    loadGame();
+    try { showScreen("select"); } catch (e) {}
+    try { loadGame(); } catch (e) {}
     try {
       const active = localStorage.getItem(ACTIVE_KEY) || G.pilot || lastInitials();
       if ($("pilotName") && !$("pilotName").value) $("pilotName").value = active || "";
@@ -26158,12 +26200,12 @@
     G.lookExtra = G.lookExtra || {};
     G.lookExtra.visor = "none";
     G.lookExtra.hat = "none";
-    ADA.skinId = validAdaSkin(ADA.skinId);
-    buildSelect();
-    paintSelectInfo();
-    paintScoreboard();
-    paintLookRow();
-    setSelectMode("new");
+    try { ADA.skinId = validAdaSkin(ADA.skinId); } catch (e) { ADA.skinId = "side"; }
+    try { buildSelect(); } catch (e) { try { console.warn("buildSelect", e); } catch (e2) {} }
+    try { paintSelectInfo(); } catch (e) {}
+    try { paintScoreboard(); } catch (e) {}
+    try { paintLookRow(); } catch (e) {}
+    try { setSelectMode("new"); } catch (e) {}
   }
 
   window.addEventListener("keydown", (e) => {
@@ -26824,36 +26866,60 @@
   }
 
   async function boot() {
-    // Asset punch can take a long time (or hang) after the bar hits 100% — never block select forever.
-    const assets = loadAssets(() => {}).catch(function (err) {
-      try { console.warn("loadAssets", err); } catch (e) {}
-    });
-    const start = performance.now();
-    const DURATION = 2000;
-    while (true) {
-      const t = Math.min(1, (performance.now() - start) / DURATION);
-      const e = 1 - Math.pow(1 - t, 2.2);
-      const fill = $("loadFill");
-      if (fill) fill.style.width = (e * 100) + "%";
-      const lines = document.querySelectorAll("#loadStack p");
-      const shown = Math.min(lines.length, Math.floor(t * lines.length + 0.001) + 1);
-      for (let i = 0; i < shown; i++) lines[i].classList.add("on");
-      if (t >= 1) break;
-      await new Promise(r => requestAnimationFrame(r));
+    // Cosmetic 2s bar used to finish, then await loadAssets() with no timeout.
+    // Hung Image() (no onload/onerror) or a throw in unguarded punch left the
+    // lockup up forever. Hard deadline + per-image timeout always reach select.
+    let entered = false;
+    let loopStarted = false;
+    function enterSelect() {
+      if (entered) return;
+      entered = true;
+      try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
+      try { paintEpochLog(); } catch (e) {}
+      try { goSelect(); } catch (e) {
+        try { showScreen("select"); } catch (e2) {}
+      }
+      if (!loopStarted) {
+        loopStarted = true;
+        try { requestAnimationFrame(loop); } catch (e) {}
+      }
     }
-    const fillDone = $("loadFill");
-    if (fillDone) fillDone.style.width = "100%";
-    const sub = document.querySelector("#screen-loading .sub");
-    if (sub) sub.textContent = "Warming thrusters…";
-    const ASSET_BUDGET_MS = 18000;
-    await Promise.race([
-      assets,
-      new Promise(function (resolve) { setTimeout(resolve, ASSET_BUDGET_MS); })
-    ]);
-    try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
-    try { paintEpochLog(); } catch (e) {}
-    goSelect();
-    requestAnimationFrame(loop);
+    const HARD_MS = 22000;
+    const hardTimer = setTimeout(enterSelect, HARD_MS);
+    try {
+      const assets = loadAssets(function () {}).catch(function (err) {
+        try { console.warn("loadAssets", err); } catch (e) {}
+      });
+      const start = performance.now();
+      const DURATION = 2000;
+      while (true) {
+        const t = Math.min(1, (performance.now() - start) / DURATION);
+        const e = 1 - Math.pow(1 - t, 2.2);
+        const fill = $("loadFill");
+        if (fill) fill.style.width = (e * 100) + "%";
+        const lines = document.querySelectorAll("#loadStack p");
+        const shown = Math.min(lines.length, Math.floor(t * lines.length + 0.001) + 1);
+        for (let i = 0; i < shown; i++) lines[i].classList.add("on");
+        if (t >= 1) break;
+        await Promise.race([
+          new Promise(function (r) { requestAnimationFrame(r); }),
+          new Promise(function (r) { setTimeout(r, 50); })
+        ]);
+      }
+      const fillDone = $("loadFill");
+      if (fillDone) fillDone.style.width = "100%";
+      const linesDone = document.querySelectorAll("#loadStack p");
+      for (let i = 0; i < linesDone.length; i++) linesDone[i].classList.add("on");
+      const ASSET_BUDGET_MS = 18000;
+      await Promise.race([
+        assets,
+        new Promise(function (resolve) { setTimeout(resolve, ASSET_BUDGET_MS); })
+      ]);
+    } catch (e) {
+      try { console.warn("boot", e); } catch (e2) {}
+    }
+    clearTimeout(hardTimer);
+    enterSelect();
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

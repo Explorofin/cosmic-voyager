@@ -241,7 +241,7 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   box-shadow: 0 0 10px var(--cyan);
 }
 .load-status { display: none; }
-.load-stack { margin-top: 16px; min-height: 6.2em; }
+.load-stack { margin-top: 16px; min-height: 7.6em; }
 .load-stack p {
   font-size: 12px;
   letter-spacing: 0.16em;

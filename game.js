@@ -44,16 +44,16 @@
   const FACTION_IDS = ["ada", "btc", "eth", "sol", "pol", "doge", "xrp", "atom", "ltc", "avax"];
 
   const SHIPS = {
-    ada:  { id: "ada",  name: "Cardano A-Wing", blurb: "Balanced Ouroboros craft. Unique Shift shield with orbiting motes. Tab energy pulse. Home is Cardano Prime.", hull: 120, shield: 90, energy: 110, turn: 2.4, thrust: 360, maxSp: 295, fire: 0.2, dmg: 14, shotSp: 640, shotLife: 1.05, special: "shield", shot: "pulse" },
-    btc:  { id: "btc",  name: "Bitcoin Dreadnought", blurb: "Tanky, slow, heavy mining laser. More hull than anyone. Tab dumps a piercing hash-beam.", hull: 190, shield: 40, energy: 90, turn: 1.25, thrust: 200, maxSp: 210, fire: 0.42, dmg: 26, shotSp: 480, shotLife: 1.25, special: "mineLaser", shot: "heavy" },
-    eth:  { id: "eth",  name: "Ethereum Gas Yacht", blurb: "Fat contract pulses. Medium handling. Tab gas-burst knocks neighbors back.", hull: 135, shield: 55, energy: 120, turn: 2.05, thrust: 310, maxSp: 280, fire: 0.28, dmg: 17, shotSp: 560, shotLife: 1.1, special: "gas", shot: "orb" },
-    sol:  { id: "sol",  name: "Solana Sprinter", blurb: "Fastest hull, snappy lasers, weak armor. Tab afterimage dash; Shift holds rapid fire.", hull: 78, shield: 35, energy: 100, turn: 3.35, thrust: 480, maxSp: 445, fire: 0.09, dmg: 6, shotSp: 800, shotLife: 0.75, special: "dash", shot: "needle" },
-    pol:  { id: "pol",  name: "Polkadot Relay", blurb: "Magenta beam and a helper drone. Tab chain-dash; drone harasses hostiles.", hull: 115, shield: 70, energy: 105, turn: 2.45, thrust: 340, maxSp: 305, fire: 0.17, dmg: 12, shotSp: 720, shotLife: 0.95, special: "drone", shot: "beam" },
-    doge: { id: "doge", name: "Dogecoin Meme Barge", blurb: "Chaotic much-wow spread. Funny, unreliable, surprisingly fun. Tab dumps a cone of coins.", hull: 105, shield: 40, energy: 95, turn: 2.65, thrust: 370, maxSp: 355, fire: 0.14, dmg: 5, shotSp: 520, shotLife: 0.8, special: "wow", shot: "spread" },
-    xrp:  { id: "xrp",  name: "Ripple Liquidity Skiff", blurb: "Blue-water courier. Fast settle, short bursts. Tab is a liquidity hop. Home is the Liquidity Ocean.", hull: 110, shield: 60, energy: 115, turn: 2.55, thrust: 400, maxSp: 375, fire: 0.16, dmg: 12, shotSp: 660, shotLife: 0.95, special: "dash", shot: "pulse" },
-    atom: { id: "atom",  name: "Cosmos Hub Runner", blurb: "IBC courier. White-ringed hull, hops zones. Tab is a hub-skip. Home is the Atom Hub.", hull: 125, shield: 35, energy: 100, turn: 2.1, thrust: 300, maxSp: 285, fire: 0.26, dmg: 16, shotSp: 600, shotLife: 1.15, special: "dash", shot: "heavy" },
-    ltc:  { id: "ltc",  name: "Litecoin Silver Pick", blurb: "BTC's quicker cousin. Silver miner, lighter tank. Tab is a sharp silver lance.", hull: 150, shield: 45, energy: 95, turn: 1.55, thrust: 250, maxSp: 245, fire: 0.32, dmg: 20, shotSp: 540, shotLife: 1.15, special: "mineLaser", shot: "heavy" },
-    avax: { id: "avax", name: "Avalanche Peak-Runner", blurb: "Red triad. Bursty, climbs fast, hits hard on the way down. Tab is a snow-crash dash.", hull: 118, shield: 50, energy: 108, turn: 2.7, thrust: 420, maxSp: 385, fire: 0.15, dmg: 13, shotSp: 720, shotLife: 0.9, special: "dash", shot: "needle" }
+    ada:  { id: "ada",  name: "Cardano A-Wing", blurb: "Balanced Ouroboros craft. Unique Shift shield with orbiting motes. Tab energy pulse. Home is Cardano Prime.", hull: 120, shield: 90, energy: 110, turn: 2.4, thrust: 360, maxSp: 295, fire: 0.2, dmg: 14, shotSp: 640, shotLife: 1.05, special: "pulse", specialName: "PULSE", shot: "pulse" },
+    btc:  { id: "btc",  name: "Bitcoin Dreadnought", blurb: "Tanky, slow, heavy mining laser. More hull than anyone. Tab dumps a piercing hash-beam.", hull: 190, shield: 40, energy: 90, turn: 1.25, thrust: 200, maxSp: 210, fire: 0.42, dmg: 26, shotSp: 480, shotLife: 1.25, special: "hashBeam", specialName: "HASH-BEAM", shot: "heavy" },
+    eth:  { id: "eth",  name: "Ethereum Gas Yacht", blurb: "Fat contract pulses. Medium handling. Tab gas-burst knocks neighbors back.", hull: 135, shield: 55, energy: 120, turn: 2.05, thrust: 310, maxSp: 280, fire: 0.28, dmg: 17, shotSp: 560, shotLife: 1.1, special: "gas", specialName: "GAS", shot: "orb" },
+    sol:  { id: "sol",  name: "Solana Sprinter", blurb: "Fastest hull, snappy lasers, weak armor. Tab afterimage dash; Shift holds rapid fire.", hull: 78, shield: 35, energy: 100, turn: 3.35, thrust: 480, maxSp: 445, fire: 0.09, dmg: 6, shotSp: 800, shotLife: 0.75, special: "afterDash", specialName: "AFTERIMAGE", shot: "needle" },
+    pol:  { id: "pol",  name: "Polkadot Relay", blurb: "Magenta beam and a helper drone. Tab chain-dash; drone harasses hostiles.", hull: 115, shield: 70, energy: 105, turn: 2.45, thrust: 340, maxSp: 305, fire: 0.17, dmg: 12, shotSp: 720, shotLife: 0.95, special: "chainDrone", specialName: "CHAIN-DASH", shot: "beam" },
+    doge: { id: "doge", name: "Dogecoin Meme Barge", blurb: "Chaotic much-wow spread. Funny, unreliable, surprisingly fun. Tab dumps a cone of coins.", hull: 105, shield: 40, energy: 95, turn: 2.65, thrust: 370, maxSp: 355, fire: 0.14, dmg: 5, shotSp: 520, shotLife: 0.8, special: "wow", specialName: "WOW", shot: "spread" },
+    xrp:  { id: "xrp",  name: "Ripple Liquidity Skiff", blurb: "Blue-water courier. Fast settle, short bursts. Tab is a liquidity hop. Home is the Liquidity Ocean.", hull: 110, shield: 60, energy: 115, turn: 2.55, thrust: 400, maxSp: 375, fire: 0.16, dmg: 12, shotSp: 660, shotLife: 0.95, special: "liqHop", specialName: "HOP", shot: "pulse" },
+    atom: { id: "atom",  name: "Cosmos Hub Runner", blurb: "IBC courier. White-ringed hull, hops zones. Tab is a hub-skip. Home is the Atom Hub.", hull: 125, shield: 35, energy: 100, turn: 2.1, thrust: 300, maxSp: 285, fire: 0.26, dmg: 16, shotSp: 600, shotLife: 1.15, special: "hubSkip", specialName: "HUB-SKIP", shot: "heavy" },
+    ltc:  { id: "ltc",  name: "Litecoin Silver Pick", blurb: "BTC's quicker cousin. Silver miner, lighter tank. Tab is a sharp silver lance.", hull: 150, shield: 45, energy: 95, turn: 1.55, thrust: 250, maxSp: 245, fire: 0.32, dmg: 20, shotSp: 540, shotLife: 1.15, special: "lance", specialName: "LANCE", shot: "heavy" },
+    avax: { id: "avax", name: "Avalanche Peak-Runner", blurb: "Red triad. Bursty, climbs fast, hits hard on the way down. Tab is a snow-crash dash.", hull: 118, shield: 50, energy: 108, turn: 2.7, thrust: 420, maxSp: 385, fire: 0.15, dmg: 13, shotSp: 720, shotLife: 0.9, special: "snowCrash", specialName: "SNOW-CRASH", shot: "needle" }
   };
 
   const CLASS_NAMES = ["Scout", "Courier", "Patrol", "Frigate", "Cruiser", "Dread", "Flagship"];
@@ -3890,7 +3890,7 @@
   const ORBIT = { ang: 0, vel: 0, drag: false, lastA: 0, lastT: 0, moved: false, node: null, fx: [] };
 
   const G = {
-    player: null, ships: [], bullets: [], rocks: [], pickups: [], parts: [], fx: [], beacons: [], drones: [],
+    player: null, ships: [], bullets: [], rocks: [], pickups: [], parts: [], fx: [], specialFx: [], beacons: [], drones: [],
     visited: {}, credits: 0, xp: 0, adaRep: 10, outlaw: 0, guard: { n: 0, faction: null },
     upgrades: { engine: 0, weapons: 0, hull: 0, shield: 0 },
     mission: null, jobs: [], offered: [], done: {}, lastDock: "cardano", homeFaction: "ada",
@@ -6291,7 +6291,7 @@
   }
 
   function spawnWorld() {
-    G.ships = []; G.bullets = []; G.rocks = []; G.pickups = []; G.parts = []; G.fx = []; G.beacons = []; G.drones = [];
+    G.ships = []; G.bullets = []; G.rocks = []; G.pickups = []; G.parts = []; G.fx = []; G.specialFx = []; G.beacons = []; G.drones = [];
     const spots = [
       { f: "ada", near: "cardano", n: 2 },
       { f: "btc", near: "bitcoin", n: 2 },
@@ -6626,50 +6626,365 @@
     if (!fromAp) beep(420 + G.weapon * 80, 0.05, "sine", 0.04);
   }
 
-  function doSpecial(ship) {
-    if (ship.specialCd > 0 || ship.energy < 18) return;
-    const id = SHIPS[ship.faction].special;
-    {
-      let cd = G.tier >= 5 ? 1.35 : 2.2;
-      if (ship.player) {
-        ensureVitals();
-        if (G.vitals.alert < 25) cd *= 1.1;
-      }
-      ship.specialCd = cd;
+  function specialTierOf(ship) {
+    if (!ship) return 1;
+    if (ship.player) return clamp(G.tier || ship.tier || 1, 1, 7);
+    return clamp(ship.tier || 1, 1, 7);
+  }
+  function specialLerp(t, a, b) {
+    return a + (b - a) * ((clamp(t, 1, 7) - 1) / 6);
+  }
+  function specialCombatants() {
+    return (G.ships || []).concat(G.player ? [G.player] : []);
+  }
+  function specialCanHit(owner, o) {
+    if (!o || o === owner || o.dead || o.soft || o.boarded) return false;
+    const allyOwner = !!(owner && (owner.player || owner.playerAlly || owner.guardian));
+    if (o.playerAlly || o.guardian) {
+      if (allyOwner) return false;
     }
-    ship.energy -= 22;
-    whoosh();
-    if (id === "shield") {
-      ship.shieldOn = 2.4;
-      ship.shield = Math.min(ship.maxShield, ship.shield + 22);
-      burst(ship.x, ship.y, 16, COL.cyan, 120);
+    if (o.player && allyOwner) return false;
+    if (owner && o.faction === owner.faction && !o.pirate && !owner.pirate && !o.wanted && !o.hunter) return false;
+    return true;
+  }
+  function specialParams(faction, tier) {
+    const t = clamp(tier || 1, 1, 7);
+    const u = (t - 1) / 6;
+    const def = SHIPS[faction] || SHIPS.ada;
+    const id = def.special;
+    const base = {
+      id: id, name: def.specialName || "SPECIAL", t: t, u: u,
+      cd: 2.40 - (t - 1) * 0.185,
+      cost: 20 + Math.round(u * 4)
+    };
+    if (id === "pulse") {
+      return Object.assign(base, {
+        r: specialLerp(t, 150, 290), dmg: specialLerp(t, 14, 30), knock: specialLerp(t, 140, 260),
+        restore: specialLerp(t, 10, 28), rings: t >= 7 ? 3 : t >= 4 ? 2 : 1
+      });
     }
-    if (id === "mineLaser") { for (let i = 0; i < 5; i++) fireShot(ship, 0, 1.4); ship.fireCd = 0.4; }
+    if (id === "hashBeam") {
+      return Object.assign(base, {
+        len: specialLerp(t, 420, 720), width: specialLerp(t, 11, 18), dmg: specialLerp(t, 32, 62),
+        life: specialLerp(t, 0.22, 0.42), ticks: t >= 7 ? 3 : t >= 4 ? 2 : 1
+      });
+    }
+    if (id === "lance") {
+      return Object.assign(base, {
+        len: specialLerp(t, 360, 600), width: specialLerp(t, 4.5, 6.5), dmg: specialLerp(t, 20, 38),
+        life: specialLerp(t, 0.10, 0.18), ticks: 1
+      });
+    }
     if (id === "gas") {
-      burst(ship.x, ship.y, 30, COL.eth, 300);
-      const everyone = G.ships.concat(G.player ? [G.player] : []);
-      for (const o of everyone) {
-        if (!o || o === ship || o.dead) continue;
-        if (dist(o, ship) < 220) {
-          const a = angTo(ship, o);
-          o.vx += Math.cos(a) * 280; o.vy += Math.sin(a) * 280;
-          hurt(o, 16, ship);
+      return Object.assign(base, {
+        r: specialLerp(t, 180, 310), dmg: specialLerp(t, 12, 24), knock: specialLerp(t, 240, 390),
+        parts: Math.round(specialLerp(t, 22, 44)), hex: t >= 4
+      });
+    }
+    if (id === "afterDash") {
+      return Object.assign(base, {
+        impulse: specialLerp(t, 520, 760), dashT: specialLerp(t, 0.34, 0.55),
+        afterLife: specialLerp(t, 0.32, 0.52), spMul: specialLerp(t, 1.42, 1.72), ghosts: t >= 5
+      });
+    }
+    if (id === "chainDrone") {
+      return Object.assign(base, {
+        hops: t >= 4 ? 3 : 2, hopImp: specialLerp(t, 260, 380),
+        droneLife: specialLerp(t, 10, 22), droneRate: specialLerp(t, 0.40, 0.18),
+        droneDmg: specialLerp(t, 5, 12), drones: t >= 7 ? 2 : 1
+      });
+    }
+    if (id === "wow") {
+      const n = t >= 7 ? 13 : t >= 5 ? 11 : t >= 3 ? 9 : 7;
+      return Object.assign(base, {
+        n: n, spread: specialLerp(t, 0.12, 0.17), dmg: specialLerp(t, 6, 12),
+        wow: t >= 3
+      });
+    }
+    if (id === "liqHop") {
+      return Object.assign(base, {
+        range: specialLerp(t, 155, 320), settle: 0.22, splash: t >= 7, splashR: 150, splashDmg: 16
+      });
+    }
+    if (id === "hubSkip") {
+      return Object.assign(base, {
+        range: specialLerp(t, 130, 290), rings: t >= 7 ? 3 : t >= 4 ? 2 : 1,
+        pulse: t >= 7, pulseR: 170, pulseDmg: 18
+      });
+    }
+    if (id === "snowCrash") {
+      return Object.assign(base, {
+        impulse: specialLerp(t, 500, 800), dashT: specialLerp(t, 0.20, 0.36),
+        afterLife: specialLerp(t, 0.18, 0.30), crashDmg: specialLerp(t, 8, 24),
+        spMul: specialLerp(t, 1.50, 1.85), triad: t >= 3
+      });
+    }
+    return base;
+  }
+  function pushSpecialFx(fx) {
+    if (!G.specialFx) G.specialFx = [];
+    G.specialFx.push(fx);
+    if (G.specialFx.length > 48) G.specialFx = G.specialFx.slice(-48);
+  }
+  function specialHurt(target, dmg, from) {
+    if (!target || target.soft || target.boarded) return;
+    hurt(target, dmg, from);
+  }
+  function applyNovaHits(owner, x, y, radius, dmg, knock, opts) {
+    opts = opts || {};
+    const everyone = specialCombatants();
+    for (let i = 0; i < everyone.length; i++) {
+      const o = everyone[i];
+      if (!o || o === owner) continue;
+      const d = Math.hypot(o.x - x, o.y - y);
+      if (d > radius) continue;
+      if (o.soft || o.boarded) {
+        if (opts.softKnock && knock) {
+          const a = Math.atan2(o.y - y, o.x - x);
+          o.vx += Math.cos(a) * knock * 0.32;
+          o.vy += Math.sin(a) * knock * 0.32;
+        }
+        continue;
+      }
+      if (!specialCanHit(owner, o)) continue;
+      if (knock) {
+        const a = Math.atan2(o.y - y, o.x - x);
+        o.vx += Math.cos(a) * knock;
+        o.vy += Math.sin(a) * knock;
+      }
+      if (dmg) specialHurt(o, dmg, owner);
+    }
+  }
+  function hopForward(ship, range) {
+    const ox = ship.x, oy = ship.y;
+    const c = Math.cos(ship.a), s = Math.sin(ship.a);
+    let nx = clamp(ox + c * range, 80, WORLD - 80);
+    let ny = clamp(oy + s * range, 80, WORLD - 80);
+    const bodies = (typeof worldBodies === "function") ? worldBodies() : (PLANETS || []);
+    for (let i = 0; i < bodies.length; i++) {
+      const pl = bodies[i];
+      if (!pl) continue;
+      const keep = (pl.r || 80) + (ship.r || 20) + 36;
+      const d = Math.hypot(nx - pl.x, ny - pl.y);
+      if (d < keep && d > 0.01) {
+        nx = pl.x + (nx - pl.x) / d * keep;
+        ny = pl.y + (ny - pl.y) / d * keep;
+      }
+    }
+    ship.x = clamp(nx, 80, WORLD - 80);
+    ship.y = clamp(ny, 80, WORLD - 80);
+    return { ox: ox, oy: oy, x: ship.x, y: ship.y };
+  }
+  function startDash(ship, impulse, dashT, opt) {
+    opt = opt || {};
+    ship.vx += Math.cos(ship.a) * impulse;
+    ship.vy += Math.sin(ship.a) * impulse;
+    ship.dashT = Math.max(ship.dashT || 0, dashT);
+    ship.afterLife = opt.afterLife || 0.28;
+    ship.afterTint = opt.tint || ((FACTIONS[ship.faction] || FACTIONS.ada).color);
+    ship.afterGlow = !!opt.glow;
+    ship.dashSpMul = opt.spMul || 1.45;
+    if (opt.crash) {
+      ship.crashT = dashT;
+      ship.crashDmg = opt.crashDmg || 10;
+      ship.crashHit = [];
+    }
+  }
+  function applyBeamHits(fx) {
+    const c = Math.cos(fx.a), s = Math.sin(fx.a);
+    const ax = fx.x, ay = fx.y;
+    const bx = fx.x + c * fx.len, by = fx.y + s * fx.len;
+    const list = specialCombatants();
+    for (let i = 0; i < list.length; i++) {
+      const o = list[i];
+      if (!specialCanHit(fx.owner, o)) continue;
+      if (!segHitsCircle(ax, ay, bx, by, o.x, o.y, shipHitR(o) + fx.width * 0.55)) continue;
+      specialHurt(o, fx.dmg, fx.owner);
+      burst(o.x, o.y, fx.kind === "lance" ? 5 : 8, fx.color, 140);
+      pushSpecialFx({
+        kind: "spark", x: o.x, y: o.y, life: 0.18, max: 0.18,
+        img: fx.kind === "lance" ? IM.projectile_spark_lance_v1 : IM.projectile_hash_chunk_v1
+      });
+    }
+    for (const r of (G.rocks || [])) {
+      if (!r || r.hp <= 0) continue;
+      if (!segHitsCircle(ax, ay, bx, by, r.x, r.y, r.r + fx.width * 0.4)) continue;
+      r.hp -= fx.dmg * 0.55;
+      burst(r.x, r.y, 4, fx.color, 80);
+      if (r.hp <= 0) breakRock(r, fx.owner);
+    }
+  }
+  function spawnPierceBeam(ship, spec) {
+    const fx = {
+      kind: spec.id === "lance" ? "lance" : "beam",
+      owner: ship, faction: ship.faction, a: ship.a,
+      x: ship.x, y: ship.y, follow: true,
+      len: spec.len, width: spec.width, dmg: spec.dmg,
+      life: spec.life, max: spec.life, t: spec.t,
+      ticksLeft: Math.max(0, (spec.ticks || 1) - 1),
+      tickEvery: spec.ticks > 1 ? spec.life / spec.ticks : spec.life,
+      tickAcc: 0,
+      color: spec.id === "lance" ? "#d5dbe2" : COL.btc
+    };
+    pushSpecialFx(fx);
+    applyBeamHits(fx);
+  }
+  function spawnHelperDrone(ship, spec) {
+    const n = spec.drones || 1;
+    for (let i = 0; i < n; i++) {
+      const side = n === 1 ? 0 : (i === 0 ? -1 : 1);
+      G.drones.push({
+        x: ship.x + Math.cos(ship.a + 1.4 * side) * 18,
+        y: ship.y + Math.sin(ship.a + 1.4 * side) * 18,
+        vx: 0, vy: 0,
+        life: spec.droneLife, owner: ship, fireCd: 0.12,
+        rate: spec.droneRate, dmg: spec.droneDmg,
+        faction: ship.faction
+      });
+    }
+  }
+  function fireCoinCone(ship, spec) {
+    const half = (spec.n - 1) / 2;
+    for (let i = 0; i < spec.n; i++) {
+      const extra = (i - half) * spec.spread;
+      const a = ship.a + extra;
+      const sp = 400 + spec.t * 16 + rand(-24, 24);
+      G.bullets.push({
+        x: ship.x + Math.cos(a) * (ship.r + 8),
+        y: ship.y + Math.sin(a) * (ship.r + 8),
+        vx: Math.cos(a) * sp + ship.vx * 0.2,
+        vy: Math.sin(a) * sp + ship.vy * 0.2,
+        life: 0.55 + spec.t * 0.03, r: 3.4,
+        dmg: spec.dmg, owner: ship, faction: ship.faction,
+        kind: "coin", color: COL.doge
+      });
+    }
+    ship.flash = 0.12;
+    if (spec.wow) {
+      const words = spec.t >= 7 ? ["WOW", "MUCH", "SUCH"] : spec.t >= 5 ? ["WOW", "MUCH"] : ["WOW"];
+      for (let w = 0; w < words.length; w++) {
+        pushSpecialFx({
+          kind: "wowText", x: ship.x + rand(-18, 18), y: ship.y + rand(-10, 10),
+          text: words[w], life: 0.55 + w * 0.08, max: 0.62, color: COL.doge
+        });
+      }
+    }
+  }
+  function tickSpecialFx(dt) {
+    if (!G.specialFx || !G.specialFx.length) return;
+    for (let i = 0; i < G.specialFx.length; i++) {
+      const fx = G.specialFx[i];
+      if (fx.follow && fx.owner && !fx.owner.dead) {
+        fx.x = fx.owner.x;
+        fx.y = fx.owner.y;
+      }
+      if ((fx.kind === "beam" || fx.kind === "lance") && fx.ticksLeft > 0) {
+        fx.tickAcc = (fx.tickAcc || 0) + dt;
+        if (fx.tickAcc >= (fx.tickEvery || 0.14)) {
+          fx.tickAcc = 0;
+          fx.ticksLeft--;
+          applyBeamHits(fx);
         }
       }
+      fx.life -= dt;
     }
-    if (id === "dash") {
-      ship.vx += Math.cos(ship.a) * 420; ship.vy += Math.sin(ship.a) * 420; ship.dashT = 0.28;
+    G.specialFx = G.specialFx.filter(function (fx) { return fx.life > 0; }).slice(-48);
+  }
+
+  function doSpecial(ship) {
+    if (!ship || ship.dead || ship.specialCd > 0 || ship.energy < 18) return;
+    const spec = specialParams(ship.faction, specialTierOf(ship));
+    let cd = spec.cd;
+    if (ship.player) {
+      ensureVitals();
+      if (G.vitals && G.vitals.alert < 25) cd *= 1.1;
     }
-    if (id === "drone") {
-      G.drones.push({ x: ship.x, y: ship.y, vx: 0, vy: 0, life: 14, owner: ship, fireCd: 0 });
-      ship.vx += Math.cos(ship.a) * 220; ship.vy += Math.sin(ship.a) * 220;
-    }
-    if (id === "wow") { for (let i = -4; i <= 4; i++) fireShot(ship, i * 0.14, 0.85); }
-    if (ship.player && G.tier >= 7) {
-      burst(ship.x, ship.y, 22, FACTIONS[ship.faction].color, 280);
-      for (const o of G.ships) {
-        if (!o || o.dead || o.faction === ship.faction) continue;
-        if (dist(o, ship) < 260) hurt(o, 18, ship);
+    ship.specialCd = cd;
+    ship.energy -= spec.cost;
+    whoosh();
+    const id = spec.id;
+    if (id === "pulse") {
+      const parts = 16 + spec.t * 3;
+      burst(ship.x, ship.y, parts, COL.cyan, 160 + spec.t * 12);
+      burst(ship.x, ship.y, 8 + spec.t, "#ffffff", 90);
+      for (let i = 0; i < spec.rings; i++) {
+        pushSpecialFx({
+          kind: "pulseRing", x: ship.x, y: ship.y, color: COL.cyan,
+          life: 0.32 + i * 0.05, max: 0.36 + i * 0.05,
+          r0: 16 + i * 10, r1: spec.r * (0.72 + i * 0.14), wide: i === 0
+        });
+      }
+      applyNovaHits(ship, ship.x, ship.y, spec.r, spec.dmg, spec.knock);
+      ship.energy = Math.min(ship.maxEnergy, ship.energy + spec.restore);
+      if (ship.player) beep(640, 0.08, "sine", 0.045, 880);
+    } else if (id === "hashBeam") {
+      spawnPierceBeam(ship, spec);
+      burst(ship.x + Math.cos(ship.a) * 24, ship.y + Math.sin(ship.a) * 24, 10 + spec.t, COL.btc, 160);
+      if (ship.player) pew(240);
+    } else if (id === "lance") {
+      spawnPierceBeam(ship, spec);
+      burst(ship.x + Math.cos(ship.a) * 20, ship.y + Math.sin(ship.a) * 20, 6 + spec.t, "#d5dbe2", 120);
+      if (ship.player) pew(420);
+    } else if (id === "gas") {
+      burst(ship.x, ship.y, spec.parts, COL.eth, 280);
+      burst(ship.x, ship.y, 10, "#c4b5fd", 180);
+      pushSpecialFx({
+        kind: "pulseRing", x: ship.x, y: ship.y, color: COL.eth,
+        life: 0.34, max: 0.34, r0: 18, r1: spec.r, wide: true
+      });
+      if (spec.hex) {
+        pushSpecialFx({
+          kind: "hexRing", x: ship.x, y: ship.y, color: COL.eth,
+          life: 0.38, max: 0.38, r0: 22, r1: spec.r * 0.85
+        });
+      }
+      applyNovaHits(ship, ship.x, ship.y, spec.r, spec.dmg, spec.knock, { softKnock: true });
+    } else if (id === "afterDash") {
+      startDash(ship, spec.impulse, spec.dashT, {
+        afterLife: spec.afterLife, tint: COL.sol, glow: true, spMul: spec.spMul
+      });
+      ship.afterGhosts = !!spec.ghosts;
+      burst(ship.x, ship.y, 10 + spec.t, COL.sol, 180);
+    } else if (id === "chainDrone") {
+      spawnHelperDrone(ship, spec);
+      startDash(ship, spec.hopImp, 0.14, { tint: COL.pol, afterLife: 0.18, spMul: 1.38 });
+      pushSpecialFx({ kind: "hopRing", x: ship.x, y: ship.y, color: COL.pol, life: 0.22, max: 0.22, r0: 12, r1: 46 });
+      if (spec.hops > 1) {
+        ship.chainDash = { n: spec.hops - 1, gap: 0.085, acc: 0.085, impulse: spec.hopImp, dashT: 0.11, tint: COL.pol };
+      }
+    } else if (id === "wow") {
+      fireCoinCone(ship, spec);
+      burst(ship.x, ship.y, 12 + spec.t, COL.doge, 200);
+    } else if (id === "liqHop") {
+      const hop = hopForward(ship, spec.range);
+      ship.vx *= spec.settle; ship.vy *= spec.settle;
+      burst(hop.ox, hop.oy, 12 + spec.t, COL.xrp, 160);
+      burst(hop.x, hop.y, 14 + spec.t, COL.xrp, 200);
+      pushSpecialFx({ kind: "hopRing", x: hop.ox, y: hop.oy, color: COL.xrp, life: 0.28, max: 0.28, r0: 10, r1: 40 });
+      pushSpecialFx({ kind: "hopRing", x: hop.x, y: hop.y, color: "#7ee8ff", life: 0.34, max: 0.34, r0: 14, r1: 58 });
+      if (spec.splash) applyNovaHits(ship, hop.x, hop.y, spec.splashR, spec.splashDmg, 160);
+    } else if (id === "hubSkip") {
+      const hop = hopForward(ship, spec.range);
+      ship.vx *= 0.55; ship.vy *= 0.55;
+      burst(hop.ox, hop.oy, 8 + spec.t, "#e8ecf8", 120);
+      burst(hop.x, hop.y, 10 + spec.t, "#ffffff", 150);
+      for (let i = 0; i < spec.rings; i++) {
+        pushSpecialFx({
+          kind: "hopRing", x: hop.x, y: hop.y, color: i ? "#cfd6ea" : "#ffffff",
+          life: 0.30 + i * 0.06, max: 0.32 + i * 0.06,
+          r0: 12 + i * 8, r1: 48 + i * 28
+        });
+      }
+      pushSpecialFx({ kind: "hopRing", x: hop.ox, y: hop.oy, color: "#d8dde8", life: 0.22, max: 0.22, r0: 8, r1: 34 });
+      if (spec.pulse) applyNovaHits(ship, hop.x, hop.y, spec.pulseR, spec.pulseDmg, 120);
+    } else if (id === "snowCrash") {
+      startDash(ship, spec.impulse, spec.dashT, {
+        afterLife: spec.afterLife, tint: COL.avax, glow: false, spMul: spec.spMul,
+        crash: true, crashDmg: spec.crashDmg
+      });
+      burst(ship.x, ship.y, 14 + spec.t, COL.avax, 220);
+      if (spec.triad) {
+        pushSpecialFx({ kind: "triad", x: ship.x, y: ship.y, a: ship.a, life: 0.28, max: 0.28, follow: true, owner: ship });
       }
     }
   }
@@ -7521,6 +7836,7 @@
     if (ship.player && (G.starshipJoyT || 0) > 0) max *= 1.22;
     if (ship.player && (G.cafeBuffT || 0) > 0 && G.cafeBuffKind === "speed") max *= 1.06;
     if (ship.player && ship.boosting) max *= 1.42;
+    if (ship.dashT > 0 || ship.crashT > 0) max *= (ship.dashSpMul || 1.4);
     if (sp > max) { ship.vx *= max / sp; ship.vy *= max / sp; }
     ship.x += ship.vx * dt;
     ship.y += ship.vy * dt;
@@ -7544,9 +7860,42 @@
       ship.trailT -= dt;
       ship.trail = ship.trailT > 0 ? 1 : 0;
     } else ship.trail = 0;
+    if (ship.chainDash && ship.chainDash.n > 0) {
+      ship.chainDash.acc -= dt;
+      if (ship.chainDash.acc <= 0) {
+        startDash(ship, ship.chainDash.impulse, ship.chainDash.dashT, {
+          tint: ship.chainDash.tint || COL.pol, afterLife: 0.16, spMul: 1.35
+        });
+        burst(ship.x, ship.y, 8, COL.pol, 140);
+        pushSpecialFx({ kind: "hopRing", x: ship.x, y: ship.y, color: COL.pol, life: 0.2, max: 0.2, r0: 10, r1: 40 });
+        ship.chainDash.n--;
+        ship.chainDash.acc = ship.chainDash.gap;
+      }
+    }
+    if (ship.crashT > 0) {
+      ship.crashT -= dt;
+      if (!ship.crashHit) ship.crashHit = [];
+      const crashList = specialCombatants();
+      for (let i = 0; i < crashList.length; i++) {
+        const o = crashList[i];
+        if (!specialCanHit(ship, o)) continue;
+        if (dist(ship, o) > (ship.r || 20) + (o.r || 16) + 16) continue;
+        if (ship.crashHit.indexOf(o) >= 0) continue;
+        ship.crashHit.push(o);
+        specialHurt(o, ship.crashDmg || 10, ship);
+        burst(o.x, o.y, 8, COL.avax, 160);
+      }
+    }
     if (ship.dashT > 0) {
       ship.dashT -= dt;
-      ship.after.push({ x: ship.x, y: ship.y, a: ship.a, life: 0.25 });
+      const life = ship.afterLife || 0.25;
+      ship.after.push({ x: ship.x, y: ship.y, a: ship.a, life: life, tint: ship.afterTint, glow: !!ship.afterGlow });
+      if (ship.afterGhosts) {
+        ship.after.push({
+          x: ship.x - (ship.vx || 0) * 0.018, y: ship.y - (ship.vy || 0) * 0.018,
+          a: ship.a, life: life * 0.7, tint: ship.afterTint || COL.sol, glow: true
+        });
+      }
     }
     if (ship.after) ship.after = ship.after.filter(t => { t.life -= dt; return t.life > 0; });
     updateGimbal(ship, dt);
@@ -11296,7 +11645,7 @@
   function paintHintBar() {
     const el = $("hintBar");
     if (!el) return;
-    el.textContent = "WASD thrust · SPACE fire · Q or [ ] weapons · E dock · B board · M map · TAB special · SHIFT shield · X boost · P autopilot · F fullscreen · N mute · I hold" +
+    el.textContent = "WASD thrust · SPACE fire · Q or [ ] weapons · E dock · B board · M map · TAB special · SHIFT ADA shield / SOL rapid · X boost · P autopilot · F fullscreen · N mute · I hold" +
       (G.quantumHop ? " · T hop" : "") +
       (G.gotLoupe ? " · L look" : "");
     paintMarketHint();
@@ -11737,19 +12086,36 @@
     for (const pr of G.parts) { pr.x += pr.vx * dt; pr.y += pr.vy * dt; pr.life -= dt; pr.vx *= 0.98; pr.vy *= 0.98; }
     G.parts = G.parts.filter(p => p.life > 0).slice(-220);
 
+    tickSpecialFx(dt);
     for (const d of G.drones) {
       d.life -= dt;
-      const prey = G.ships.find(s => !s.dead && s.faction !== G.homeFaction);
-      const t = prey || G.player;
-      if (t) {
-        const a = angTo(d, t);
-        d.vx = lerp(d.vx, Math.cos(a) * 260, 0.08);
-        d.vy = lerp(d.vy, Math.sin(a) * 260, 0.08);
+      const owner = d.owner;
+      const roster = specialCombatants();
+      let prey = null, best = 1e9;
+      for (let i = 0; i < roster.length; i++) {
+        const s = roster[i];
+        if (!specialCanHit(owner, s)) continue;
+        const dd = dist(d, s);
+        if (dd < best && dd < 560) { best = dd; prey = s; }
+      }
+      const follow = (owner && !owner.dead) ? owner : prey;
+      if (follow) {
+        const a = prey ? angTo(d, prey) : angTo(d, follow);
+        const spd = prey ? 280 : 200;
+        d.vx = lerp(d.vx, Math.cos(a) * spd, 0.08);
+        d.vy = lerp(d.vy, Math.sin(a) * spd, 0.08);
         d.x += d.vx * dt; d.y += d.vy * dt;
         d.fireCd -= dt;
-        if (prey && d.fireCd <= 0 && dist(d, prey) < 420) {
-          G.bullets.push({ x: d.x, y: d.y, vx: Math.cos(a) * 500, vy: Math.sin(a) * 500, life: 0.7, r: 2.5, dmg: 6, owner: G.player, faction: G.homeFaction, kind: "beam", color: COL.pol });
-          d.fireCd = 0.35;
+        if (prey && d.fireCd <= 0 && dist(d, prey) < 440) {
+          const fa = angTo(d, prey);
+          G.bullets.push({
+            x: d.x, y: d.y,
+            vx: Math.cos(fa) * 520, vy: Math.sin(fa) * 520,
+            life: 0.7, r: 2.5, dmg: d.dmg || 6,
+            owner: owner || d, faction: (owner && owner.faction) || d.faction || G.homeFaction,
+            kind: "beam", color: COL.pol
+          });
+          d.fireCd = d.rate || 0.35;
         }
       }
     }
@@ -13251,17 +13617,21 @@
       for (const t of ship.after) {
         const q = worldToScreen(t.x, t.y);
         ctx.save();
-        ctx.globalAlpha = Math.max(0, t.life) * 1.7;
+        const fade = Math.max(0, t.life / Math.max(t.life, ship.afterLife || 0.25));
+        ctx.globalAlpha = Math.max(0, fade) * (t.glow ? 0.72 : 0.48);
         ctx.translate(q.x, q.y);
         ctx.rotate((t.a != null ? t.a : ship.a) + Math.PI / 2);
+        const tint = t.tint || (FACTIONS[ship.faction] || FACTIONS.ada).color;
+        ctx.shadowColor = tint;
+        ctx.shadowBlur = t.glow ? 22 : 10;
         const spr = hullSprite(ship.faction, ship.tier || 1, ship.faction === "ada" ? ADA.skinId : null);
         if (spr && (spr.width || spr.naturalWidth)) {
           const tNow = clamp(ship.tier || 1, 1, 7);
           const fit = hullFitSize(spr, 70 + tNow * 6);
           try { ctx.drawImage(spr, -fit.w / 2, -fit.h / 2, fit.w, fit.h); } catch (e) {}
         } else {
-          ctx.strokeStyle = (FACTIONS[ship.faction] || FACTIONS.ada).color;
-          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = tint;
+          ctx.lineWidth = t.glow ? 2.2 : 1.5;
           ctx.beginPath();
           ctx.moveTo(0, -12); ctx.lineTo(8, 10); ctx.lineTo(0, 6); ctx.lineTo(-8, 10);
           ctx.closePath();
@@ -13361,7 +13731,17 @@
         ctx.shadowColor = "#ffd24a"; ctx.shadowBlur = 12;
         ctx.fillStyle = "rgba(255,210,80,0.8)";
         ctx.beginPath(); ctx.arc(-6, 0, 2.2, 0, 6.28); ctx.fill();
-      } else if (b.kind === "orb") { ctx.beginPath(); ctx.arc(0, 0, 5, 0, 6.28); ctx.fill(); }
+      } else if (b.kind === "coin") {
+        const coin = IM.projectile_coin_v1;
+        if (coin && (coin.width || coin.naturalWidth)) {
+          try { ctx.drawImage(coin, -7, -7, 14, 14); } catch (e) {}
+        } else {
+          ctx.beginPath(); ctx.arc(0, 0, 4.2, 0, 6.28); ctx.fill();
+          ctx.strokeStyle = "#f4e27a"; ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.arc(0, 0, 2.4, 0, 6.28); ctx.stroke();
+        }
+      }
+      else if (b.kind === "orb") { ctx.beginPath(); ctx.arc(0, 0, 5, 0, 6.28); ctx.fill(); }
       else if (b.kind === "heavy") { ctx.fillRect(-4, -2, 8, 4); }
       else if (b.kind === "pulse" || b.kind === "long" || b.kind === "needle" || b.kind === "beam") {
         // elongated glow (not only dots)
@@ -13724,6 +14104,125 @@
     ctx.globalAlpha = 1;
   }
 
+  function drawSpecialFx() {
+    if (!G.specialFx || !G.specialFx.length) return;
+    for (let i = 0; i < G.specialFx.length; i++) {
+      const fx = G.specialFx[i];
+      const t = 1 - clamp(fx.life / (fx.max || 0.3), 0, 1);
+      const s = worldToScreen(fx.x, fx.y);
+      if (fx.kind === "pulseRing" || fx.kind === "hopRing") {
+        const rad = (fx.r0 || 16) + t * ((fx.r1 || 120) - (fx.r0 || 16));
+        ctx.save();
+        ctx.globalAlpha = clamp(1 - t, 0, fx.kind === "hopRing" ? 0.9 : 0.8);
+        ctx.strokeStyle = fx.color || COL.cyan;
+        ctx.shadowColor = fx.color || COL.cyan;
+        ctx.shadowBlur = fx.wide ? 16 : 8;
+        ctx.lineWidth = fx.wide ? 3.4 : 2;
+        ctx.beginPath(); ctx.arc(s.x, s.y, rad, 0, 6.28); ctx.stroke();
+        if (fx.kind === "pulseRing") {
+          ctx.globalAlpha = clamp(0.18 * (1 - t), 0, 0.22);
+          ctx.fillStyle = fx.color || COL.cyan;
+          ctx.beginPath(); ctx.arc(s.x, s.y, rad * 0.55, 0, 6.28); ctx.fill();
+        }
+        ctx.restore();
+        continue;
+      }
+      if (fx.kind === "hexRing") {
+        const rad = (fx.r0 || 18) + t * ((fx.r1 || 140) - (fx.r0 || 18));
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(t * 0.4);
+        ctx.globalAlpha = clamp(1 - t, 0, 0.8);
+        ctx.strokeStyle = fx.color || COL.eth;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let k = 0; k < 6; k++) {
+          const a = k * Math.PI / 3 - Math.PI / 6;
+          const x = Math.cos(a) * rad, y = Math.sin(a) * rad;
+          if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.closePath(); ctx.stroke();
+        ctx.restore();
+        continue;
+      }
+      if (fx.kind === "beam" || fx.kind === "lance") {
+        const bx = fx.x + Math.cos(fx.a) * fx.len;
+        const by = fx.y + Math.sin(fx.a) * fx.len;
+        const e = worldToScreen(bx, by);
+        ctx.save();
+        ctx.globalAlpha = 0.28 + 0.62 * (1 - t);
+        ctx.strokeStyle = fx.color;
+        ctx.shadowColor = fx.color;
+        ctx.shadowBlur = fx.kind === "beam" ? 20 : 12;
+        ctx.lineCap = "round";
+        ctx.lineWidth = fx.kind === "beam" ? fx.width : fx.width * 0.85;
+        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+        ctx.globalAlpha = 0.55 * (1 - t);
+        ctx.strokeStyle = "#fff";
+        ctx.shadowBlur = 6;
+        ctx.lineWidth = fx.kind === "lance" ? 1.6 : 3;
+        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+        if (fx.kind === "beam") {
+          const n = 5 + (fx.t || 1);
+          const dx = e.x - s.x, dy = e.y - s.y;
+          const len = Math.hypot(dx, dy) || 1;
+          ctx.strokeStyle = fx.color;
+          ctx.lineWidth = 2;
+          ctx.globalAlpha = 0.75 * (1 - t);
+          for (let k = 1; k < n; k++) {
+            const u = k / n;
+            const hx = s.x + dx * u, hy = s.y + dy * u;
+            const px = -dy / len * 7, py = dx / len * 7;
+            ctx.beginPath(); ctx.moveTo(hx - px, hy - py); ctx.lineTo(hx + px, hy + py); ctx.stroke();
+          }
+        }
+        ctx.restore();
+        continue;
+      }
+      if (fx.kind === "triad") {
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(fx.a || 0);
+        ctx.globalAlpha = 1 - t;
+        ctx.strokeStyle = COL.avax;
+        ctx.shadowColor = COL.avax;
+        ctx.shadowBlur = 12;
+        ctx.lineWidth = 2.2;
+        for (let k = 0; k < 3; k++) {
+          const x = 14 + k * 16 + t * 36;
+          ctx.beginPath();
+          ctx.moveTo(x, -7 - k); ctx.lineTo(x + 11, 0); ctx.lineTo(x, 7 + k);
+          ctx.stroke();
+        }
+        ctx.restore();
+        continue;
+      }
+      if (fx.kind === "wowText") {
+        ctx.save();
+        ctx.globalAlpha = clamp(1 - t, 0, 1);
+        ctx.fillStyle = fx.color || COL.doge;
+        ctx.font = "bold 13px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(fx.text || "WOW", s.x, s.y - t * 28);
+        ctx.restore();
+        continue;
+      }
+      if (fx.kind === "spark") {
+        const img = fx.img;
+        ctx.save();
+        ctx.globalAlpha = clamp(1 - t, 0.15, 1);
+        if (img && (img.width || img.naturalWidth)) {
+          try { ctx.drawImage(img, s.x - 10, s.y - 10, 20, 20); } catch (e) {}
+        } else {
+          ctx.fillStyle = "#fff";
+          ctx.beginPath(); ctx.arc(s.x, s.y, 3, 0, 6.28); ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
   function drawRadar() {
     const rw = radar.width, rh = radar.height;
     rtx.clearRect(0, 0, rw, rh);
@@ -13983,10 +14482,21 @@
     drawBullets();
     for (const s of G.ships) drawShip(s);
     if (G.player) drawShip(G.player);
+    drawSpecialFx();
     drawHopGhosts();
     for (const d of G.drones) {
       const s = worldToScreen(d.x, d.y);
-      ctx.fillStyle = COL.pol; ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, 6.28); ctx.fill();
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.rotate((G.time || 0) * 3.2);
+      ctx.fillStyle = COL.pol;
+      ctx.shadowColor = COL.pol;
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.moveTo(6, 0); ctx.lineTo(0, 4.2); ctx.lineTo(-6, 0); ctx.lineTo(0, -4.2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
     }
     ctx.restore();
     if (mode === "play" || mode === "tut" || mode === "loot") {
@@ -14044,6 +14554,8 @@
     $("locTxt").textContent = locationName();
     {
       const bits = [];
+      if (p.specialCd > 0) bits.push("TAB " + p.specialCd.toFixed(1) + "s");
+      else bits.push("TAB " + ((SHIPS[p.faction] && SHIPS[p.faction].specialName) || "RDY"));
       if (G.iffDecode) bits.push(G.iffInstalled ? "IFF+" : "IFF");
       if (G.radarBoostT > 0) bits.push("RADAR " + Math.ceil(G.radarBoostT) + "s");
       else if (G.hasRadarMapper) bits.push(G.radarInstalled ? "MAPPER+" : "MAPPER");
@@ -25998,7 +26510,7 @@
 
   const TUT = [
     { title: "Thrust", body: "W or Up burns the engine. A/D rotate. You keep sliding — this is inertia, not a racer. Nudge, do not panic-spin." },
-    { title: "Shoot", body: "Space or click fires. Weapons are rate-limited. Tab is your chain special. Cardano: hold Shift for the Ouroboros shield." },
+    { title: "Shoot", body: "Space or click fires. Weapons are rate-limited. Tab is your faction special — it grows with hull class. Cardano: hold Shift for the Ouroboros shield. Solana: hold Shift for rapid fire." },
     { title: "Dock", body: "Your home world is the planet for the rocket you picked. Fly home, press E when the dock prompt appears. Walk the market: info booth for official jobs, lane vendors for alley gigs. Grab a job, ramp undock." },
     { title: "Map", body: "M opens the star chart. White is you. Green ring is the job. Rivals are red; friendlies cyan. ESC pauses. Go make the war interesting." }
   ];
@@ -27451,6 +27963,6 @@
     requestAnimationFrame(loop);
   }
 
-  window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };
+  window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS, doSpecial: doSpecial, specialParams: specialParams };
   boot();
 })();

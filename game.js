@@ -3929,7 +3929,7 @@
     pilotStr: 2, pilotLife: 2, duel: null,
     time: 0, finaleStarted: false, won: false,
     ledger: [], earned: 0, spent: 0, tier: 1, weapon: 0, memeTimer: 0, heat: false,
-    epochFollow: true, epochSuggest: true, customTarget: "you", orbitAng: 0, pilot: "", look: "scout", epochLook: "lamp", trait: "chatter", explore: 3, lookExtra: { visor: "none", hat: "none" }, curios: [], foundLoft: false, navMark: null, quantumHop: false, radioHack: false, intel: [], helpArrow: true, helpKey: "", epochLog: [], hopGhosts: [],
+    epochFollow: true, epochSuggest: true, customTarget: "you", orbitAng: 0, pilot: "Satoshi", look: "courier", epochLook: "lamp", trait: "chatter", explore: 3, lookExtra: { visor: "none", hat: "none" }, curios: [], foundLoft: false, navMark: null, quantumHop: false, radioHack: false, intel: [], helpArrow: true, helpKey: "", epochLog: [], hopGhosts: [],
     gotLoupe: false, loupeHeld: false, loupeFound: [], loupeDone: false, loupeNeedEpoch: "",
     iffDecode: false, iffInstalled: false, hasRadarMapper: false, radarInstalled: false,
     radarBoostT: 0, escapeArmed: false, freeFuelOnce: false, refitLandTipShown: false,
@@ -3963,7 +3963,7 @@
   let pendingLook = null, pendingTrait = null, pendingEpochLook = null;
 
   function lookDef(id) {
-    id = id || G.look || "scout";
+    id = id || G.look || "courier";
     for (let i = 0; i < LOOK_KITS.length; i++) if (LOOK_KITS[i].id === id) return LOOK_KITS[i];
     return LOOK_KITS[0];
   }
@@ -20153,7 +20153,7 @@
     return { front: IM.walkerScoutV2 || IM.walkerScout, three: IM.walkerScoutV2Three, threeLeft: IM.walkerScoutV2ThreeLeft, side: IM.walkerScoutV2Side, threeBack: IM.walkerScoutV2ThreeBack, threeBackLeft: IM.walkerScoutV2ThreeBackLeft, back: IM.walkerScoutV2Back };
   }
   function pickLookTurnSprite(opt) {
-    const base = opt.base || (typeof G !== "undefined" && G.look) || "scout";
+    const base = opt.base || (typeof G !== "undefined" && G.look) || "courier";
     const set = lookTurnSet(base, visorIsPrism(opt.visor), opt);
     const face = opt.faceShow != null ? opt.faceShow : opt.facing;
     const c = face == null ? 0 : Math.cos(face);
@@ -20388,7 +20388,7 @@
     const dw = opt.kitDw != null ? opt.kitDw : 21;
     const dh = opt.kitDh != null ? opt.kitDh : 32;
     if (opt.hoodie) {
-      const base = opt.base || (typeof G !== "undefined" && G.look) || "scout";
+      const base = opt.base || (typeof G !== "undefined" && G.look) || "courier";
       let hoodieImg = null;
       if (base === "shade") hoodieImg = IM.hoodieShadeV8e || null;
       else if (base === "brass") hoodieImg = IM.hoodieBrassV8 || null;
@@ -26188,7 +26188,7 @@
       pilotStr: clamp(G.pilotStr | 0, 2, 10), pilotLife: clamp(G.pilotLife | 0, 2, 10),
       ledger: G.ledger, earned: G.earned, spent: G.spent,
       tier: G.tier, weapon: G.weapon, adaSkin: ADA.skinId,
-      look: G.look || "scout", epochLook: G.epochLook || "lamp", trait: G.trait || "chatter", explore: exploreLevel(), lookExtra: G.lookExtra || {}, foundLoft: !!G.foundLoft,
+      look: G.look || "courier", epochLook: G.epochLook || "lamp", trait: G.trait || "chatter", explore: exploreLevel(), lookExtra: G.lookExtra || {}, foundLoft: !!G.foundLoft,
       epochFollow: G.epochFollow !== false, epochSuggest: G.epochSuggest !== false, orbitAng: ORBIT.ang || 0,
       navMark: G.navMark || null,
       quantumHop: !!G.quantumHop, radioHack: !!G.radioHack,
@@ -26240,7 +26240,7 @@
   }
   function applySave(d) {
     if (!d) return false;
-    G.pilot = d.pilot || G.pilot || "";
+    G.pilot = d.pilot || G.pilot || "Satoshi";
     G.credits = d.credits != null ? +d.credits : 0;
     if (!isFinite(G.credits)) G.credits = 0;
     G.xp = d.xp || 0;
@@ -26293,7 +26293,7 @@
     G.tier = clamp(d.tier || 1, 1, 7);
     G.weapon = clamp(d.weapon || 0, 0, WEPS.length - 1);
     ADA.skinId = validAdaSkin(d.adaSkin);
-    G.look = d.look || "scout";
+    G.look = d.look || "courier";
     {
       const el = d.epochLook || "lamp";
       G.epochLook = (el === "rover") ? "rover" : ((el === "keep" || el === "lamp") ? el : "lamp");
@@ -26410,8 +26410,9 @@
     G.tier = 1;
     G.weapon = 0;
     G.upgrades = { engine: 0, weapons: 0, hull: 0, shield: 0 };
-    G.look = "scout";
+    G.look = "courier";
     G.epochLook = "lamp";
+    if (!G.pilot) G.pilot = "Satoshi";
     G.trait = "chatter";
     G.lookExtra = G.lookExtra || {};
     G.lookExtra.visor = "none";
@@ -26522,7 +26523,7 @@
     continuePilot = true;
     G.pilot = row.name;
     applySave(row.save);
-    pendingLook = G.look || "scout";
+    pendingLook = G.look || "courier";
     pendingEpochLook = G.epochLook || "lamp";
     pendingTrait = G.trait || "chatter";
     const inp = $("pilotName");
@@ -26553,7 +26554,7 @@
       return;
     }
     const name = readPilotInput() || G.pilot || lastInitials();
-    G.pilot = cleanPilotName(name) || "RYN";
+    G.pilot = cleanPilotName(name) || "Satoshi";
     const row = rosterFind(G.pilot);
     const keep = !!(continuePilot && selectMode === "resume" && row && row.save);
     audioCtx();
@@ -26812,7 +26813,7 @@
     paintCustomTarget();
     const menu = $("lookDdMenu");
     const blurb = $("lookBlurb");
-    const cur = G.look || "scout";
+    const cur = G.look || "courier";
     const home = FACTIONS[selectedId] || FACTIONS[G.homeFaction] || FACTIONS.ada;
     if ($("lookDdVal")) $("lookDdVal").textContent = lookDef(cur).name;
     if (menu) {
@@ -27358,8 +27359,11 @@
     showScreen("select");
     loadGame();
     try {
-      const active = localStorage.getItem(ACTIVE_KEY) || G.pilot || lastInitials();
-      if ($("pilotName") && !$("pilotName").value) $("pilotName").value = active || "";
+      const active = localStorage.getItem(ACTIVE_KEY) || G.pilot || "Satoshi";
+      if ($("pilotName")) {
+        if (!$("pilotName").value) $("pilotName").value = active || "Satoshi";
+      }
+      if (!G.pilot) G.pilot = "Satoshi";
       continuePilot = false;
     } catch (e) {}
     G.lookExtra = G.lookExtra || {};
@@ -27783,10 +27787,10 @@
     paintTweaks();
   });
   if ($("playerLookPrev")) $("playerLookPrev").addEventListener("click", function () {
-    selectLook(cycleKitId(LOOK_KITS, G.look || "scout", -1));
+    selectLook(cycleKitId(LOOK_KITS, G.look || "courier", -1));
   });
   if ($("playerLookNext")) $("playerLookNext").addEventListener("click", function () {
-    selectLook(cycleKitId(LOOK_KITS, G.look || "scout", 1));
+    selectLook(cycleKitId(LOOK_KITS, G.look || "courier", 1));
   });
   if ($("epochLookPrev")) $("epochLookPrev").addEventListener("click", function () {
     selectEpochLook(cycleKitId(EPOCH_LOOKS, G.epochLook || "lamp", -1));

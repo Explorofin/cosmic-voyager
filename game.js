@@ -3916,7 +3916,7 @@
     sx: 0, sy: 0, wheelAng: 0, wheelFace: 0, lastX: 452, lastY: 518
   };
   const MAPVIEW = { zoom: 1, cx: 4000, cy: 4000, drag: false, lx: 0, ly: 0, ax: 0, ay: 0, moved: 0 };
-  const ORBIT = { ang: 0, vel: 0, drag: false, lastA: 0, lastT: 0, moved: false, node: null, fx: [] };
+  const ORBIT = { ang: 0, vel: 0, drag: false, lastA: 0, lastT: 0, moved: false, node: null, fx: [], idleSpin: 0.085 };
 
   const G = {
     player: null, ships: [], bullets: [], rocks: [], pickups: [], parts: [], fx: [], specialFx: [], beacons: [], drones: [],
@@ -26689,8 +26689,8 @@
       let sc = noseUp
         ? Math.min((art.height - 8) / iw, (art.width - 8) / ih)
         : Math.min((art.height - 8) / ih, (art.width - 8) / iw);
-      // BTC Launch floater only: 20% smaller (orbit thumbs keep their own scale).
-      if (id === "btc") sc *= 0.8;
+      // BTC Launch floater only: 24% smaller total (prior 20% + another 5%).
+      if (id === "btc") sc *= 0.76;
       const w = iw * sc, h = ih * sc;
       if (noseUp) {
         g.save();
@@ -26988,7 +26988,7 @@
       node.style.left = (50 + Math.cos(a) * 42) + "%";
       node.style.top = (50 + Math.sin(a) * 36) + "%";
     });
-    orbit.classList.toggle("spinning", ORBIT.drag || Math.abs(ORBIT.vel) > 0.08);
+    orbit.classList.toggle("spinning", true);
   }
   function orbitAngleAt(e, el) {
     const r = el.getBoundingClientRect();
@@ -27016,7 +27016,11 @@
         ORBIT.ang += ORBIT.vel * dt;
         ORBIT.vel *= Math.pow(0.14, dt);
         if (Math.random() < 0.55) spawnOrbitFx($("shipOrbit"));
-      } else ORBIT.vel = 0;
+      } else {
+        ORBIT.vel = 0;
+        // Slow idle orbit so ships drift around Launch.
+        ORBIT.ang += (ORBIT.idleSpin || 0.085) * dt;
+      }
     }
     G.orbitAng = ORBIT.ang;
     layoutOrbit();
@@ -27220,7 +27224,9 @@
     orbit.innerHTML = "";
     const ids = FACTION_IDS;
     const n = ids.length;
-    if (G.orbitAng != null && isFinite(+G.orbitAng)) ORBIT.ang = +G.orbitAng;
+    // Fresh select: BTC (FACTION_IDS[0]) at top of ring. Idle spin continues from 0.
+    ORBIT.ang = 0;
+    G.orbitAng = 0;
     ids.forEach((id, i) => {
       const node = document.createElement("button");
       node.type = "button";

@@ -27174,38 +27174,33 @@
   }
 
   async function boot() {
-    setLoadProgress(0, "hangar");
-    const ESSENTIAL_BUDGET_MS = 12000;
+    setLoadProgress(0, "art");
+    // Full warm before select so ships / you / Epoch aren't stubs.
+    // Skip-punch on clears still keeps this much faster than the old CPU bake.
+    const LOAD_BUDGET_MS = 90000;
     let timedOut = false;
     await Promise.race([
       loadAssets(function (frac, label) {
-        setLoadProgress(frac, label || "hangar");
-      }, "essential").catch(function (err) {
-        try { console.warn("loadAssets essential", err); } catch (e) {}
+        setLoadProgress(frac, label || "art");
+      }, "all").catch(function (err) {
+        try { console.warn("loadAssets", err); } catch (e) {}
       }),
       new Promise(function (resolve) {
         setTimeout(function () {
           timedOut = true;
-          setLoadProgress(1, "hangar");
           const st = $("loadStatus");
-          if (st) st.textContent = "Opening hangar…";
+          if (st) st.textContent = "Still warming — opening hangar with what loaded…";
           resolve();
-        }, ESSENTIAL_BUDGET_MS);
+        }, LOAD_BUDGET_MS);
       })
     ]);
     const st = $("loadStatus");
-    if (st) st.textContent = timedOut ? "Hangar open — warming world art…" : "Hangar ready.";
+    if (st) st.textContent = timedOut ? "Hangar open — some art may still be catching up." : "Hangar ready.";
     setLoadProgress(1, "ready");
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
     goSelect();
     requestAnimationFrame(loop);
-    // Continue world / higher-tier hulls while the player picks a ship.
-    loadAssets(function () {}, "rest").then(function () {
-      try { buildSelect(); paintLookRow(); paintCrewThumbs(); } catch (e) {}
-    }).catch(function (err) {
-      try { console.warn("loadAssets rest", err); } catch (e) {}
-    });
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

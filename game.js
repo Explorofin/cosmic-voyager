@@ -27157,31 +27157,42 @@
     requestAnimationFrame(loop);
   }
 
-  function setLoadProgress(frac, label) {
+  let loadDotsTimer = null;
+  function startLoadDots() {
+    const st = $("loadStatus");
+    if (!st) return;
+    let n = 1;
+    st.textContent = "Loading.";
+    if (loadDotsTimer) clearInterval(loadDotsTimer);
+    loadDotsTimer = setInterval(function () {
+      n = n % 3 + 1;
+      st.textContent = "Loading" + ".".repeat(n);
+    }, 420);
+  }
+  function stopLoadDots() {
+    if (loadDotsTimer) { clearInterval(loadDotsTimer); loadDotsTimer = null; }
+  }
+
+  function setLoadProgress(frac) {
     const f = Math.max(0, Math.min(1, frac || 0));
     const fill = $("loadFill");
     if (fill) fill.style.width = (f * 100) + "%";
     const pct = $("loadPct");
     if (pct) pct.textContent = Math.round(f * 100) + "%";
-    const st = $("loadStatus");
-    if (st) st.textContent = label ? ("Loading " + label + "…") : "Loading art…";
-    const lines = document.querySelectorAll("#loadStack p");
-    const shown = Math.min(lines.length, Math.floor(f * lines.length + 0.001) + 1);
-    for (let i = 0; i < shown; i++) lines[i].classList.add("on");
   }
 
   async function boot() {
-    setLoadProgress(0, "art");
+    startLoadDots();
+    setLoadProgress(0);
     // Full warm before select — no timeout early-open (avoids stub ships / you / Epoch).
     // Skip-punch on clears still keeps this faster than the old CPU bake.
-    await loadAssets(function (frac, label) {
-      setLoadProgress(frac, label || "art");
+    await loadAssets(function (frac) {
+      setLoadProgress(frac);
     }, "all").catch(function (err) {
       try { console.warn("loadAssets", err); } catch (e) {}
     });
-    const st = $("loadStatus");
-    if (st) st.textContent = "Hangar ready.";
-    setLoadProgress(1, "ready");
+    stopLoadDots();
+    setLoadProgress(1);
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
     goSelect();

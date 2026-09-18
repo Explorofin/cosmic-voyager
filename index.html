@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmic Voyager — A Cardano space opera</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game"></canvas>
+
+    <div id="epochCloud" class="epoch-cloud hidden"></div>
+    <aside id="missionSidePanel" class="mission-side hidden" aria-label="Active missions">
+      <div class="mission-side-head">MISSIONS</div>
+      <div id="missionSideList" class="mission-side-list"></div>
+    </aside>
+    <div id="hud" class="hidden">
+      <div class="hud-top">
+        <div class="bars">
+          <div class="bar-row"><span>HULL</span><div class="bar"><i id="hpBar"></i></div><b id="hpTxt">100</b></div>
+          <div class="bar-row"><span>SHLD</span><div class="bar shield"><i id="shBar"></i></div><b id="shTxt">80</b></div>
+          <div class="bar-row"><span>ENRG</span><div class="bar energy"><i id="enBar"></i></div><b id="enTxt">100</b></div>
+        </div>
+        <div class="hud-meta">
+          <div class="credits"><span id="credTxt">0₳</span><span id="fiatTxt" class="fiat">$0</span></div>
+          <div class="heat" id="heatTxt"></div>
+          <div class="tier" id="tierTxt">TIER 1 / Scout</div>
+          <div class="wep" id="wepTxt">PULSE</div>
+          <div class="loc" id="locTxt">Deep Space</div>
+          <div class="inv-hud-note" id="invHudNote"></div>
+          <div class="war" id="warTxt"></div>
+        </div>
+        <div class="hud-contracts">
+          <div class="mission-box" id="missionBox">
+            <button type="button" id="helpArrowBtn" class="help-arrow-btn" aria-pressed="false">HELP</button>
+            <div class="m-title" id="mTitle">No active contract</div>
+            <div class="m-obj" id="mObj">Dock at a station to take work.</div>
+            <div class="m-list" id="mList"></div>
+          </div>
+          <button type="button" id="epochSuggestBtnFly" class="epoch-talk-btn fly-epoch-talk on" aria-pressed="true">
+            <span>EPOCH TALK</span>
+            <b id="epochSuggestValFly">ON</b>
+          </button>
+          <div class="epoch-log-wrap"><button type="button" class="epoch-log-arr" data-epoch-log-dir="-1" aria-label="Older Epoch talk">▲</button><div class="epoch-log" id="epochLogFly" aria-label="Epoch talk history"></div><button type="button" class="epoch-log-arr" data-epoch-log-dir="1" aria-label="Newer Epoch talk">▼</button></div>
+        </div>
+      </div>
+      <div class="hud-left-col">
+        <label class="explore-dial fly-explore" for="exploreDialFly">
+          <span>EXPLORE <b id="exploreValFly">3</b></span>
+          <input id="exploreDialFly" type="range" min="0" max="11" value="3" />
+          <i id="exploreHintFly">booth first</i>
+        </label>
+        <div class="ap-pill" id="apPill">AP OFF</div>
+      </div>
+      <canvas id="radar" width="168" height="168"></canvas>
+      <div id="prompt" class="hidden"></div>
+      <div id="toast"></div>
+      <div id="chatterFeed" class="chatter-feed hidden" aria-hidden="true"></div>
+      <div class="hint" id="hintBar">WASD thrust · SPACE fire · Q or [ ] weapons · E dock · B board · M map · TAB special · SHIFT shield · X boost · P autopilot · F fullscreen · N mute · I hold</div>
+    </div>
+
+    <div id="lootSheet" class="loot-overlay hidden" aria-hidden="true">
+      <div class="loot-panel">
+        <div class="loot-head"><span class="tag">BOARD LOOT</span><button type="button" data-loot="leaveAll">LEAVE ALL</button></div>
+        <div id="lootScrap" class="loot-scrap"></div>
+        <div id="lootItems" class="loot-items"></div>
+        <div class="loot-foot"><span id="lootMass"></span><button type="button" data-loot="done">DONE</button></div>
+      </div>
+    </div>
+
+    <div id="invFlyout" class="inv-flyout hidden" aria-hidden="true">
+      <div class="inv-panel">
+        <div class="loot-head"><span class="tag">HOLD / INVENTORY</span><button type="button" id="invClose">CLOSE</button></div>
+        <div id="invMass" class="loot-scrap"></div>
+        <div id="invList" class="inv-list"></div>
+        <div class="loot-foot"><span class="inv-hint">I or Esc closes</span></div>
+      </div>
+    </div>
+
+
+    <div id="screen-duel" class="screen hidden" aria-hidden="true">
+      <div id="duelBackdrop" class="duel-backdrop" aria-hidden="true"></div>
+      <div class="duel-frame">
+        <div class="duel-hud-top">
+          <div class="duel-hud-side you" id="duelYouCol">
+            <div class="duel-id">
+              <div class="duel-side-tag">YOU</div>
+              <h2 id="duelYouName">Pilot</h2>
+              <div class="duel-fac" id="duelYouFac"></div>
+            </div>
+            <div class="duel-bars">
+              <div class="duel-bar-row"><span>LIFE</span><div class="duel-bar life"><i id="duelYouLife"></i></div><b id="duelYouLifeTxt">0</b></div>
+              <div class="duel-bar-row"><span>ARMOR</span><div class="duel-bar armor"><i id="duelYouArmor"></i></div><b id="duelYouArmorTxt">0</b></div>
+              <div class="duel-bar-row stam"><span>STAM</span><div class="duel-stam" id="duelYouStam" aria-label="stamina"></div></div>
+            </div>
+            <div class="duel-stats" id="duelYouStats"></div>
+          </div>
+          <div class="duel-hud-mid">
+            <div class="duel-kicker">BOARDING DUEL</div>
+            <div id="duelToast" class="duel-toast hidden" aria-live="assertive"></div>
+            <div class="duel-phase" id="duelPhase">FIGHT</div>
+          </div>
+          <div class="duel-hud-side foe" id="duelFoeCol">
+            <div class="duel-id">
+              <div class="duel-side-tag">FOE</div>
+              <h2 id="duelFoeName">Rival</h2>
+              <div class="duel-fac" id="duelFoeFac"></div>
+            </div>
+            <div class="duel-bars">
+              <div class="duel-bar-row"><span>LIFE</span><div class="duel-bar life"><i id="duelFoeLife"></i></div><b id="duelFoeLifeTxt">0</b></div>
+              <div class="duel-bar-row"><span>ARMOR</span><div class="duel-bar armor"><i id="duelFoeArmor"></i></div><b id="duelFoeArmorTxt">0</b></div>
+              <div class="duel-bar-row stam"><span>STAM</span><div class="duel-stam" id="duelFoeStam" aria-label="foe stamina"></div></div>
+            </div>
+            <div class="duel-stats" id="duelFoeStats"></div>
+          </div>
+        </div>
+        <div class="duel-stage" id="duelStage" aria-label="boarding bay arena">
+          <div class="duel-ground" aria-hidden="true"></div>
+          <div class="duel-fighter you" id="duelYouPilot" data-side="you">
+            <div class="duel-sil" aria-hidden="true"></div>
+            <img id="duelYouImg" class="duel-pilot-img hidden" alt="" />
+          </div>
+          <div class="duel-fighter foe" id="duelFoePilot" data-side="foe">
+            <div class="duel-sil" aria-hidden="true"></div>
+            <img id="duelFoeImg" class="duel-pilot-img hidden" alt="" />
+          </div>
+        </div>
+        <div class="duel-bottom">
+          <div class="duel-acts" id="duelActs">
+            <button type="button" data-duel="left" class="duel-move-act" aria-label="Move left">← A</button>
+            <button type="button" data-duel="strike">J · STRIKE</button>
+            <button type="button" data-duel="guard" id="duelGuardBtn">K · GUARD</button>
+            <button type="button" data-duel="steal">L · STEAL</button>
+            <button type="button" data-duel="boost" id="duelBoostBtn" class="hidden">4 · BOOST</button>
+            <button type="button" data-duel="right" class="duel-move-act" aria-label="Move right">D →</button>
+            <button type="button" data-duel="flee" class="duel-flee-act" id="duelFleeBtn">Esc · FLEE</button>
+          </div>
+          <div class="duel-flee-confirm hidden" id="duelFleeConfirm">
+            <p>Cut and run? Soft scrap only.</p>
+            <button type="button" data-duel="fleeYes">CONFIRM FLEE</button>
+            <button type="button" data-duel="fleeNo">STAY</button>
+          </div>
+          <div class="duel-log" id="duelLog" aria-live="polite"></div>
+          <div class="duel-foot" id="duelFoot">A/D walk · J strike · K guard · L steal · Esc flee</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-loading" class="screen">
+      <div class="lockup">
+        <div class="kicker">CARDANO SPACE OPERA</div>
+        <h1>COSMIC VOYAGER</h1>
+        <div class="sub">A Cardano space opera</div>
+        <div class="loadbar"><i id="loadFill"></i></div>
+        <div class="load-stack" id="loadStack">
+          <p>Calibrating Ouroboros drives…</p>
+          <p>Punching black from ADA plates…</p>
+          <p>Stamping rival logos…</p>
+          <p>Seeding the chain war…</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-select" class="screen hidden">
+      <canvas id="selectSky"></canvas>
+      <div class="lockup mini">
+        <h1 class="cv-title" aria-label="COSMIC VOYAGER"><span class="cv-letter cv-l0"><img src="assets/images/ui/cv_ast_C.png" alt=""></span><span class="cv-letter cv-l1"><img src="assets/images/ui/cv_ast_O.png" alt=""></span><span class="cv-letter cv-l2"><img src="assets/images/ui/cv_ast_S.png" alt=""></span><span class="cv-letter cv-l3"><img src="assets/images/ui/cv_ast_M.png" alt=""></span><span class="cv-letter cv-l4"><img src="assets/images/ui/cv_ast_I.png" alt=""></span><span class="cv-letter cv-l5"><img src="assets/images/ui/cv_ast_C_1.png" alt=""></span><span class="cv-sp" aria-hidden="true"></span><span class="cv-letter cv-l6"><img src="assets/images/ui/cv_ast_V.png" alt=""></span><span class="cv-letter cv-l7"><img src="assets/images/ui/cv_ast_O_1.png" alt=""></span><span class="cv-letter cv-l8"><img src="assets/images/ui/cv_ast_Y.png" alt=""></span><span class="cv-letter cv-l9"><img src="assets/images/ui/cv_ast_A.png" alt=""></span><span class="cv-letter cv-l10"><img src="assets/images/ui/cv_ast_G.png" alt=""></span><span class="cv-letter cv-l11"><img src="assets/images/ui/cv_ast_E.png" alt=""></span><span class="cv-letter cv-l12"><img src="assets/images/ui/cv_ast_R.png" alt=""></span></h1>
+      </div>
+      <aside id="scoreboard" class="scoreboard roster" aria-label="Pilot and scores">
+        <div class="pilot-row">
+          <label for="pilotName">PILOT</label>
+          <input id="pilotName" maxlength="16" placeholder="Your name" autocomplete="off" spellcheck="false" />
+          <p id="pilotHint">New game · Scout · 0₳</p>
+        </div>
+        <div class="play-mode" id="playMode">
+          <button type="button" id="newGameBtn" class="mode-btn on">NEW GAME</button>
+          <button type="button" id="resumeBtn" class="mode-btn">RESUME</button>
+        </div>
+        <div id="resumeBox" class="resume-box hidden">
+          <h3>SAVES</h3>
+          <ol id="rosterList"></ol>
+        </div>
+        <h3 class="subhead">HIGH SCORES</h3>
+        <ol id="scoreboardList"></ol>
+      </aside>
+      <div class="select-stage">
+        <div class="orbit" id="shipOrbit"></div>
+        <button type="button" id="launchBtn" class="launch">
+          <canvas id="launchArt" width="240" height="196"></canvas>
+          <span>LAUNCH</span>
+          <i class="launch-hint">Click a ship</i>
+        </button>
+      </div>
+      <aside id="customizePane" class="customize-pane" aria-label="Customize">
+        <h3>CUSTOMIZE</h3>
+        <p class="custom-intro">You and Epoch walk the market.</p>
+        <div class="look-previews">
+          <button type="button" class="look-prev on" id="lookPrevYou" data-custom="you" aria-pressed="true">
+            <canvas id="playerLookThumb" width="120" height="160"></canvas>
+            <span>YOU</span>
+          </button>
+          <button type="button" class="look-prev" id="lookPrevEpoch" data-custom="epoch" aria-pressed="false">
+            <canvas id="epochLookThumb" width="120" height="160"></canvas>
+            <span>EPOCH</span>
+          </button>
+        </div>
+        <div class="cycle-row" id="playerLookCycle">
+          <span class="cycle-lab">PLAYER LOOK</span>
+          <button type="button" id="playerLookPrev" class="cycle-btn" aria-label="Previous player look">&lt;</button>
+          <b id="playerLookVal">SCOUT</b>
+          <button type="button" id="playerLookNext" class="cycle-btn" aria-label="Next player look">&gt;</button>
+        </div>
+        <div class="cycle-row" id="epochLookCycle">
+          <span class="cycle-lab">EPOCH LOOK</span>
+          <button type="button" id="epochLookPrev" class="cycle-btn" aria-label="Previous Epoch look">&lt;</button>
+          <b id="epochLookVal">STOCK</b>
+          <button type="button" id="epochLookNext" class="cycle-btn" aria-label="Next Epoch look">&gt;</button>
+        </div>
+        <div class="dd hidden" data-dd="hull" id="adaHullDd">
+          <button type="button" class="dd-btn" id="adaHullDdBtn">HULL <b id="adaHullDdVal">ADA ROCKET</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="adaHullDdMenu"></div>
+        </div>
+        <div class="dd" data-dd="look">
+          <button type="button" class="dd-btn" id="lookDdBtn">LOOK <b id="lookDdVal">SCOUT</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="lookDdMenu"></div>
+        </div>
+        <div class="dd" data-dd="trait">
+          <button type="button" class="dd-btn" id="traitDdBtn">TRAIT <b id="traitDdVal">CHATTER</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="traitDdMenu"></div>
+        </div>
+        <div class="dd" data-dd="hat" style="display:none">
+          <button type="button" class="dd-btn" id="hatDdBtn">HAT <b id="hatDdVal">NONE</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="hatDdMenu"></div>
+        </div>
+        <div class="dd" data-dd="visor" style="display:none">
+          <button type="button" class="dd-btn" id="visorDdBtn">VISOR <b id="visorDdVal">NONE</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="visorDdMenu"></div>
+        </div>
+        <div class="dd" data-dd="suit">
+          <button type="button" class="dd-btn" id="suitDdBtn">SUIT <b id="suitDdVal">WHITE</b> <i class="dd-caret">▾</i></button>
+          <div class="dd-menu hidden" id="suitDdMenu"></div>
+        </div>
+        <div class="custom-bits">
+          <button type="button" id="tweakHoodie" class="skin-btn">HOODIE OFF</button>
+        </div>
+        <p id="lookBlurb" class="look-blurb">Stock visor. You look like every other berth.</p>
+      </aside>
+      <div class="select-info">
+        <h2 id="selName">Cardano A-Wing</h2>
+        <p id="selBlurb"></p>
+      </div>
+    </div>
+
+    <div id="screen-tutorial" class="screen hidden">
+      <div class="panel tut">
+        <div class="kicker">FLIGHT SCHOOL</div>
+        <h2 id="tutTitle">Thrust</h2>
+        <p id="tutBody"></p>
+        <button type="button" id="tutNext" class="btn primary">Next</button>
+      </div>
+    </div>
+
+    <div id="screen-dock" class="screen hidden market-screen">
+      <div id="marketWrap">
+        <canvas id="market" width="960" height="540"></canvas>
+        <div id="talkCard" class="talk-card hidden"></div>
+        <div id="kioskOverlay" class="kiosk-overlay hidden" aria-hidden="true">
+          <div id="kioskPanel" class="kiosk-panel" data-theme="meme" data-planet="cardano">
+            <div class="kiosk-bezel">
+              <header class="kiosk-head">
+                <span class="kiosk-led" aria-hidden="true"></span>
+                <b id="kioskHead">KIOSK</b>
+                <button type="button" id="kioskClose" class="kiosk-x">CLOSE</button>
+              </header>
+              <div class="kiosk-crt">
+                <pre id="kioskScreen">READY.</pre>
+                <div id="kioskLog" class="kiosk-log"></div>
+              </div>
+              <div id="kioskMenu" class="kiosk-menu hidden"></div>
+              <div class="kiosk-keys">
+                <button type="button" id="kioskFire" class="kiosk-fire">SEND</button>
+                <button type="button" id="kioskLights" class="kiosk-sub hidden">LIGHTS</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="market-hint" id="marketHint">WASD walk · SHIFT sprint · E talk · RAMP undock · INFO BOOTH jobs · far alley SHADE · I hold</div>
+      </div>
+      <header class="market-hud">
+        <div class="market-hud-left">
+          <div class="kicker" id="dockKicker">STATION</div>
+          <h2 id="dockName">Cardano Prime</h2>
+          <p id="dockFlavor" class="market-flavor"></p>
+        </div>
+        <div class="market-hud-right">
+          <div class="dock-wallet" id="dockWallet"></div>
+          <label class="explore-dial" for="exploreDial">
+            <span>EXPLORE <b id="exploreVal">3</b></span>
+            <input id="exploreDial" type="range" min="0" max="11" value="3" />
+            <i id="exploreHint">booth first</i>
+          </label>
+          <button type="button" id="epochSuggestBtn" class="epoch-talk-btn on" aria-pressed="true">
+            <span>EPOCH TALK</span>
+            <b id="epochSuggestVal">ON</b>
+          </button>
+          <div class="epoch-log-wrap"><button type="button" class="epoch-log-arr" data-epoch-log-dir="-1" aria-label="Older Epoch talk">▲</button><div class="epoch-log" id="epochLogMkt" aria-label="Epoch talk history"></div><button type="button" class="epoch-log-arr" data-epoch-log-dir="1" aria-label="Newer Epoch talk">▼</button></div>
+          <div id="missionSidePanelMkt" class="mission-side mission-side-mkt" aria-label="Active missions">
+            <div class="mission-side-head">MISSIONS</div>
+            <div id="missionSideListMkt" class="mission-side-list"></div>
+          </div>
+          <button type="button" id="undockBtn" class="btn">UNDOCK</button>
+        </div>
+      </header>
+      <div class="dock-toast" id="dockToast"></div>
+      <div class="dock paper-fallback hidden" id="paperDock">
+        <header>
+          <div>
+            <div class="kicker">INFORMATION BOOTH</div>
+            <h2>Official board</h2>
+            <p>Legal contracts posted for this planet. Esc or BACK returns to the market.</p>
+          </div>
+          <button type="button" id="paperBackBtn" class="btn">BACK TO MARKET</button>
+        </header>
+        <div class="dock-grid">
+          <section>
+            <h3>Services</h3>
+            <div class="svc" id="svcRepair"></div>
+            <div class="svc" id="svcRefuel"></div>
+            <div class="svc hull-class" id="hullClass"></div>
+            <div class="upgrades" id="upgrades"></div>
+          </section>
+          <section class="missions-col">
+            <h3 id="missionsHead">Available Contracts</h3>
+            <div id="missionList"></div>
+            <div id="turnInBox"></div>
+          </section>
+          <section class="ledger-col">
+            <h3>LEDGER</h3>
+            <div class="ledger-sum" id="ledgerSum"></div>
+            <div id="ledgerList"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-map" class="screen hidden">
+      <div class="map-wrap">
+        <div class="map-head">
+          <h2>STAR CHART</h2>
+          <p id="mapWar"></p>
+          <button type="button" id="mapClose" class="btn">CLOSE (M)</button>
+        </div>
+        <canvas id="mapCanvas" width="720" height="720"></canvas>
+        <div class="legend">
+          <span class="lg friendly">friendly</span>
+          <span class="lg rival">rival</span>
+          <span class="lg contest">contested</span>
+          <span class="lg you">you</span>
+          <span class="lg target">mission</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-pause" class="screen hidden">
+      <div class="panel">
+        <h2>PAUSED</h2>
+        <p>Universe on hold. Keys released.</p>
+        <button type="button" id="pauseResumeBtn" class="btn primary">RESUME</button>
+        <button type="button" id="saveQuitBtn" class="btn">SAVE &amp; MENU</button>
+      </div>
+    </div>
+
+    <div id="screen-over" class="screen hidden">
+      <div class="panel">
+        <div class="kicker">EJECTED</div>
+        <h2>EJECTED</h2>
+        <p id="overMsg">You woke at the last berth. Cargo's gone. The run is not.</p>
+        <button type="button" id="againBtn" class="btn primary">PLAY AGAIN</button>
+        <button type="button" id="overMenuBtn" class="btn">SHIP SELECT</button>
+      </div>
+    </div>
+
+    <div id="screen-win" class="screen hidden">
+      <div class="panel win">
+        <div class="kicker">CAMPAIGN COMPLETE</div>
+        <h2>CARDANO STANDS</h2>
+        <p id="winMsg">The rival-chain armada breaks. Ouroboros holds the sky.</p>
+        <button type="button" id="winAgainBtn" class="btn primary">REPLAY AS ANOTHER SHIP</button>
+        <button type="button" id="winContBtn" class="btn">KEEP FLYING</button>
+      </div>
+    </div>
+    <div id="iniPrompt" class="ini-overlay hidden">
+      <div class="ini-card">
+        <div class="kicker">RUN COMPLETE</div>
+        <h2>POST SCORE</h2>
+        <p class="ini-score" id="iniScore">0</p>
+        <label for="iniInput">INITIALS</label>
+        <input id="iniInput" maxlength="3" value="RYN" autocomplete="off" spellcheck="false" />
+        <button type="button" id="iniPostBtn" class="btn primary">POST</button>
+      </div>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

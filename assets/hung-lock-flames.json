@@ -1,0 +1,213 @@
+{
+  "comment": "Flame hang lock (NEW FILE). Does not replace or rewrite hung-lock.json facade locks. New filenames only. Do not punch hulls. Do not overwrite ADA_rocket.png / ADA_yacht_clear.png / game.js.",
+  "assets": [
+    {
+      "id": "ada_side_t1_center_accel_v1",
+      "path": "assets/images/flames/ada_side_t1_center_accel_v1.png",
+      "sha256": "9c40250abc2fb2f802f3e0cd273d9b119084ba013736184cad50d9eb34ed1579",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t1_center_boost_v1",
+      "path": "assets/images/flames/ada_side_t1_center_boost_v1.png",
+      "sha256": "12b6bd736d4103dd574638fd5513dcfc73c8f0582c87bddf11c7053487c0e592",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t1_center_idle_v1",
+      "path": "assets/images/flames/ada_side_t1_center_idle_v1.png",
+      "sha256": "cf6aaadaf92614da100ec96f559f92274471229fac8ccd0569c964cf04c1a9da",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_center_accel_v1",
+      "path": "assets/images/flames/ada_side_t4_center_accel_v1.png",
+      "sha256": "8fa8d9f7117b02a76d688a5d93f9c5968c32f8de92211827a69ba3bfb55461d0",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_center_boost_v1",
+      "path": "assets/images/flames/ada_side_t4_center_boost_v1.png",
+      "sha256": "8bc23f604fc7b3876d9030f74c5e6e3ad72f4a8bc9364abd781453fc690f0ca1",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_center_idle_v1",
+      "path": "assets/images/flames/ada_side_t4_center_idle_v1.png",
+      "sha256": "de45b676f353b93df8449b016eeb4d181362e5919c90a4ac14580c4af0a54d59",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_left_accel_v1",
+      "path": "assets/images/flames/ada_side_t4_left_accel_v1.png",
+      "sha256": "e761f2a25614bf4f86ebe7e1b3950f4f6af56ad9b9cbaf318ab88b140c21182b",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_left_boost_v1",
+      "path": "assets/images/flames/ada_side_t4_left_boost_v1.png",
+      "sha256": "0f601a1c383ec9fda15ca5ac1567b2d06a73a0a93d03dabe0cbcff488ba554e6",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_left_idle_v1",
+      "path": "assets/images/flames/ada_side_t4_left_idle_v1.png",
+      "sha256": "e8ee383e8ccc22bc0f70b18801084c914d7c45028190aac1376ee9bbc4a5d6b7",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_right_accel_v1",
+      "path": "assets/images/flames/ada_side_t4_right_accel_v1.png",
+      "sha256": "6ad07e156255191b1b744c0586ab8dad3b6672e4ed4212d8fad19fe35ff6be0e",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_right_boost_v1",
+      "path": "assets/images/flames/ada_side_t4_right_boost_v1.png",
+      "sha256": "7115a270b1862263f1bba79ad54307d282e451731c5b4190b438aeca72870b18",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_right_idle_v1",
+      "path": "assets/images/flames/ada_side_t4_right_idle_v1.png",
+      "sha256": "9491e339b8a97af7f4f10f4d659ea23f41a57246a6ef927304ad20ffd50d860c",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_center_accel_v1",
+      "path": "assets/images/flames/ada_yacht_t1_center_accel_v1.png",
+      "sha256": "ccea50bf7b6b49a5d970bc0ba3f07321ac95a0107bdf0dccd83659487ec15572",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_center_boost_v1",
+      "path": "assets/images/flames/ada_yacht_t1_center_boost_v1.png",
+      "sha256": "a1b5a612cf1e5aa637accf091fbf5135822328dcd744ef5f3af95e4809f87895",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_center_idle_v1",
+      "path": "assets/images/flames/ada_yacht_t1_center_idle_v1.png",
+      "sha256": "1931c6934213e5ccdfee22ce120bc1235b4b2d27c74b81746f0cef0745c4cd7e",
+      "role": "ada-flame-sprite",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_flame_attach_v1",
+      "path": "assets/images/flames/ada_flame_attach_v1.json",
+      "sha256": "2579f3b0f9e2f57ff82b392ac05f3fd1928deea2413b6a5978af1b60617a903b",
+      "role": "ada-flame-attach",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_t1_t4_baked_snug_sheet_v3",
+      "path": "assets/images/flames/previews/ada_t1_t4_baked_snug_sheet_v3.png",
+      "sha256": "620fd3ed9b18af1359b00e685422c86c992fc97dbda92ef06f9b84bb2b25b9a9",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t1_baked_snug_accel_v2",
+      "path": "assets/images/flames/previews/ada_side_t1_baked_snug_accel_v2.png",
+      "sha256": "dfa6fa6e645072cdd681a0bf8b2113c40b78659234e7249f70b6017da8836800",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t1_baked_snug_idle_v2",
+      "path": "assets/images/flames/previews/ada_side_t1_baked_snug_idle_v2.png",
+      "sha256": "716f9350e1271bd585f17eb5e82c6601ce3c4b240ba04acd6e098d25ebacfdca",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t1_baked_snug_boost_v3",
+      "path": "assets/images/flames/previews/ada_side_t1_baked_snug_boost_v3.png",
+      "sha256": "c7afd97be4cc5f19aec842a8821add4ccb76e47084b7b537cf59b2c2a7943c0a",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_baked_snug_accel_v2",
+      "path": "assets/images/flames/previews/ada_side_t4_baked_snug_accel_v2.png",
+      "sha256": "632d1d9df2581e2f0c972c0c293ca20d6b845459aa556bd0b6c391b506c7b9eb",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_baked_snug_idle_v2",
+      "path": "assets/images/flames/previews/ada_side_t4_baked_snug_idle_v2.png",
+      "sha256": "b1ea8929896d41afdba1424025bb016ae9463ec828d93ee2911cf5e5b8e444f3",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_side_t4_baked_snug_boost_v3",
+      "path": "assets/images/flames/previews/ada_side_t4_baked_snug_boost_v3.png",
+      "sha256": "bbd03368a06b46dbabab9db53b56784567d28b05e25d96d59a262c0e86a75339",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_baked_snug_accel_v2",
+      "path": "assets/images/flames/previews/ada_yacht_t1_baked_snug_accel_v2.png",
+      "sha256": "5c68390fad203e33580f33dd0af4bb47e7e4d5bd08950a1e3d48fcd00304ca61",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_baked_snug_idle_v2",
+      "path": "assets/images/flames/previews/ada_yacht_t1_baked_snug_idle_v2.png",
+      "sha256": "4110fac7b9806f16fcb72f182ffbf6d2d317f5c9cbd38706fd0b2339a40183d6",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "ada_yacht_t1_baked_snug_boost_v3",
+      "path": "assets/images/flames/previews/ada_yacht_t1_baked_snug_boost_v3.png",
+      "sha256": "816c479e5c7776a636752fa6d8c443cceef2f128e108e0216ce0109ec7b55655",
+      "role": "ada-flame-preview-signed",
+      "skipPunch": true,
+      "noFallback": true
+    }
+  ]
+}

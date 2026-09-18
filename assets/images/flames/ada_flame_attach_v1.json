@@ -1,0 +1,443 @@
+{
+  "note": "ADA t1/t4 baked-snug flame hang v1 + yacht t4 boost v4 L+C+R. Flame-only sprites. Yacht t4 idle/accel stay procedural (no isolated L/R idle/accel). Boost blit L+C+R snug 1px below bells. Do not punch hulls.",
+  "scales": {
+    "idle": 0.28,
+    "accel": 1.0,
+    "boost": 2.45
+  },
+  "boost_sx": 1.15,
+  "sideK": 0.62,
+  "idle": 0.28,
+  "accel": 1.0,
+  "boost": 2.45,
+  "sprite_dir": "assets/images/flames/",
+  "hulls": {
+    "ada_side_t1": {
+      "family": "side",
+      "hull_w": 169,
+      "hull_h": 356,
+      "hull_source": "assets/images/hulls/ada/side/t1.png",
+      "motors": [
+        {
+          "role": "center",
+          "role_code": "C",
+          "bell_x": 84,
+          "bell_y": 223,
+          "x_centroid": 83.74,
+          "snug_top_y": 224,
+          "dy": 0,
+          "native_length": 82,
+          "orig_bbox": [
+            66,
+            224,
+            101,
+            305
+          ],
+          "n_pixels": 1748,
+          "sprites": {
+            "idle": "ada_side_t1_center_idle_v1.png",
+            "accel": "ada_side_t1_center_accel_v1.png",
+            "boost": "ada_side_t1_center_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 36,
+              "h": 23
+            },
+            "accel": {
+              "w": 36,
+              "h": 82
+            },
+            "boost": {
+              "w": 41,
+              "h": 201
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 66,
+              "dy": 224
+            },
+            "accel": {
+              "dx": 66,
+              "dy": 224
+            },
+            "boost": {
+              "dx": 64,
+              "dy": 224
+            }
+          },
+          "sideK": 1.0
+        }
+      ]
+    },
+    "ada_side_t4": {
+      "family": "side",
+      "hull_w": 239,
+      "hull_h": 485,
+      "hull_source": "assets/images/hulls/ada/side/t4.png",
+      "motors": [
+        {
+          "role": "left",
+          "role_code": "L",
+          "bell_x": 58,
+          "bell_y": 344,
+          "x_centroid": 57.65,
+          "snug_top_y": 343,
+          "dy": 0,
+          "native_length": 70,
+          "orig_bbox": [
+            41,
+            343,
+            74,
+            412
+          ],
+          "n_pixels": 1383,
+          "sprites": {
+            "idle": "ada_side_t4_left_idle_v1.png",
+            "accel": "ada_side_t4_left_accel_v1.png",
+            "boost": "ada_side_t4_left_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 34,
+              "h": 20
+            },
+            "accel": {
+              "w": 34,
+              "h": 70
+            },
+            "boost": {
+              "w": 39,
+              "h": 172
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 41,
+              "dy": 343
+            },
+            "accel": {
+              "dx": 41,
+              "dy": 343
+            },
+            "boost": {
+              "dx": 39,
+              "dy": 343
+            }
+          },
+          "sideK": 0.62
+        },
+        {
+          "role": "center",
+          "role_code": "C",
+          "bell_x": 118,
+          "bell_y": 339,
+          "x_centroid": 118.01,
+          "snug_top_y": 326,
+          "dy": 0,
+          "native_length": 133,
+          "orig_bbox": [
+            88,
+            326,
+            148,
+            458
+          ],
+          "n_pixels": 4308,
+          "sprites": {
+            "idle": "ada_side_t4_center_idle_v1.png",
+            "accel": "ada_side_t4_center_accel_v1.png",
+            "boost": "ada_side_t4_center_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 61,
+              "h": 37
+            },
+            "accel": {
+              "w": 61,
+              "h": 133
+            },
+            "boost": {
+              "w": 70,
+              "h": 326
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 88,
+              "dy": 326
+            },
+            "accel": {
+              "dx": 88,
+              "dy": 326
+            },
+            "boost": {
+              "dx": 84,
+              "dy": 326
+            }
+          },
+          "sideK": 1.0
+        },
+        {
+          "role": "right",
+          "role_code": "R",
+          "bell_x": 180,
+          "bell_y": 342,
+          "x_centroid": 179.72,
+          "snug_top_y": 343,
+          "dy": 0,
+          "native_length": 69,
+          "orig_bbox": [
+            163,
+            343,
+            196,
+            411
+          ],
+          "n_pixels": 1397,
+          "sprites": {
+            "idle": "ada_side_t4_right_idle_v1.png",
+            "accel": "ada_side_t4_right_accel_v1.png",
+            "boost": "ada_side_t4_right_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 34,
+              "h": 19
+            },
+            "accel": {
+              "w": 34,
+              "h": 69
+            },
+            "boost": {
+              "w": 39,
+              "h": 169
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 163,
+              "dy": 343
+            },
+            "accel": {
+              "dx": 163,
+              "dy": 343
+            },
+            "boost": {
+              "dx": 161,
+              "dy": 343
+            }
+          },
+          "sideK": 0.62
+        }
+      ]
+    },
+    "ada_yacht_t1": {
+      "family": "yacht",
+      "hull_w": 159,
+      "hull_h": 367,
+      "hull_source": "assets/images/hulls/ada/yacht/t1.png",
+      "motors": [
+        {
+          "role": "center",
+          "role_code": "C",
+          "bell_x": 73,
+          "bell_y": 208,
+          "x_centroid": 72.52,
+          "snug_top_y": 209,
+          "dy": -17,
+          "native_length": 91,
+          "orig_bbox": [
+            62,
+            226,
+            84,
+            316
+          ],
+          "n_pixels": 1149,
+          "sprites": {
+            "idle": "ada_yacht_t1_center_idle_v1.png",
+            "accel": "ada_yacht_t1_center_accel_v1.png",
+            "boost": "ada_yacht_t1_center_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 23,
+              "h": 25
+            },
+            "accel": {
+              "w": 23,
+              "h": 91
+            },
+            "boost": {
+              "w": 26,
+              "h": 223
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 62,
+              "dy": 209
+            },
+            "accel": {
+              "dx": 62,
+              "dy": 209
+            },
+            "boost": {
+              "dx": 61,
+              "dy": 209
+            }
+          },
+          "sideK": 1.0
+        }
+      ]
+    },
+    "ada_yacht_t4": {
+      "family": "yacht",
+      "hull_w": 239,
+      "hull_h": 573,
+      "hull_source": "assets/images/hulls/ada/yacht/t4.png",
+      "motors": [
+        {
+          "role": "left",
+          "role_code": "L",
+          "bell_x": 28,
+          "bell_y": 451,
+          "x_centroid": 27.32,
+          "snug_top_y": 452,
+          "dy": 0,
+          "native_length": 220,
+          "orig_bbox": [
+            15,
+            452,
+            41,
+            671
+          ],
+          "n_pixels": 3346,
+          "sprites": {
+            "boost": "ada_yacht_t4_left_boost_v1.png"
+          },
+          "sprite_size": {
+            "boost": {
+              "w": 27,
+              "h": 220
+            }
+          },
+          "paste_hull_space": {
+            "boost": {
+              "dx": 15,
+              "dy": 452
+            }
+          },
+          "sideK": 0.62
+        },
+        {
+          "role": "center",
+          "role_code": "C",
+          "bell_x": 105,
+          "bell_y": 362,
+          "x_centroid": 104.98,
+          "snug_top_y": 363,
+          "dy": -21,
+          "native_length": 145,
+          "orig_bbox": [
+            88,
+            384,
+            124,
+            528
+          ],
+          "n_pixels": 2758,
+          "sprites": {
+            "idle": "ada_yacht_t4_center_idle_v1.png",
+            "accel": "ada_yacht_t4_center_accel_v1.png",
+            "boost": "ada_yacht_t4_center_boost_v1.png"
+          },
+          "sprite_size": {
+            "idle": {
+              "w": 37,
+              "h": 41
+            },
+            "accel": {
+              "w": 37,
+              "h": 145
+            },
+            "boost": {
+              "w": 43,
+              "h": 355
+            }
+          },
+          "paste_hull_space": {
+            "idle": {
+              "dx": 88,
+              "dy": 363
+            },
+            "accel": {
+              "dx": 88,
+              "dy": 363
+            },
+            "boost": {
+              "dx": 85,
+              "dy": 363
+            }
+          },
+          "sideK": 1.0
+        },
+        {
+          "role": "right",
+          "role_code": "R",
+          "bell_x": 197,
+          "bell_y": 468,
+          "x_centroid": 196.32,
+          "snug_top_y": 469,
+          "dy": 0,
+          "native_length": 220,
+          "orig_bbox": [
+            184,
+            469,
+            210,
+            688
+          ],
+          "n_pixels": 3346,
+          "sprites": {
+            "boost": "ada_yacht_t4_right_boost_v1.png"
+          },
+          "sprite_size": {
+            "boost": {
+              "w": 27,
+              "h": 220
+            }
+          },
+          "paste_hull_space": {
+            "boost": {
+              "dx": 184,
+              "dy": 469
+            }
+          },
+          "sideK": 0.62
+        }
+      ],
+      "boost_v4": {
+        "canvas": [
+          239,
+          742
+        ],
+        "source": "ada_yacht_t4_baked_snug_boost_v4.png",
+        "sha256": "97651ba20860f1e0bacd46e1aaa47296b3bdc4e5596fa63bd839cf509a428073",
+        "center_boost_sha256": "73ad86cc6d47cc8f062fc91e218ae94cf81acf9b129878a80119cd15f69f2432"
+      }
+    }
+  },
+  "source_sha256": {
+    "/workspace/cosmic-voyager/assets/images/hulls/ada/side/t1.png": "6e503b93b6aed69bafe1e5a731fd0a30d7c0a6051354fb7dde9961a18266de20",
+    "/workspace/flame-preview/ada_side_t1_nofire.png": "387ee800b4ce389637d127c2483babcc3e52272d01674c3c63367284412ad6f8",
+    "/workspace/cosmic-voyager/assets/images/hulls/ada/side/t4.png": "fd7e0ed95438b314a4ca87ac66664f42405686e534ec03d81c8834e457be7a2e",
+    "/workspace/flame-preview/ada_side_t4_nofire.png": "90d70d834ad546239e9efdde7a41b34d600057d81ffec45b55eb8b39e21b4fcd",
+    "/workspace/cosmic-voyager/assets/images/hulls/ada/yacht/t1.png": "7526694a8415507eeea2aac300d7f348fb56f3171799eb61ac16fbd69b568857",
+    "/workspace/flame-preview/ada_yacht_t1_nofire.png": "eaa1b9e6e3e1090739b5015c82a3375d764cfd3decf6df17b7c8c3878e89d76c",
+    "/workspace/cosmic-voyager/assets/images/hulls/ada/yacht/t4.png": "095225ecb8314325dc1145214c51ad452a32ac455cebc1ccd0d6e3f055b87e0b",
+    "/workspace/flame-preview/ada_yacht_t4_nofire.png": "cfd4652b14d8e69233ca59e3c582cd8d8db717f74ae3592ad0e9f2874ff4f8b8",
+    "/workspace/cv-flame-survey/previews/ada_yacht_t4_baked_snug_boost_v4.png": "97651ba20860f1e0bacd46e1aaa47296b3bdc4e5596fa63bd839cf509a428073",
+    "/workspace/cv-flame-survey/hang/sprites/ada_yacht_t4_left_boost_v1.png": "9b9921f488bd6397ee343216bea36882604e3a97b13d325c2e889c68cdab7101",
+    "/workspace/cv-flame-survey/hang/sprites/ada_yacht_t4_right_boost_v1.png": "9b9921f488bd6397ee343216bea36882604e3a97b13d325c2e889c68cdab7101",
+    "/workspace/cv-flame-survey/hang/sprites/ada_yacht_t4_center_boost_v1.png": "73ad86cc6d47cc8f062fc91e218ae94cf81acf9b129878a80119cd15f69f2432"
+  }
+}

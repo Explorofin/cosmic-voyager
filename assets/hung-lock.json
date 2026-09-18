@@ -1,0 +1,1194 @@
+{
+  "comment": "Hung-asset lock. Do not empty locked lots. Do not swap locked facades. Locked files cannot revert, get punched, or lose to leftovers. New paintings are new filenames only. facade_hangar.png is classic only \u2014 never Cardano REFIT. facade_sand.png is a locked stub \u2014 Cardano Sand Keep uses facade_cardano_sand_v2 only.",
+  "assets": [
+    {
+      "id": "facadeHangar",
+      "path": "assets/images/world/facade_hangar.png",
+      "sha256": "2307db6908b0e3903a97009331e73295aa67d72fb86b03b3dde01007fb37c267",
+      "role": "classic-hangar",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeCantilever",
+      "path": "assets/images/world/facade_cantilever.png",
+      "sha256": "b0a52217df221c967729322373b670b73a999f5c042b246a72ab1c4e2add3abd",
+      "role": "classic-cantilever",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeArcade",
+      "path": "assets/images/world/facade_arcade.png",
+      "sha256": "be65dbe798a190395c933bc02e381e2540a8a5cf889569b5e40c4863aedc9acc",
+      "role": "classic-arcade",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeSails",
+      "path": "assets/images/world/facade_sails.png",
+      "sha256": "6e9608fac6c8f3e3e44a4a8db9fc81b3b6f62b21aeb7fe67589d0acf03498a24",
+      "role": "classic-sails",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeSand",
+      "path": "assets/images/world/facade_sand.png",
+      "sha256": "67056b485e039c5b82a44bccfab7f826be255944c7c8776b9a8028f988ba934b",
+      "role": "classic-sand-stub",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeHexface",
+      "path": "assets/images/world/facade_hexface.png",
+      "sha256": "5bd2db9412116d5a7e15a2f8c42b5f5e4efc33a3c13977d74237b54ed8baba4a",
+      "role": "classic-hexface",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeCrane",
+      "path": "assets/images/world/facade_crane.png",
+      "sha256": "cd87e2b14bb2daf0a6d956a45a41df67c6ed726d96baadcf8556761ca3d45bfa",
+      "role": "classic-crane",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "interiorCafe",
+      "path": "assets/images/world/interior_cafe.png",
+      "sha256": "3758d2c9d1d90e31f08543976557924618771a72dcc7017337333402938f2e2d",
+      "role": "hq-room-cafe",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "interiorMeme",
+      "path": "assets/images/world/interior_meme.png",
+      "sha256": "348027459622aee878c7f72e24fca523e23f14fd5702f7781bf411339ca79d35",
+      "role": "hq-room-meme",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "interiorMechanic",
+      "path": "assets/images/world/interior_mechanic.png",
+      "sha256": "809a94f55bcf03968766f6d9dfce4ed408511516a3ef39b733dba58a15ac04e2",
+      "role": "hq-room-mechanic",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "interiorLoft",
+      "path": "assets/images/world/interior_loft.png",
+      "sha256": "e0eb9a11510a54708dff3cc3156b19c42623323d2e9a495645d6aec2dfdbe6c0",
+      "role": "hq-room-loft",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeCardanoHoskyV3",
+      "path": "assets/images/world/facade_cardano_hosky_v3.png",
+      "sha256": "bab648172babd2ca0b7ba1f330a3862e3bbe642db52df4edb7ec7fba0b2a67c2",
+      "role": "cardano-hosky",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facadeCardanoMechanicV3b",
+      "path": "assets/images/world/facade_cardano_mechanic_v3b.png",
+      "sha256": "c7d07560419bb8a70edac5e9088d93ca100998a9f256559a0d47a4241db00062",
+      "role": "cardano-refit",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12",
+      "note": "Cardano REFIT live: mass RIGHT, bay opens LEFT. Never classic hangar. Never v2_solid as street winner."
+    },
+    {
+      "id": "facadeCardanoMechanicV2Solid",
+      "path": "assets/images/world/facade_cardano_mechanic_v2_solid.png",
+      "sha256": "0770cf5ee8df63d0e7de2ab5dc5981163a8facdb1937119091937a7fe73c58bf",
+      "role": "cardano-refit-archive",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Archived open-bay solid. Live REFIT is facade_cardano_mechanic_v3b. Do not restore as street winner."
+    },
+    {
+      "id": "room_cardano_sand_v2",
+      "path": "assets/images/world/interior_cardano_sand_v2.png",
+      "sha256": "7724b4232c270828bd8d496ac28bac83bbb9d22d350fbde0a925ab67f5581f7e",
+      "role": "cardano-sand-room",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "room_cardano_sandcastle_fancy",
+      "path": "assets/images/world/interior_cardano_sandcastle_fancy_v1.png",
+      "sha256": "89fd08b7e68f1bd10294b5d37769413144408e40020c148b09cb78b612c9cbed",
+      "role": "cardano-castle-overlay",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facade_cardano_sand_v2",
+      "path": "assets/images/world/facade_cardano_sand_v2.png",
+      "sha256": "9134088f18aac01aef990abad6a89c127234e3a13b98cb8e0104b830813097a7",
+      "role": "cardano-sand-keep",
+      "skipPunch": true,
+      "noFallback": true
+    },
+    {
+      "id": "facade_cardano_midnight_v3",
+      "path": "assets/images/world/facade_cardano_midnight_v3.png",
+      "sha256": "7783bd25f273967ae4fefb1d755053fcbaab925f5a7dc5fa9699e6036809c95d",
+      "role": "cardano-midnight-street",
+      "skipPunch": false,
+      "noFallback": true,
+      "pending": false,
+      "note": "Hung HQ street facade. skipPunch=false so punchFacadeStamp edge-floods the exterior black box (RGB all < 8 from borders). Never use interior_cardano_midnight_v3 as street front. Room stays interior_cardano_midnight_v3."
+    },
+    {
+      "id": "interior_avalanche_ledger_secret_v1",
+      "path": "assets/images/world/interior_avalanche_ledger_secret_v1.png",
+      "sha256": "e2041f2c186f3e9ad5a152b73a990dae1cb063343e92ab45f6b2bb4d95dac39b",
+      "role": "avax-ledger-secret",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T19:26:00-07:00"
+    },
+    {
+      "id": "interior_bitcoin_ledger_secret_v1",
+      "path": "assets/images/world/interior_bitcoin_ledger_secret_v1.png",
+      "role": "btc-ledger-secret",
+      "sha256": "dbe1991f49730b224681e4b07133152b6abe72efef80b7a553bf481c1fba26cd",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T19:27:00-07:00"
+    },
+    {
+      "id": "interior_cardano_ledger_secret_v1",
+      "path": "assets/images/world/interior_cardano_ledger_secret_v1.png",
+      "role": "ada-ledger-secret",
+      "sha256": "4f2f2219c929dad192804af0d1a6a630da282214b2ead3f80e0286d4ac2d10b0",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T19:27:00-07:00"
+    },
+    {
+      "id": "prop_doge_sticker_pack_v1",
+      "path": "assets/images/world/prop_doge_sticker_pack_v1.png",
+      "role": "prop-doge-sticker-pack",
+      "sha256": "1a1df36c55042632e96da9e94bc22f0b36c7adac22893a0911373b77ea3fc70f",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T20:02:00-07:00"
+    },
+    {
+      "id": "prop_hardware_wallet_brick_v2",
+      "path": "assets/images/world/prop_hardware_wallet_brick_v2.png",
+      "role": "prop-hardware-wallet",
+      "sha256": "df73a6e913162c162fb052cddbcb42f9cc04e0b332604792f59961c07a826732",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T20:02:00-07:00"
+    },
+    {
+      "id": "prop_hosky_sticker_pack_v3",
+      "path": "assets/images/world/prop_hosky_sticker_pack_v3.png",
+      "role": "prop-hosky-sticker-pack",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-10T20:24:00-07:00",
+      "sha256": "e035a08897e737430e5f8b4144c410b189989f05ba6fa17579869136801a88e1"
+    },
+    {
+      "id": "interior_doge_starship_v1",
+      "path": "assets/images/world/interior_doge_starship_v1.png",
+      "role": "doge-starship-hangar",
+      "sha256": "bbbbba90fe9a4af762d5602e494284b3ab1aa9268fea4e19f0f295b3a430b533",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12T12:07:35-07:00"
+    },
+    {
+      "id": "interior_bitcoin_starship_v1",
+      "path": "assets/images/world/interior_bitcoin_starship_v1.png",
+      "role": "bitcoin-starship-hangar",
+      "sha256": "2bfdde5ee8872286940cfe267302580769b9c73ff842f5bc90a047186f8eadbb",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12T12:07:35-07:00"
+    },
+    {
+      "id": "interior_ethereum_ledger_secret_v1",
+      "path": "assets/images/world/interior_ethereum_ledger_secret_v1.png",
+      "role": "ethereum-ledger-secret",
+      "sha256": "8520218d6c70406246cd6db14fb19c81eacdda7ff7cf2d91290172cc173a1305",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12T12:07:35-07:00"
+    },
+    {
+      "id": "interior_solana_ledger_secret_v1",
+      "path": "assets/images/world/interior_solana_ledger_secret_v1.png",
+      "role": "solana-ledger-secret",
+      "sha256": "7e7a424a3ae28c2feeeeadde3a2e539bf957994ff4dfbb92397e3d1c6aaa933f",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12T12:07:35-07:00"
+    },
+    {
+      "id": "interior_cardano_mechanic_v1",
+      "path": "assets/images/world/interior_cardano_mechanic_v1.png",
+      "sha256": "d49c9d21a85744d3ad1a737e35af59bcdd8a90be978a6936181ae08a93f3208b",
+      "role": "cardano-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-12",
+      "note": "Cardano REFIT room only. New file; locked shared interior_mechanic.png untouched. Ryan hearted 2026-09-12."
+    },
+    {
+      "id": "interior_bitcoin_mechanic_v1",
+      "path": "assets/images/world/interior_bitcoin_mechanic_v1.png",
+      "sha256": "a8975c76c05c725d2c084a000bf3df9bf1fbb5a0a4e266e447092772cba17ba2",
+      "role": "btc-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Bitcoin REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_ethereum_mechanic_v1",
+      "path": "assets/images/world/interior_ethereum_mechanic_v1.png",
+      "sha256": "72871861b8e3cc8e4911fbc9073f9a6b7f601d4e01587c699b370357c5d1822f",
+      "role": "eth-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Ethereum REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_solana_mechanic_v1",
+      "path": "assets/images/world/interior_solana_mechanic_v1.png",
+      "sha256": "bb90707bc1a30565cf19b7d1675e42028f950415016705936ab5e97719e7b4e9",
+      "role": "sol-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Solana REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_polkadot_mechanic_v1",
+      "path": "assets/images/world/interior_polkadot_mechanic_v1.png",
+      "sha256": "5dd28a1be6dc980920eabc75fa1f6b85f9bc344b00c42e0a38e14d6a3a923bf1",
+      "role": "dot-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Polkadot REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_doge_mechanic_v1",
+      "path": "assets/images/world/interior_doge_mechanic_v1.png",
+      "sha256": "95a98706551c80a5003fe297b5eab99b7aeded05bc2215f86a424b210d74e721",
+      "role": "doge-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Doge REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_ripple_mechanic_v1",
+      "path": "assets/images/world/interior_ripple_mechanic_v1.png",
+      "sha256": "1029ce25b468244907af5a0cf22d79c8a3bbc7aaf85d03bd66b28b7281183a87",
+      "role": "xrp-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Ripple REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_cosmos_mechanic_v1",
+      "path": "assets/images/world/interior_cosmos_mechanic_v1.png",
+      "sha256": "710b1514e24e51af4adecf8a6243b68485ec06ff7c86b8b35705915f25c69cba",
+      "role": "atom-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Cosmos REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_litecoin_mechanic_v1",
+      "path": "assets/images/world/interior_litecoin_mechanic_v1.png",
+      "sha256": "f6d1bcb45b3675c4f90c762e8ddf2ab0a7776e9c4ab2c3900f2bd4ffd6ed5f4a",
+      "role": "ltc-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Litecoin REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_avalanche_mechanic_v1",
+      "path": "assets/images/world/interior_avalanche_mechanic_v1.png",
+      "sha256": "a1caf4fa0a58dd0826043188a06ecd98d37c85993d7aba2d2cb3db9a11f2d706",
+      "role": "avax-refit-interior",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13",
+      "note": "Avalanche REFIT room only. New file; shared interior_mechanic.png untouched. Ryan hearted batch 2026-09-13."
+    },
+    {
+      "id": "interior_polkadot_ledger_secret_v1",
+      "path": "assets/images/world/interior_polkadot_ledger_secret_v1.png",
+      "role": "polkadot-ledger-secret",
+      "sha256": "f09f226ef2b4dc18a9eb2182b0cb48f57b5ee908e4d7e6f0bd51c60bbefebe35",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13T12:27:00-07:00"
+    },
+    {
+      "id": "interior_doge_ledger_secret_v1",
+      "path": "assets/images/world/interior_doge_ledger_secret_v1.png",
+      "role": "doge-ledger-secret",
+      "sha256": "1203f631c2f7e78803b3023a1ce38b1dda992eda8482cf99b97bbe4686478e6f",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13T12:27:00-07:00"
+    },
+    {
+      "id": "interior_ripple_ledger_secret_v1",
+      "path": "assets/images/world/interior_ripple_ledger_secret_v1.png",
+      "role": "ripple-ledger-secret",
+      "sha256": "786bad212106de3fa83786ec159cfd00fd89d2a6762970d2b99df44f487523d6",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13T12:27:00-07:00"
+    },
+    {
+      "id": "interior_cosmos_ledger_secret_v1",
+      "path": "assets/images/world/interior_cosmos_ledger_secret_v1.png",
+      "role": "cosmos-ledger-secret",
+      "sha256": "8a902bb8c4629e6535bbb3ff4a95b3e7ea47e08fa8c4ddb472c060a523103f78",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13T12:27:00-07:00"
+    },
+    {
+      "id": "interior_litecoin_ledger_secret_v1",
+      "path": "assets/images/world/interior_litecoin_ledger_secret_v1.png",
+      "role": "litecoin-ledger-secret",
+      "sha256": "dfc27a0fd55a2fdc4af525ade9b78b7dde453575b9a14eafd4497e97bf69f7e1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-13T12:27:00-07:00"
+    },
+    {
+      "id": "interior_cardano_cafe_curtain_v1",
+      "path": "assets/images/world/interior_cardano_cafe_curtain_v1.png",
+      "role": "cardano-cafe-curtain",
+      "sha256": "6d16e0cc41f0d7fd72c490e4dec7b171731160704b3189ce8031ba03bc23c814",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-14T14:26:00-07:00",
+      "note": "Missing Stamp Act 1. Hung by Cosmic Voyager under Ryan take-the-lead 2026-09-14 (quality bar pass)."
+    },
+    {
+      "id": "interior_cardano_midnight_after_v1",
+      "path": "assets/images/world/interior_cardano_midnight_after_v1.png",
+      "role": "cardano-midnight-after",
+      "sha256": "8ea4e3ee0e9543ace896da3b1d3b80a08bbb7f66b8b7c605b5ea05170df88b25",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-14T14:26:00-07:00",
+      "note": "Missing Stamp Act 1. Hung by Cosmic Voyager under Ryan take-the-lead 2026-09-14 (quality bar pass)."
+    },
+    {
+      "id": "interior_cardano_info_basement_v1",
+      "path": "assets/images/world/interior_cardano_info_basement_v1.png",
+      "role": "cardano-info-basement",
+      "sha256": "bea574adeee952f7cbe5f3171062c4ba7bfeb7fc300281782b1677a4ee629432",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-14T14:26:00-07:00",
+      "note": "Missing Stamp Act 1. Hung by Cosmic Voyager under Ryan take-the-lead 2026-09-14 (quality bar pass)."
+    },
+    {
+      "id": "interior_cardano_deep_hub_v1",
+      "path": "assets/images/world/interior_cardano_deep_hub_v1.png",
+      "role": "cardano-deep-hub",
+      "sha256": "d7d3b341d1a77fbec670f0a16aa5b8e3ceec1b967a4d654a912df5c482bfd283",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_bitcoin_deep_hub_v1",
+      "path": "assets/images/world/interior_bitcoin_deep_hub_v1.png",
+      "role": "bitcoin-deep-hub",
+      "sha256": "a8aa1d93d3fdaa603e8e601c37076553b02e8a99cb6e71170637614cca153ca6",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ethereum_deep_hub_v1",
+      "path": "assets/images/world/interior_ethereum_deep_hub_v1.png",
+      "role": "ethereum-deep-hub",
+      "sha256": "d60f69c5564a56abd300868b0b8379c9f19fa8d1ffc1ef280322583d32a5d950",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_solana_deep_hub_v1",
+      "path": "assets/images/world/interior_solana_deep_hub_v1.png",
+      "role": "solana-deep-hub",
+      "sha256": "cef33743903ac2b3ce3841f06ed03b6c0c7ea217a31517934b7f3c1ae2f7129d",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_polkadot_deep_hub_v1",
+      "path": "assets/images/world/interior_polkadot_deep_hub_v1.png",
+      "role": "polkadot-deep-hub",
+      "sha256": "62e173bbbf347a1d3bafe0a75b9aba1fcba81d707297be2bdf1955af20949a17",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_doge_deep_hub_v1",
+      "path": "assets/images/world/interior_doge_deep_hub_v1.png",
+      "role": "doge-deep-hub",
+      "sha256": "de4a0c347361fc8cc8150957f5eda547acf46520a0bb027c41b8615e31311f22",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ripple_deep_hub_v1",
+      "path": "assets/images/world/interior_ripple_deep_hub_v1.png",
+      "role": "ripple-deep-hub",
+      "sha256": "2ee174e7b84aabd6879fe4f0c3ef34303f1aba2c31d4874ac9fa8fa6978856b0",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cosmos_deep_hub_v1",
+      "path": "assets/images/world/interior_cosmos_deep_hub_v1.png",
+      "role": "cosmos-deep-hub",
+      "sha256": "69d1597ecefd69cd5c9b8a2b4681e52432933728e00779a761b09a368ecdf070",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_litecoin_deep_hub_v1",
+      "path": "assets/images/world/interior_litecoin_deep_hub_v1.png",
+      "role": "litecoin-deep-hub",
+      "sha256": "60b536b23cc3a1264528bcf4348bc01f3523c0cf39f06861a7958a16dfc45398",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_avalanche_deep_hub_v1",
+      "path": "assets/images/world/interior_avalanche_deep_hub_v1.png",
+      "role": "avalanche-deep-hub",
+      "sha256": "b0aada51c152b74b529387b9fa07716bd806bb83be44ac2bffcaaa34ad75dfa1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:20:00-07:00",
+      "note": "Deep Worlds hub. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cardano_deep_a_v1",
+      "path": "assets/images/world/interior_cardano_deep_a_v1.png",
+      "role": "cardano-deep-a",
+      "sha256": "a5e878f6a52dbf3dd7ffa4f4d44770870000dc00ad4bde52d031eb541f34bebe",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cardano_deep_b_v1",
+      "path": "assets/images/world/interior_cardano_deep_b_v1.png",
+      "role": "cardano-deep-b",
+      "sha256": "3ec2aa223727ab353e22a41ad642262ebe9bbc012b751e8ae33f5e52beb20759",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cardano_deep_c_v1",
+      "path": "assets/images/world/interior_cardano_deep_c_v1.png",
+      "role": "cardano-deep-c",
+      "sha256": "67f1c878a75c7cbde6e53552d82e92a6d550d5839dd3a4eb1c4905189fe37933",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cardano_deep_leaf_v1",
+      "path": "assets/images/world/interior_cardano_deep_leaf_v1.png",
+      "role": "cardano-deep-leaf",
+      "sha256": "ddbc2e0a68f4269c0da0fb017545018a238039014b6423ddd2147950c5925f5c",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_bitcoin_deep_a_v1",
+      "path": "assets/images/world/interior_bitcoin_deep_a_v1.png",
+      "role": "bitcoin-deep-a",
+      "sha256": "a191f6820a6a366e110cf42c671db2a32d02b9281bf8a25f80d43e98e1a53b16",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_bitcoin_deep_b_v1",
+      "path": "assets/images/world/interior_bitcoin_deep_b_v1.png",
+      "role": "bitcoin-deep-b",
+      "sha256": "f7e77e625b30d881309622bc1d775eeb9c0df0a5e1be1e3db31370a6e6ff0808",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_bitcoin_deep_c_v1",
+      "path": "assets/images/world/interior_bitcoin_deep_c_v1.png",
+      "role": "bitcoin-deep-c",
+      "sha256": "2ccc24c7e3943ea3792ef6fa238e7e25d795ca4f49c6543ebc2ecee17f9c8afe",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_bitcoin_deep_leaf_v1",
+      "path": "assets/images/world/interior_bitcoin_deep_leaf_v1.png",
+      "role": "bitcoin-deep-leaf",
+      "sha256": "914639978280f64cd2c66a4cd8cc6aab1d2318be4641488b4842e5410d659424",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ethereum_deep_a_v1",
+      "path": "assets/images/world/interior_ethereum_deep_a_v1.png",
+      "role": "ethereum-deep-a",
+      "sha256": "300e61af9efd33121e7cd1b162c4bc8b507b9237f12b579ede5c9e6ac30b48b4",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ethereum_deep_b_v1",
+      "path": "assets/images/world/interior_ethereum_deep_b_v1.png",
+      "role": "ethereum-deep-b",
+      "sha256": "f99c7e9d7eb0c2e2566c4918c8ef4149dfb66b709e9ecfaac036cdb718bf9e86",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ethereum_deep_c_v1",
+      "path": "assets/images/world/interior_ethereum_deep_c_v1.png",
+      "role": "ethereum-deep-c",
+      "sha256": "162c167e7e3cd0095be3ed477ceac0f1f0270fda6eabb7cde9ff72829d7a549d",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ethereum_deep_leaf_v1",
+      "path": "assets/images/world/interior_ethereum_deep_leaf_v1.png",
+      "role": "ethereum-deep-leaf",
+      "sha256": "7ba82579bfe272d9c02e82998be19bf738ae9e540cdc2dd9435cc330781fe07f",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_solana_deep_a_v1",
+      "path": "assets/images/world/interior_solana_deep_a_v1.png",
+      "role": "solana-deep-a",
+      "sha256": "53669aa3d7a495af266299b6130df6bd31a6cd2a9dd2d1fa0465160b85ba1b34",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_solana_deep_b_v1",
+      "path": "assets/images/world/interior_solana_deep_b_v1.png",
+      "role": "solana-deep-b",
+      "sha256": "e7ae4cac63fd5cc1cba4eabfba3398bf311e028b36e4ad8c6912c094c4e4c0ae",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_solana_deep_c_v1",
+      "path": "assets/images/world/interior_solana_deep_c_v1.png",
+      "role": "solana-deep-c",
+      "sha256": "1212703309cc9dc6521352bb1113c5fb408480060a68fb158a9cd6df9300a365",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_solana_deep_leaf_v1",
+      "path": "assets/images/world/interior_solana_deep_leaf_v1.png",
+      "role": "solana-deep-leaf",
+      "sha256": "5997749131e563b898061ae1afac82d07e79be11622f6b4bf7e84171ab1fa2e1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_polkadot_deep_a_v1",
+      "path": "assets/images/world/interior_polkadot_deep_a_v1.png",
+      "role": "polkadot-deep-a",
+      "sha256": "9fc863c154dd65a54905f29671740780b8dbd1aed8ed5119ea54587ca314eef1",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_polkadot_deep_b_v1",
+      "path": "assets/images/world/interior_polkadot_deep_b_v1.png",
+      "role": "polkadot-deep-b",
+      "sha256": "a8767444cbcbe417e1b4898222d6b05b2672e720ce3f45c1b9812345d93aa676",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_polkadot_deep_c_v1",
+      "path": "assets/images/world/interior_polkadot_deep_c_v1.png",
+      "role": "polkadot-deep-c",
+      "sha256": "b6758db4d0d29c448b48bd1fef3b72a49d2496883026e8f06ecfbbcf5a2329e2",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_polkadot_deep_leaf_v1",
+      "path": "assets/images/world/interior_polkadot_deep_leaf_v1.png",
+      "role": "polkadot-deep-leaf",
+      "sha256": "7d78d6d6470d3e13023421dbc4807b0fda992dfa81f1c352cbe84567719647d5",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_doge_deep_a_v1",
+      "path": "assets/images/world/interior_doge_deep_a_v1.png",
+      "role": "doge-deep-a",
+      "sha256": "901652eee0f785199ff6d4c04f4f265e86ef65d42cbd8c0f80608fcdbf777ca7",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_doge_deep_b_v1",
+      "path": "assets/images/world/interior_doge_deep_b_v1.png",
+      "role": "doge-deep-b",
+      "sha256": "701b99e00005f05fcf4e4ad64e46ff694e356fada7231bf8e3510bee23d44354",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_doge_deep_c_v1",
+      "path": "assets/images/world/interior_doge_deep_c_v1.png",
+      "role": "doge-deep-c",
+      "sha256": "d08b684231658d9b0e84b44003ab768bb5d5d6a047a347da5d6d8625a6537ae8",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_doge_deep_leaf_v1",
+      "path": "assets/images/world/interior_doge_deep_leaf_v1.png",
+      "role": "doge-deep-leaf",
+      "sha256": "d6ade6f39b4814ba3dd306592866136b047a9ee73961d662044c5b444ac1a40a",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ripple_deep_a_v1",
+      "path": "assets/images/world/interior_ripple_deep_a_v1.png",
+      "role": "ripple-deep-a",
+      "sha256": "b631b4722a51282b84a2795b478c501769e7e856bf010140a166a906642fe7ff",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ripple_deep_b_v1",
+      "path": "assets/images/world/interior_ripple_deep_b_v1.png",
+      "role": "ripple-deep-b",
+      "sha256": "86fd4d7bb48a6785c863e52106077108758fab725da5032840e9a9a187ed41fb",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ripple_deep_c_v1",
+      "path": "assets/images/world/interior_ripple_deep_c_v1.png",
+      "role": "ripple-deep-c",
+      "sha256": "7da26e9e27c3e2ebda6b4ec59a6cc21297a578050abbc0d7c7fbd77735bf64be",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_ripple_deep_leaf_v1",
+      "path": "assets/images/world/interior_ripple_deep_leaf_v1.png",
+      "role": "ripple-deep-leaf",
+      "sha256": "ff33c50903d1d44c5c9b49c3517d866da8a2a2a1858d14154afaa5d71d1c3854",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cosmos_deep_a_v1",
+      "path": "assets/images/world/interior_cosmos_deep_a_v1.png",
+      "role": "cosmos-deep-a",
+      "sha256": "442a5e40335ec10f9d395797e1bc6bda39a408a0c62ef79910ab0787aa19a4a8",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cosmos_deep_b_v1",
+      "path": "assets/images/world/interior_cosmos_deep_b_v1.png",
+      "role": "cosmos-deep-b",
+      "sha256": "0a7a4e5eb4a2678c2ac69fc1b3c3e1c04eac188ccb5c5893c2c97732c55e892e",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cosmos_deep_c_v1",
+      "path": "assets/images/world/interior_cosmos_deep_c_v1.png",
+      "role": "cosmos-deep-c",
+      "sha256": "1d52174218c6894fcd2e2e538049d9a181923061aa2f3c28e4e142a0a8949a6f",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_cosmos_deep_leaf_v1",
+      "path": "assets/images/world/interior_cosmos_deep_leaf_v1.png",
+      "role": "cosmos-deep-leaf",
+      "sha256": "2a63bbbc16fdaff00b3fd86f15aef40e5c51e0d845fd7b9f8aacb8752e35c0df",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_litecoin_deep_a_v1",
+      "path": "assets/images/world/interior_litecoin_deep_a_v1.png",
+      "role": "litecoin-deep-a",
+      "sha256": "33e8daaf18581607093b3447f0e6cc84f497d05604a4735310149b89943ca869",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_litecoin_deep_b_v1",
+      "path": "assets/images/world/interior_litecoin_deep_b_v1.png",
+      "role": "litecoin-deep-b",
+      "sha256": "2bf76e0fc0ff62b76356bda43976c34cd7ee0f84f8533f761c8a08e5ce7b7339",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_litecoin_deep_c_v1",
+      "path": "assets/images/world/interior_litecoin_deep_c_v1.png",
+      "role": "litecoin-deep-c",
+      "sha256": "fb1e0fb4e58ee879dc4447145eebeeefd322327f948a9e3619f5c6806de2e351",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_litecoin_deep_leaf_v1",
+      "path": "assets/images/world/interior_litecoin_deep_leaf_v1.png",
+      "role": "litecoin-deep-leaf",
+      "sha256": "65df7b9a466a647dfe4bdd6ee7c72e21f0cb32e604d8f826e48f6b913a049f0a",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_avalanche_deep_a_v1",
+      "path": "assets/images/world/interior_avalanche_deep_a_v1.png",
+      "role": "avalanche-deep-a",
+      "sha256": "a46e6c7b2652fbd2a0af14552735b30afbf9c42448427e050789e46014637500",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_avalanche_deep_b_v1",
+      "path": "assets/images/world/interior_avalanche_deep_b_v1.png",
+      "role": "avalanche-deep-b",
+      "sha256": "91cfa3c52763fca1212a1c6963006e6a96b69320ee251561c7a215fc987636a8",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_avalanche_deep_c_v1",
+      "path": "assets/images/world/interior_avalanche_deep_c_v1.png",
+      "role": "avalanche-deep-c",
+      "sha256": "90380ab77feb6554518239349208eb9a80cda95daf57f76b8493ef63ed96f043",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "interior_avalanche_deep_leaf_v1",
+      "path": "assets/images/world/interior_avalanche_deep_leaf_v1.png",
+      "role": "avalanche-deep-leaf",
+      "sha256": "302b14c5bec0443635781ca22ecfafab861092664cb7bc5bb88d8b73dd4320bf",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-15T04:38:00-07:00",
+      "note": "Deep Worlds branch/leaf. Hung under Ryan take-the-lead 2026-09-15."
+    },
+    {
+      "id": "room_bitcoin_sandcastle_fancy",
+      "path": "assets/images/world/interior_bitcoin_sandcastle_fancy_v1.png",
+      "sha256": "53a86092bdf00ad15c1db73b65a321660ff988e56da2c119f2ba77bd80afd231",
+      "role": "bitcoin-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.9,
+      "sitLockedAt": "2026-09-17T23:27:29Z",
+      "note": "Sandcastle sit locked @ 10% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_ethereum_sandcastle_fancy",
+      "path": "assets/images/world/interior_ethereum_sandcastle_fancy_v1.png",
+      "sha256": "b13b5838858b3802e6f4beaa20d8c1967be2e2c6fc89393d7b56a553f6b00cdb",
+      "role": "ethereum-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.95,
+      "sitLockedAt": "2026-09-17T23:59:38Z",
+      "note": "Sandcastle sit locked @ 5% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_solana_sandcastle_fancy",
+      "path": "assets/images/world/interior_solana_sandcastle_fancy_v1.png",
+      "sha256": "22a972bd9589cc577b17bc67bf1a92441e924ce2cc60da0523279338035eb535",
+      "role": "solana-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.9,
+      "sitLockedAt": "2026-09-17T23:27:29Z",
+      "note": "Sandcastle sit locked @ 10% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_polkadot_sandcastle_fancy",
+      "path": "assets/images/world/interior_polkadot_sandcastle_fancy_v1.png",
+      "sha256": "46698d4e4311063989da3374b59dbea4b5abd7e672f752cbe7a265af88f26136",
+      "role": "polkadot-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.99,
+      "sitLockedAt": "2026-09-18T00:00:43Z",
+      "note": "Sandcastle sit locked @ 1% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_doge_sandcastle_fancy",
+      "path": "assets/images/world/interior_doge_sandcastle_fancy_v1.png",
+      "sha256": "e3b6053b6e216661acff7de4c104c1c35f2f32eb83b6fcfcc3857f433d0bfc54",
+      "role": "doge-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 1.0,
+      "sitLockedAt": "2026-09-18T00:00:43Z",
+      "note": "Sandcastle sit locked @ 0% flush floor (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_ripple_sandcastle_fancy",
+      "path": "assets/images/world/interior_ripple_sandcastle_fancy_v1.png",
+      "sha256": "c300dc70278092a55966f82af9387d42326ab77eaa19ec1f489f0572352c3388",
+      "role": "ripple-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.95,
+      "sitLockedAt": "2026-09-17T23:59:38Z",
+      "note": "Sandcastle sit locked @ 5% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_cosmos_sandcastle_fancy",
+      "path": "assets/images/world/interior_cosmos_sandcastle_fancy_v1.png",
+      "sha256": "552b8a2b4cc9f56110c9baf57bd889fa5944cc67e2d2b8b7c7320230ee6d3b49",
+      "role": "cosmos-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 1.0,
+      "sitLockedAt": "2026-09-18T00:00:43Z",
+      "note": "Sandcastle sit locked @ 0% flush floor (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_litecoin_sandcastle_fancy",
+      "path": "assets/images/world/interior_litecoin_sandcastle_fancy_v1.png",
+      "sha256": "4e84e9b6b313d5f9e8c69dfefb4aa93b62dfa900d62a68764ba485645ff3a1a9",
+      "role": "litecoin-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 0.9,
+      "sitLockedAt": "2026-09-17T23:27:29Z",
+      "note": "Sandcastle sit locked @ 10% off bottom (Ryan 2026-09-17)"
+    },
+    {
+      "id": "room_avalanche_sandcastle_fancy",
+      "path": "assets/images/world/interior_avalanche_sandcastle_fancy_v1.png",
+      "sha256": "a9eb0f96e74158c4a59a9d77a3a15a4e36471b7c998defcd328017bd12086a26",
+      "role": "avalanche-sandcastle-fancy",
+      "skipPunch": true,
+      "noFallback": true,
+      "lockedAt": "2026-09-17T22:52:30Z",
+      "sitBottomFrac": 1.0,
+      "sitLockedAt": "2026-09-18T00:00:43Z",
+      "note": "Sandcastle sit locked @ 0% flush floor (Ryan 2026-09-17)"
+    },
+    {
+      "id": "balcony-cardano",
+      "path": "assets/images/world/interior_cardano_balcony_v1.png",
+      "sha256": "1801a19bff4d6b2655446f77fcb75c3e43e6094e25358b4635908eba26273570",
+      "role": "balcony-cardano",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-bitcoin",
+      "path": "assets/images/world/interior_bitcoin_balcony_v1.png",
+      "sha256": "662cf6da3b19d0cb232ff480d9f075f14a216c31c35fd2b85d9760ea4b25a150",
+      "role": "balcony-bitcoin",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-ethereum",
+      "path": "assets/images/world/interior_ethereum_balcony_v1.png",
+      "sha256": "9ac9f9bb0e62fe699d1a6bd35fc8d94fbc523bd81f8b6dac4b2662bed8692c79",
+      "role": "balcony-ethereum",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-solana",
+      "path": "assets/images/world/interior_solana_balcony_v1.png",
+      "sha256": "73b0ba64ff0c3a641d6186e5d9b80e1c4c03f1c5d077ffebf596cd95e50276e6",
+      "role": "balcony-solana",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-polkadot",
+      "path": "assets/images/world/interior_polkadot_balcony_v1.png",
+      "sha256": "21234d503c55cc9da58cdf73f67fceb217360e7157a510218845a6680326217a",
+      "role": "balcony-polkadot",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-doge",
+      "path": "assets/images/world/interior_doge_balcony_v1.png",
+      "sha256": "169d39b16a2b2db53b030d928f3ac065df87b5b43a3b6c1cc17653f59637054d",
+      "role": "balcony-doge",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-ripple",
+      "path": "assets/images/world/interior_ripple_balcony_v1.png",
+      "sha256": "6ada6270c6310396d677776f1ed1e7489335fcd1571190eeabd0feb636fd76e0",
+      "role": "balcony-ripple",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-cosmos",
+      "path": "assets/images/world/interior_cosmos_balcony_v1.png",
+      "sha256": "0e76117bcf783705d03e8b3af627f0a493848440c91e5046442e09ae8f677b9a",
+      "role": "balcony-cosmos",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-litecoin",
+      "path": "assets/images/world/interior_litecoin_balcony_v1.png",
+      "sha256": "67556255161c3acd370270843d449127558a131ab37680b539807d4f3d84fbcc",
+      "role": "balcony-litecoin",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    },
+    {
+      "id": "balcony-avalanche",
+      "path": "assets/images/world/interior_avalanche_balcony_v1.png",
+      "sha256": "0bb6f808dd0068e57f0e6ab8a0fd34e9263805ebf22f95f85368baf95da71b33",
+      "role": "balcony-avalanche",
+      "skipPunch": true,
+      "noFallback": true,
+      "note": "Tower balcony hung 2026-09-18. Loft v2 untouched.",
+      "lockedAt": "2026-09-18"
+    }
+  ],
+  "lots": {
+    "comment": "Do not drop a row. No empty shop lots. Cardano-style filled. Road horizon locked.",
+    "metrics": {
+      "stallW": 148,
+      "stallH": 78,
+      "yStep": 166,
+      "STALL_SETBACK": 73,
+      "keepsFuelScale": 1.5,
+      "fountainScale": 2.5,
+      "towerScale": 2.2,
+      "towerSetback": 0,
+      "towerDestW": 242,
+      "fuelScale": 1.215,
+      "sandScale": 1.25
+    },
+    "rows": [
+      {
+        "row": 0,
+        "L": "ledger",
+        "R": "refit"
+      },
+      {
+        "row": "vendors",
+        "L": "vendor",
+        "R": "vendor",
+        "repeat": 2
+      },
+      {
+        "row": "rShop",
+        "L": "meme",
+        "R": "cafe on path curb"
+      },
+      {
+        "row": "rShop+1",
+        "L": "souvenir 1.5x off-road",
+        "R": "sand 1.25x on lot above cafe"
+      },
+      {
+        "row": "rShop+2",
+        "L": "midnight (cardano) / leftover flavor-or-keep (other)",
+        "R": "empty (tower is on row 2 R)"
+      },
+      {
+        "row": 1,
+        "R": "fuel 1.5x on first lot above REFIT"
+      },
+      {
+        "row": 2,
+        "R": "tower on old sand pad, lotX, scale 2.2"
+      }
+    ],
+    "roadHorizon": {
+      "locked": true,
+      "pathTop": "shadeY - 20",
+      "fadeH": 32,
+      "camFollow": 0.62,
+      "camMin": "min(towerTop, pathTop - viewH * 0.70)",
+      "neverCamMinZero": true,
+      "walkerMinY": "pathTop + 6",
+      "note": "Road ends just past Shade and fades to space. Camera keeps scrolling so the horizon stays visible. Do not draw path above pathTop. Do not clamp camY to 0."
+    },
+    "cafeCurb": {
+      "locked": true,
+      "x": "pathX + 136 + stallW/2 + 40",
+      "note": "Cafe sits just off the drawn path edge (path is pathX \u00b1 136)."
+    }
+  }
+}

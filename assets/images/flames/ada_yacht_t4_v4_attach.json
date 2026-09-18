@@ -1,0 +1,117 @@
+{
+  "note": "ADA yacht t4 BOOST v4 3-flame hang sidecar. NEW file; does not rewrite ada_flame_attach_v1.json or hung-lock-flames.json. Boost-only (idle/accel not hearted for 3-flame). Hull 239x573 drawn on 239x742 boost canvas. Bells L(28,451) C(105,362) R(197,468). Side plumes extracted flame-only from hearted v4 bake (center boost sprite kept as-is). Sides hang snug 1px below bells. sideK=0.62. Do not punch hulls. game.js not wired.",
+  "key": "ada_yacht_t4",
+  "family": "yacht",
+  "hull_w": 239,
+  "hull_h": 573,
+  "boost_canvas": [
+    239,
+    742
+  ],
+  "sideK": 0.62,
+  "snug_px_below_bell": 1,
+  "modes": [
+    "boost"
+  ],
+  "sprite_dir": "assets/images/flames/",
+  "hull_source": "assets/images/hulls/ada/yacht/t4.png",
+  "preview": "assets/images/flames/previews/ada_yacht_t4_baked_snug_boost_v4.png",
+  "motors": [
+    {
+      "role": "left",
+      "role_code": "L",
+      "bell_x": 28,
+      "bell_y": 451,
+      "snug_top_y": 452,
+      "sideK": 0.62,
+      "sprites": {
+        "boost": "ada_yacht_t4_left_boost_v1.png"
+      },
+      "sprite_size": {
+        "boost": {
+          "w": 27,
+          "h": 220
+        }
+      },
+      "paste_hull_space": {
+        "boost": {
+          "dx": 15,
+          "dy": 452
+        }
+      },
+      "orig_bbox": [
+        15,
+        452,
+        41,
+        671
+      ],
+      "n_pixels_a16": 3346
+    },
+    {
+      "role": "center",
+      "role_code": "C",
+      "bell_x": 105,
+      "bell_y": 362,
+      "snug_top_y": 363,
+      "sideK": 1.0,
+      "sprites": {
+        "boost": "ada_yacht_t4_center_boost_v1.png"
+      },
+      "sprite_size": {
+        "boost": {
+          "w": 43,
+          "h": 355
+        }
+      },
+      "paste_hull_space": {
+        "boost": {
+          "dx": 85,
+          "dy": 363
+        }
+      },
+      "orig_bbox": [
+        85,
+        363,
+        127,
+        717
+      ],
+      "n_pixels_a16": 8248
+    },
+    {
+      "role": "right",
+      "role_code": "R",
+      "bell_x": 197,
+      "bell_y": 468,
+      "snug_top_y": 469,
+      "sideK": 0.62,
+      "sprites": {
+        "boost": "ada_yacht_t4_right_boost_v1.png"
+      },
+      "sprite_size": {
+        "boost": {
+          "w": 27,
+          "h": 220
+        }
+      },
+      "paste_hull_space": {
+        "boost": {
+          "dx": 184,
+          "dy": 469
+        }
+      },
+      "orig_bbox": [
+        184,
+        469,
+        210,
+        688
+      ],
+      "n_pixels_a16": 3346
+    }
+  ],
+  "source_sha256": {
+    "ada_yacht_t4_baked_snug_boost_v4.png": "97651ba20860f1e0bacd46e1aaa47296b3bdc4e5596fa63bd839cf509a428073",
+    "ada_yacht_t4_center_boost_v1.png": "73ad86cc6d47cc8f062fc91e218ae94cf81acf9b129878a80119cd15f69f2432",
+    "ada_yacht_t4_left_boost_v1.png": "9b9921f488bd6397ee343216bea36882604e3a97b13d325c2e889c68cdab7101",
+    "ada_yacht_t4_right_boost_v1.png": "9b9921f488bd6397ee343216bea36882604e3a97b13d325c2e889c68cdab7101"
+  }
+}

@@ -26823,33 +26823,45 @@
     requestAnimationFrame(loop);
   }
 
+  function setLoadProgress(frac, label) {
+    const f = Math.max(0, Math.min(1, frac || 0));
+    const fill = $("loadFill");
+    if (fill) fill.style.width = (f * 100) + "%";
+    const pct = $("loadPct");
+    if (pct) pct.textContent = Math.round(f * 100) + "%";
+    const st = $("loadStatus");
+    if (st) st.textContent = label ? ("Loading " + label + "…") : "Loading art…";
+    const lines = document.querySelectorAll("#loadStack p");
+    const shown = Math.min(lines.length, Math.floor(f * lines.length + 0.001) + 1);
+    for (let i = 0; i < shown; i++) lines[i].classList.add("on");
+  }
+
   async function boot() {
-    // Asset punch can take a long time (or hang) after the bar hits 100% — never block select forever.
-    const assets = loadAssets(() => {}).catch(function (err) {
+    // Drive the intro bar from real asset progress (not a fake 2s fill).
+    setLoadProgress(0, "art");
+    const assets = loadAssets(function (frac, label) {
+      setLoadProgress(frac, label || "art");
+    }).catch(function (err) {
       try { console.warn("loadAssets", err); } catch (e) {}
     });
-    const start = performance.now();
-    const DURATION = 2000;
-    while (true) {
-      const t = Math.min(1, (performance.now() - start) / DURATION);
-      const e = 1 - Math.pow(1 - t, 2.2);
-      const fill = $("loadFill");
-      if (fill) fill.style.width = (e * 100) + "%";
-      const lines = document.querySelectorAll("#loadStack p");
-      const shown = Math.min(lines.length, Math.floor(t * lines.length + 0.001) + 1);
-      for (let i = 0; i < shown; i++) lines[i].classList.add("on");
-      if (t >= 1) break;
-      await new Promise(r => requestAnimationFrame(r));
-    }
-    const fillDone = $("loadFill");
-    if (fillDone) fillDone.style.width = "100%";
-    const sub = document.querySelector("#screen-loading .sub");
-    if (sub) sub.textContent = "Warming thrusters…";
-    const ASSET_BUDGET_MS = 18000;
+    const ASSET_BUDGET_MS = 45000;
+    let timedOut = false;
     await Promise.race([
-      assets,
-      new Promise(function (resolve) { setTimeout(resolve, ASSET_BUDGET_MS); })
+      assets.then(function () { setLoadProgress(1, "ready"); }),
+      new Promise(function (resolve) {
+        setTimeout(function () {
+          timedOut = true;
+          setLoadProgress(1, "continuing");
+          const st = $("loadStatus");
+          if (st) st.textContent = "Opening hangar (art still warming)…";
+          resolve();
+        }, ASSET_BUDGET_MS);
+      })
     ]);
+    if (!timedOut) {
+      const st = $("loadStatus");
+      if (st) st.textContent = "Ready.";
+    }
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
     goSelect();

@@ -2030,142 +2030,142 @@
     {
       "id": "btcHullT1",
       "path": "assets/images/hulls/btc/t1.png",
-      "sha256": "bf5fa22e3926089ea6949063dcb4ead8ac0068c018b27f08d96b1b9176a004ab",
+      "sha256": "b3803f34249bf963893144f42c375582c5bef25a2876973896596522e701bf3d",
       "role": "btc-hull-t1",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT1Clear",
       "path": "assets/images/hulls/btc/t1_clear.png",
-      "sha256": "bf5fa22e3926089ea6949063dcb4ead8ac0068c018b27f08d96b1b9176a004ab",
+      "sha256": "b3803f34249bf963893144f42c375582c5bef25a2876973896596522e701bf3d",
       "role": "btc-hull-t1",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT2",
       "path": "assets/images/hulls/btc/t2.png",
-      "sha256": "025dfb3b7b76f4bd33140a4932829fe4fe0e0c3508dddf7c954d96c75b1b4384",
+      "sha256": "368f6d29111ac70af691d134b27bc17a5b2c1e889cb0c1c2d6b6b6a41485dd32",
       "role": "btc-hull-t2",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT2Clear",
       "path": "assets/images/hulls/btc/t2_clear.png",
-      "sha256": "025dfb3b7b76f4bd33140a4932829fe4fe0e0c3508dddf7c954d96c75b1b4384",
+      "sha256": "368f6d29111ac70af691d134b27bc17a5b2c1e889cb0c1c2d6b6b6a41485dd32",
       "role": "btc-hull-t2",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT3",
       "path": "assets/images/hulls/btc/t3.png",
-      "sha256": "f86ea342797a4a315095ad29d529b4df036a9875a9837a9c4e292d8d4420d153",
+      "sha256": "4c6ac3980643fb7e77faa6a64aee2c8c2875216b3a2e662677c4576a70a9cde3",
       "role": "btc-hull-t3",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT3Clear",
       "path": "assets/images/hulls/btc/t3_clear.png",
-      "sha256": "f86ea342797a4a315095ad29d529b4df036a9875a9837a9c4e292d8d4420d153",
+      "sha256": "4c6ac3980643fb7e77faa6a64aee2c8c2875216b3a2e662677c4576a70a9cde3",
       "role": "btc-hull-t3",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT4",
       "path": "assets/images/hulls/btc/t4.png",
-      "sha256": "11f91241b318025c7d0804e97f34b3c37c444c92a23e635e5e62496b0eac3cb1",
+      "sha256": "b9398248576a87531dd09e2bff95fe71f7004bc35e90931058f2bd28f3965034",
       "role": "btc-hull-t4",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT4Clear",
       "path": "assets/images/hulls/btc/t4_clear.png",
-      "sha256": "11f91241b318025c7d0804e97f34b3c37c444c92a23e635e5e62496b0eac3cb1",
+      "sha256": "b9398248576a87531dd09e2bff95fe71f7004bc35e90931058f2bd28f3965034",
       "role": "btc-hull-t4",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT5",
       "path": "assets/images/hulls/btc/t5.png",
-      "sha256": "959118b90ea40905ac247bf082dd512c9fdda4139c89243e22cebd34dcb76a9d",
+      "sha256": "e0ec95c5d5b84b106c14e200953376aedd68750420a315eb945abc384ed3cb95",
       "role": "btc-hull-t5",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT5Clear",
       "path": "assets/images/hulls/btc/t5_clear.png",
-      "sha256": "959118b90ea40905ac247bf082dd512c9fdda4139c89243e22cebd34dcb76a9d",
+      "sha256": "e0ec95c5d5b84b106c14e200953376aedd68750420a315eb945abc384ed3cb95",
       "role": "btc-hull-t5",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT6",
       "path": "assets/images/hulls/btc/t6.png",
-      "sha256": "dce2d5618c45ffe3b31ba8d70cc347bb2dad00f703d624fe6154d18092ccb5b0",
+      "sha256": "8fa1f7fc6e8969f4a881679518bad0f2f77a2393e104e1dbf522d8142f23f0ab",
       "role": "btc-hull-t6",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT6Clear",
       "path": "assets/images/hulls/btc/t6_clear.png",
-      "sha256": "dce2d5618c45ffe3b31ba8d70cc347bb2dad00f703d624fe6154d18092ccb5b0",
+      "sha256": "8fa1f7fc6e8969f4a881679518bad0f2f77a2393e104e1dbf522d8142f23f0ab",
       "role": "btc-hull-t6",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT7",
       "path": "assets/images/hulls/btc/t7.png",
-      "sha256": "34819ab96a63354ad3eef7d40d22ed2ff4cdc4ebf4a9d86f7e94234af8507b18",
+      "sha256": "6ece819485a05b4f7eec48a36fa9dd894be3342d6de84dbdd4939c41dee6811a",
       "role": "btc-hull-t7",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     },
     {
       "id": "btcHullT7Clear",
       "path": "assets/images/hulls/btc/t7_clear.png",
-      "sha256": "34819ab96a63354ad3eef7d40d22ed2ff4cdc4ebf4a9d86f7e94234af8507b18",
+      "sha256": "6ece819485a05b4f7eec48a36fa9dd894be3342d6de84dbdd4939c41dee6811a",
       "role": "btc-hull-t7",
       "skipPunch": true,
       "noFallback": true,
-      "lockedAt": "2026-09-18T16:14:21Z",
-      "note": "Ryan heart 2026-09-18 \u2014 BTC pad size ~18.5% fill"
+      "lockedAt": "2026-09-18T17:17:21Z",
+      "note": "Ryan rescinded pad 2026-09-18 \u2014 restored pre_pad originals; select orbit -5% only"
     }
   ],
   "lots": {
@@ -26102,14 +26102,16 @@
     gx.setTransform(1, 0, 0, 1, 0, 0);
     gx.clearRect(0, 0, size, size);
     // Match launchArt fit math so bubbles stay sharp (was tiny pad + soft CSS upscale).
+    // BTC orbit bubbles only: 5% smaller than restored pre-pad hulls (not launch, not flight).
     const spr = hullSprite(id, 1);
     if (spr && (spr.width || spr.naturalWidth)) {
       const iw = spr.width || spr.naturalWidth, ih = spr.height || spr.naturalHeight;
       const pad = 4;
       const noseUp = id === "atom";
-      const sc = noseUp
+      let sc = noseUp
         ? Math.min((size - pad * 2) / iw, (size - pad * 2) / ih)
         : Math.min((size - pad * 2) / ih, (size - pad * 2) / iw);
+      if (id === "btc") sc *= 0.95;
       const dw = iw * sc, dh = ih * sc;
       gx.save();
       gx.translate(size / 2, size / 2);

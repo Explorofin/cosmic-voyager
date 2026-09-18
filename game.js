@@ -3251,6 +3251,8 @@
     const hullRest = hullJobs.filter(function (j) { return j.tier !== 1; });
     const worldEssentialKeys = {
       walkerScoutV2: 1, walkerScoutV2Three: 1, walkerScoutV2Side: 1, walkerScoutV2Back: 1,
+      walkerBrass: 1, walkerCourier: 1, walkerRig: 1, walkerShade: 1,
+      walkerEpoch_lamp: 1, walkerEpoch_rover: 1, walkerEpoch_keep: 1,
       kitHatCapV2: 1, kitHatAntennaV2: 1, kitHatFlapV2: 1, kitHatBeanieV2: 1, kitHatBowlerV2: 1,
       groundTile: 1, pathTile: 1
     };
@@ -4207,8 +4209,8 @@
       vest: k.vest || null,
       apron: k.apron || null,
       glasses: false,
-      hoodie: ex.hoodie != null ? !!ex.hoodie : !!k.hoodie,
-      hoodieColor: ex.hoodieColor || null,
+      hoodie: false,
+      hoodieColor: null,
       frame: extra.frame || 0,
       facing: extra.facing,
       trait: trait,
@@ -25954,6 +25956,12 @@
     else { paintRoster(); paintPilotHint(); }
   }
   function launch(id) {
+    if (!assetsWarm) {
+      paintLaunchButton();
+      toast("Still loading…");
+      beep(320, 0.05, "sine", 0.03);
+      return;
+    }
     const name = readPilotInput() || G.pilot || lastInitials();
     G.pilot = cleanPilotName(name) || "RYN";
     const row = rosterFind(G.pilot);
@@ -26025,6 +26033,23 @@
     const row = rosterFind(G.pilot || readPilotInput());
     return (row && row.save) ? row : null;
   }
+  let assetsWarm = false;
+  let launchLoadFlashTimer = null;
+  let launchLoadFlashN = 1;
+  function startLaunchLoadFlash() {
+    if (launchLoadFlashTimer) return;
+    launchLoadFlashN = 1;
+    launchLoadFlashTimer = setInterval(function () {
+      if (assetsWarm) { stopLaunchLoadFlash(); paintLaunchButton(); return; }
+      launchLoadFlashN = launchLoadFlashN % 3 + 1;
+      const btn = $("launchBtn");
+      const span = btn && btn.querySelector("span");
+      if (span) span.textContent = "Loading" + ".".repeat(launchLoadFlashN);
+    }, 420);
+  }
+  function stopLaunchLoadFlash() {
+    if (launchLoadFlashTimer) { clearInterval(launchLoadFlashTimer); launchLoadFlashTimer = null; }
+  }
   function paintLaunchButton() {
     const btn = $("launchBtn");
     if (!btn) return;
@@ -26033,6 +26058,15 @@
     const row = resumeArmed();
     const resume = !!row;
     btn.classList.toggle("resume", resume);
+    btn.classList.toggle("loading-warm", !assetsWarm);
+    if (!assetsWarm) {
+      startLaunchLoadFlash();
+      if (span) span.textContent = "Loading" + ".".repeat(launchLoadFlashN || 1);
+      if (hint) hint.textContent = "Warming ships & world…";
+      btn.style.borderColor = "rgba(0,195,255,0.55)";
+      return;
+    }
+    stopLaunchLoadFlash();
     if (span) span.textContent = resume ? "RESUME" : "LAUNCH";
     if (resume) {
       const sv = row.save || {};
@@ -26260,7 +26294,7 @@
     }
     const youBlurb = $("youLookBlurb");
     if (youBlurb) {
-      youBlurb.textContent = "Hoodie on/off. Select the ADA hull for ship skins.";
+      youBlurb.textContent = "Select the ADA hull for ship skins.";
     }
     if (typeof paintTweaks === "function") paintTweaks();
     paintLookCycles();
@@ -26726,6 +26760,8 @@
     G.lookExtra = G.lookExtra || {};
     G.lookExtra.visor = "none";
     G.lookExtra.hat = "none";
+    G.lookExtra.hoodie = false;
+    G.lookExtra.hoodieColor = null;
     ADA.skinId = validAdaSkin(ADA.skinId);
     buildSelect();
     paintSelectInfo();
@@ -27106,22 +27142,11 @@
       $("tweakGlasses").appendChild(document.createTextNode(glassesOn ? "GLASSES ON" : "GLASSES OFF"));
       $("tweakGlasses").classList.toggle("active", glassesOn);
     }
-    if ($("tweakHoodie")) {
-      $("tweakHoodie").innerHTML = "";
-      const hic = document.createElement("img");
-      hic.className = "kit-icon";
-      hic.alt = "";
-      hic.src = "assets/images/kit/hoodie_icon.png";
-      $("tweakHoodie").appendChild(hic);
-      $("tweakHoodie").appendChild(document.createTextNode(hoodieOn ? "HOODIE ON" : "HOODIE OFF"));
-      $("tweakHoodie").classList.toggle("active", hoodieOn);
-    }
-    const hoodPick = $("hoodieColor");
-    if (hoodPick) {
-      hoodPick.classList.toggle("hidden", !hoodieOn);
-      const curCol = (ex.hoodieColor && /^#[0-9a-fA-F]{6}$/.test(ex.hoodieColor)) ? ex.hoodieColor : "#3a4a6a";
-      if (hoodPick.value !== curCol) hoodPick.value = curCol;
-    }
+    if (G.lookExtra) { G.lookExtra.hoodie = false; G.lookExtra.hoodieColor = null; }
+    const hoodRow = $("hoodieRow");
+    if (hoodRow) hoodRow.classList.add("hidden");
+    if ($("tweakHoodie")) $("tweakHoodie").classList.add("hidden");
+    if ($("hoodieColor")) $("hoodieColor").classList.add("hidden");
   }
   if ($("tweakGlasses")) $("tweakGlasses").addEventListener("click", function () {
     G.lookExtra = G.lookExtra || {};
@@ -27436,19 +27461,47 @@
   async function boot() {
     startLoadDots();
     setLoadProgress(0);
-    // Full warm before select — no timeout early-open (avoids stub ships / you / Epoch).
-    // Skip-punch on clears still keeps this faster than the old CPU bake.
-    await loadAssets(function (frac) {
-      setLoadProgress(frac);
-    }, "all").catch(function (err) {
-      try { console.warn("loadAssets", err); } catch (e) {}
-    });
+    assetsWarm = false;
+    // Select-first: essential warm (logos, ADA, T1 hulls, You/Epoch fronts) then open select.
+    // Rest loads in background; Launch flashes Loading… until assetsWarm.
+    try {
+      await loadAssets(function (frac) {
+        setLoadProgress(Math.min(0.55, frac * 0.55));
+      }, "essential");
+    } catch (err) {
+      try { console.warn("loadAssets essential", err); } catch (e) {}
+    }
     stopLoadDots();
-    setLoadProgress(1);
+    setLoadProgress(0.55);
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
     goSelect();
+    paintLaunchButton();
     requestAnimationFrame(loop);
+    loadAssets(function (frac) {
+      setLoadProgress(0.55 + frac * 0.45);
+    }, "rest").then(function () {
+      assetsWarm = true;
+      setLoadProgress(1);
+      stopLaunchLoadFlash();
+      try {
+        paintLaunchButton();
+        paintLaunchArt(selectedId || "ada");
+        if (typeof buildSelect === "function") {
+          /* refresh orbit thumbs with full hull set */
+          const nodes = document.querySelectorAll("#shipOrbit .ship-node");
+          for (let i = 0; i < nodes.length; i++) {
+            const id = nodes[i].getAttribute("data-id");
+            if (id && typeof refreshOrbitThumb === "function") refreshOrbitThumb(id);
+          }
+        }
+        paintCrewThumbs();
+      } catch (e3) {}
+    }).catch(function (err) {
+      try { console.warn("loadAssets rest", err); } catch (e) {}
+      assetsWarm = true;
+      paintLaunchButton();
+    });
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

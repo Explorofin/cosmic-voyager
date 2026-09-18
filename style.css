@@ -1811,3 +1811,15 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
 }
 .you-pane::-webkit-scrollbar,
 .epoch-pane::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+.launch.loading-warm span {
+  animation: launchLoadFlash 0.7s steps(2, end) infinite;
+  color: var(--cyan);
+  letter-spacing: 0.12em;
+}
+@keyframes launchLoadFlash {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.28; }
+}
+.launch.loading-warm { cursor: wait; pointer-events: auto; }
+#hoodieRow, .hoodie-color-wrap { display: none !important; }

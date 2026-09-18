@@ -2,11 +2,13 @@
 
 A blockchain space opera. Cosmic Voyager — rotate, thrust, dock, fight, take contracts. Crypto is the *costume*, not a wallet. Single-folder HTML5: `index.html` + `game.js` + `style.css` + `assets`. No build, no Unity, no wallets.
 
-## How to play
+## How to play (local only)
 
-Open `index.html` in Chrome (double-click, or serve the folder). Every dock posts contracts; ambient memes (HOSKY, SNEK, WOW, IBC…) drift Cardano, Doge, and visited space.
+Cosmic Voyager ships ~1 GB of art. **Play from a local copy** — download the repo (or a zip of this folder), then open `index.html` in Chrome (double-click, or `npx serve` in the folder). First open is a full warm of ships / you / Epoch / world art; after that, disk cache keeps it snappy.
 
-1. 2s title lockup with a cyan load bar.
+GitHub Pages is **off** on purpose. A browser play URL would re-download the gigabyte every cold visit and feels broken while assets are still cold. Do not expect https://explorofin.github.io/cosmic-voyager/ to host the game.
+
+1. Title lockup with a real cyan load bar (art progress).
 2. Circle picker: ten hulls around LAUNCH (ADA at 12 o'clock). Click or press **1-9** and **0**, then **LAUNCH**.
 3. Fly. Dock at Cardano Prime (**E**). Take **HOSKY Meme Collection**, scoop memes, get paid in your home-chain ticker.
 

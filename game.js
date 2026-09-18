@@ -26671,6 +26671,44 @@
       btn.style.borderColor = f.color;
     }
   }
+
+  // Opaque bbox for select thumbs / Launch floater so padded PNGs fill the same visual size.
+  const _opaqueBoundCache = typeof WeakMap !== "undefined" ? new WeakMap() : null;
+  function opaqueBounds(img) {
+    if (!img) return null;
+    if (_opaqueBoundCache && _opaqueBoundCache.has(img)) return _opaqueBoundCache.get(img);
+    const iw = (img.width || img.naturalWidth || 0) | 0;
+    const ih = (img.height || img.naturalHeight || 0) | 0;
+    let out = { x: 0, y: 0, w: iw, h: ih, iw: iw, ih: ih };
+    if (iw > 0 && ih > 0) {
+      try {
+        const c = document.createElement("canvas");
+        c.width = iw; c.height = ih;
+        const x = c.getContext("2d", { willReadFrequently: true });
+        x.drawImage(img, 0, 0);
+        const d = x.getImageData(0, 0, iw, ih).data;
+        let x0 = iw, y0 = ih, x1 = -1, y1 = -1;
+        const thr = 12;
+        for (let y = 0; y < ih; y++) {
+          const row = y * iw * 4;
+          for (let px = 0; px < iw; px++) {
+            if (d[row + px * 4 + 3] > thr) {
+              if (px < x0) x0 = px;
+              if (y < y0) y0 = y;
+              if (px > x1) x1 = px;
+              if (y > y1) y1 = y;
+            }
+          }
+        }
+        if (x1 >= x0 && y1 >= y0) out = { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1, iw: iw, ih: ih };
+      } catch (e) { /* tainted / file:// — fall back to full frame */ }
+    }
+    if (_opaqueBoundCache) {
+      try { _opaqueBoundCache.set(img, out); } catch (e) {}
+    }
+    return out;
+  }
+
   function paintLaunchArt(id) {
     const art = $("launchArt");
     const btn = $("launchBtn");
@@ -26683,34 +26721,38 @@
     g.clearRect(0, 0, art.width, art.height);
     g.translate(art.width / 2, art.height / 2 + 4);
     const t = G.tier || 1;
-    const spr = hullSprite(id, t);
-    if (spr && (spr.width || spr.naturalWidth)) {
-      const iw = spr.width || spr.naturalWidth, ih = spr.height || spr.naturalHeight;
-      const noseUp = id === "atom";
+    const boxW = art.width - 8, boxH = art.height - 8;
+
+    function drawLaunchSpr(spr, facId) {
+      const b = opaqueBounds(spr);
+      if (!b || !b.w || !b.h) return false;
+      const noseUp = facId === "atom";
+      // Fit opaque bbox (not full PNG padding), then +5%; BTC still −10% on that base.
       let sc = noseUp
-        ? Math.min((art.height - 8) / iw, (art.width - 8) / ih)
-        : Math.min((art.height - 8) / ih, (art.width - 8) / iw);
-      // All Launch ships ~5% larger in the floater; BTC still 10% under that base.
+        ? Math.min(boxH / b.w, boxW / b.h)
+        : Math.min(boxH / b.h, boxW / b.w);
       sc *= 1.05;
-      if (id === "btc") sc *= 0.9;
-      const w = iw * sc, h = ih * sc;
+      if (facId === "btc") sc *= 0.9;
+      const dw = b.iw * sc, dh = b.ih * sc;
+      const ox = -(b.x + b.w / 2) * sc;
+      const oy = -(b.y + b.h / 2) * sc;
       if (noseUp) {
         g.save();
         g.rotate(-Math.PI / 2);
-        try { g.drawImage(spr, -w / 2, -h / 2, w, h); } catch (e) {}
+        try { g.drawImage(spr, ox, oy, dw, dh); } catch (e) {}
         g.restore();
       } else {
-        try { g.drawImage(spr, -w / 2, -h / 2, w, h); } catch (e) {}
+        try { g.drawImage(spr, ox, oy, dw, dh); } catch (e) {}
       }
-      return;
+      return true;
     }
+
+    const spr = hullSprite(id, t);
+    if (spr && (spr.width || spr.naturalWidth) && drawLaunchSpr(spr, id)) return;
     if (id === "ada") {
       const skin = adaSkin();
       const fb = (skin && skin.canvas) || ADA.sprite || IM.adaRocket || IM.adaWide;
-      if (fb && (fb.width || fb.naturalWidth)) {
-        const iw = fb.width || fb.naturalWidth, ih = fb.height || fb.naturalHeight;
-        const h = art.height - 8, w = (iw / ih) * h;
-        try { g.drawImage(fb, -w / 2, -h / 2, w, h); } catch (e) {}
+      if (fb && (fb.width || fb.naturalWidth) && drawLaunchSpr(fb, id)) {
         g.rotate(-Math.PI / 2);
         g.scale(1.35, 1.35);
         drawAdaTierBits(g, t);

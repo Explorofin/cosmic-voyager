@@ -2014,8 +2014,63 @@
   const HULLS = {};
 
   const IMG_LOAD_MS = 8000;
+  const FETCH_CONCURRENCY = 8;
+  let BOOT_JOBS = null;
+  let HANGAR_DONE = null;
+  let REST_STARTED = false;
   function bootYield() {
     return new Promise(function (r) { setTimeout(r, 0); });
+  }
+  async function mapPool(items, concurrency, fn) {
+    if (!items || !items.length) return;
+    let i = 0;
+    async function worker() {
+      while (i < items.length) {
+        const idx = i++;
+        try { await fn(items[idx], idx); } catch (e) {}
+        if ((idx & 3) === 3) await bootYield();
+      }
+    }
+    const n = Math.min(concurrency || FETCH_CONCURRENCY, items.length);
+    const ws = [];
+    for (let k = 0; k < n; k++) ws.push(worker());
+    await Promise.all(ws);
+  }
+  function alreadyClear(img) {
+    if (!img) return false;
+    try {
+      const w = img.naturalWidth || img.width || 0;
+      const h = img.naturalHeight || img.height || 0;
+      if (!w || !h) return false;
+      const c = document.createElement("canvas");
+      const sw = Math.min(w, 64), sh = Math.min(h, 64);
+      c.width = sw; c.height = sh;
+      const x = c.getContext("2d");
+      x.drawImage(img, 0, 0, sw, sh);
+      const p = x.getImageData(0, 0, sw, sh).data;
+      let edge = 0, clear = 0;
+      for (let y = 0; y < sh; y++) {
+        for (let xx = 0; xx < sw; xx++) {
+          if (y > 1 && y < sh - 2 && xx > 1 && xx < sw - 2) continue;
+          edge++;
+          if (p[(y * sw + xx) * 4 + 3] < 12) clear++;
+        }
+      }
+      return edge > 0 && clear / edge > 0.35;
+    } catch (e) { return false; }
+  }
+  function isClearAsset(key, src) {
+    const s = String(src || ""), k = String(key || "");
+    return k.indexOf("_clear") >= 0 || s.indexOf("_clear") >= 0 || k.indexOf("Clear") >= 0;
+  }
+  function isHangarListKey(key) {
+    return /^(adaRocket|adaWide|adaPng|btc|eth|sol|doge|pol|xrp|atom|ltc|avax|hosky)$/.test(key);
+  }
+  function isHangarWorldKey(key) {
+    if (!key) return false;
+    if (key.indexOf("kit") === 0) return true;
+    if (key === "walkerScout" || key === "walkerScoutV2") return true;
+    return false;
   }
   function loadImage(src) {
     return new Promise((resolve) => {
@@ -2341,7 +2396,16 @@
     return beig || (blk && blk.canvas) || img;
   }
 
-  async function loadAssets(onProg) {
+  async function loadAssets(onProg, phase) {
+    phase = phase || "all";
+    if (phase === "rest") {
+      if (HANGAR_DONE) {
+        try { await HANGAR_DONE; } catch (e) {}
+      }
+      if (!BOOT_JOBS || REST_STARTED) return;
+      REST_STARTED = true;
+      return loadAssetsRest(onProg, BOOT_JOBS);
+    }
     const list = [
       ["adaRocket", "assets/images/ADA_rocket.png"],
       ["adaWide", "assets/images/ADA_wide.png"],
@@ -2989,72 +3053,76 @@
         });
       });
     });
-    const denom = list.length + ADA_SKINS.length + hullJobs.length + worldList.length;
-    for (let i = 0; i < list.length; i++) {
-      try {
-        IM[list[i][0]] = await loadImage(list[i][1]);
-        onProg((i + 1) / denom, list[i][0]);
-      } catch (e) {
-        IM[list[i][0]] = null;
-      }
-      if ((i & 3) === 3) await bootYield();
-    }
-    ADA.skins = {};
-    for (let i = 0; i < ADA_SKINS.length; i++) {
-      const def = ADA_SKINS[i];
-      let canv = null, keep = 1, ok = false;
-      try {
-        const raw = await loadImage(def.src);
-        onProg((list.length + i + 1) / denom, def.id);
-        ok = !!raw;
-        if (raw) {
-          if (def.punch === "black") canv = punchBlack(raw);
-          else if (def.punch === "beige") canv = punchBeige(raw);
-          else if (def.punch === "none") {
+    BOOT_JOBS = {
+      list: list,
+      hullJobs: hullJobs,
+      worldList: worldList,
+      STREET_V2_KEYS: STREET_V2_KEYS,
+      STREET_CLEAR_KEYS: STREET_CLEAR_KEYS
+    };
+    await loadAssetsHangar(onProg, BOOT_JOBS);
+    if (phase === "hangar") return;
+    await loadAssetsRest(onProg, BOOT_JOBS);
+  }
+
+  function shouldSkipRuntimePunch(key, src, raw, hung) {
+    if (hung && hung.skipPunch) return true;
+    if (isClearAsset(key, src)) return true;
+    if (alreadyClear(raw)) return true;
+    return false;
+  }
+  function stampOrRaw(img, punch) {
+    try { return punch(img) || img; } catch (e) { return img || null; }
+  }
+  function applyAdaSkin(def, raw) {
+    let canv = null, keep = 1, ok = !!raw;
+    try {
+      if (raw) {
+        if (def.punch === "black") canv = punchBlack(raw);
+        else if (def.punch === "beige") canv = punchBeige(raw);
+        else if (def.punch === "none") {
+          if (alreadyClear(raw) || isClearAsset(def.id, def.src)) {
+            canv = raw;
+            keep = 1;
+          } else {
             const n = punchPixels(raw, function (_r, _g, _b, a) { return a < 12; });
             canv = n && n.canvas;
             keep = n ? n.keep : 1;
-          } else if (def.punch === "monument") {
-            const m = punchMonument(raw);
-            canv = m && m.canvas;
-            keep = m ? m.keep : 0;
-          } else canv = punchAuto(raw);
-        }
-        if (!canv && def.fallback) {
-          const fb = ADA.skins[def.fallback];
-          canv = fb && fb.canvas;
-          ok = !!canv;
-        }
-        let fly = def.inflight;
-        if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
-        if (fly && !canv) fly = false;
-        ADA.skins[def.id] = { canvas: canv ? punchFlame(canv) : canv, inflight: !!fly, ok: ok && !!canv, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
-      } catch (e) {
-        ADA.skins[def.id] = { canvas: canv, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
-      }
-      await bootYield();
-    }
-    for (let i = 0; i < hullJobs.length; i++) {
-      const job = hullJobs[i];
-      try {
-        const raw = await loadImage(job.src);
-        onProg((list.length + ADA_SKINS.length + i + 1) / denom, (job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier);
-        // Outline-keep only: cut outside the silhouette. Never punchKeepFrame on 7-tier hulls.
-        // punchFlame is a cropper for baked exhaust; Voyager Flames owns that iteratively with Ryan.
-        const canv = raw ? (punchOutlineKeep(raw) || raw) : null;
-        if (job.faction === "ada") {
-          const skin = ADA.skins[job.skin];
-          if (skin) {
-            if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
-            skin.tiers[job.tier] = canv;
           }
-        } else {
-          if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
-          HULLS[job.faction][job.tier] = canv;
-        }
-      } catch (e) {}
-      if ((i & 3) === 3) await bootYield();
+        } else if (def.punch === "monument") {
+          const m = punchMonument(raw);
+          canv = m && m.canvas;
+          keep = m ? m.keep : 0;
+        } else canv = punchAuto(raw);
+      }
+      if (!canv && def.fallback) {
+        const fb = ADA.skins[def.fallback];
+        canv = fb && fb.canvas;
+        ok = !!canv;
+      }
+      let fly = def.inflight;
+      if (fly === "try") fly = keep >= 0.08 && keep <= 0.55;
+      if (fly && !canv) fly = false;
+      ADA.skins[def.id] = { canvas: canv ? (alreadyClear(canv) ? canv : punchFlame(canv)) : canv, inflight: !!fly, ok: ok && !!canv, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
+    } catch (e) {
+      ADA.skins[def.id] = { canvas: canv || raw || null, inflight: false, ok: false, keep: keep, tiers: [null, null, null, null, null, null, null, null] };
     }
+  }
+  function assignHull(job, raw) {
+    const skip = shouldSkipRuntimePunch(job.skin || job.faction, job.src, raw, null);
+    const canv = raw ? (skip ? raw : (punchOutlineKeep(raw) || raw)) : null;
+    if (job.faction === "ada") {
+      const skin = ADA.skins[job.skin];
+      if (skin) {
+        if (!skin.tiers) skin.tiers = [null, null, null, null, null, null, null, null];
+        skin.tiers[job.tier] = canv;
+      }
+    } else {
+      if (!HULLS[job.faction]) HULLS[job.faction] = [null, null, null, null, null, null, null, null];
+      HULLS[job.faction][job.tier] = canv;
+    }
+  }
+  function finishHangarStamps() {
     try {
       ADA.sprite = (ADA.skins.side && ADA.skins.side.canvas) || punchBlack(IM.adaRocket) || punchBlack(IM.adaWide) || punchBlack(IM.adaPng);
     } catch (e) {
@@ -3066,9 +3134,6 @@
       ADA.skinId = validAdaSkin(localStorage.getItem(SKIN_KEY));
       localStorage.setItem(SKIN_KEY, ADA.skinId);
     } catch (e) {}
-    function stampOrRaw(img, punch) {
-      try { return punch(img) || img; } catch (e) { return img; }
-    }
     IM.btcStamp = stampOrRaw(IM.btc, punchBlack);
     IM.ethStamp = stampOrRaw(IM.eth, punchBlack);
     IM.solStamp = stampOrRaw(IM.sol, punchBlack);
@@ -3079,32 +3144,17 @@
     IM.ltcStamp = stampOrRaw(IM.ltc, punchBlack);
     IM.avaxStamp = stampOrRaw(IM.avax, punchBlack);
     IM.hoskyStamp = stampOrRaw(IM.hosky, punchHosky) || stampOrRaw(IM.hosky, punchBlack);
-    for (let i = 0; i < worldList.length; i++) {
-      const key = worldList[i][0], src = worldList[i][1], punch = worldList[i][2];
-      try {
-        const raw = await loadImage(src);
-        onProg((list.length + ADA_SKINS.length + hullJobs.length + i + 1) / denom, key);
-        const isFacade = key.indexOf("facade") === 0;
-        const hung = hungLockById(key);
-        IM[key] = punch && raw && !(hung && hung.skipPunch)
-          ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
-          : raw;
-        if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
-      } catch (e) {
-        IM[key] = null;
-      }
-      // Yield so the tab stays responsive during long punch runs (esp. GitHub Pages).
-      if ((i & 3) === 3) await bootYield();
-    }
-    for (let sk = 0; sk < STREET_V2_KEYS.length; sk++) {
-      const skey = STREET_V2_KEYS[sk];
-      try {
-        if (!IM[skey]) continue;
-        if (STREET_CLEAR_KEYS.indexOf(skey) >= 0) { IM[skey]._streetPunched = true; continue; }
-        IM[skey] = punchStreetWalker(IM[skey]);
-      } catch (e) {}
-      if ((sk & 3) === 3) await bootYield();
-    }
+    IM.kitHat = {
+      none: null,
+      cap: IM.kitHatCapV2,
+      antenna: IM.kitHatAntennaV2,
+      flap: IM.kitHatFlapV2,
+      beanie: IM.kitHatBeanieV2,
+      bowler: IM.kitHatBowlerV2
+    };
+    try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
+  }
+  function finishWorldMaps(jobs) {
     IM.facade = {
       hangar: IM.facadeHangar, arcade: IM.facadeArcade, crane: IM.facadeCrane,
       cantilever: IM.facadeCantilever, hexface: IM.facadeHexface, sails: IM.facadeSails,
@@ -3119,6 +3169,107 @@
       bowler: IM.kitHatBowlerV2
     };
     try { paintLookRow(); paintCrewThumbs(); } catch (e) {}
+  }
+  function placeWorldRaw(key, src, punchFlag, raw, streetClear) {
+    try {
+      const hung = hungLockById(key);
+      const skip = !punchFlag || shouldSkipRuntimePunch(key, src, raw, hung) || (streetClear && streetClear.indexOf(key) >= 0);
+      const isFacade = key.indexOf("facade") === 0;
+      IM[key] = (!skip && raw)
+        ? (isFacade ? (punchFacadeStamp(raw) || raw) : (punchEdgeVoid(raw) || punchBlackLoose(raw) || raw))
+        : raw;
+      if (IM[key] && isStubArt(IM[key]) && key.indexOf("fountain") >= 0) IM[key] = null;
+      if (skip && IM[key]) IM[key]._streetPunched = true;
+    } catch (e) {
+      IM[key] = raw || null;
+    }
+  }
+
+  async function loadAssetsHangar(onProg, jobs) {
+    const hangarList = jobs.list.filter(function (row) { return isHangarListKey(row[0]); });
+    const hangarHulls = jobs.hullJobs.filter(function (j) { return j.tier === 1; });
+    const hangarWorld = jobs.worldList.filter(function (row) { return isHangarWorldKey(row[0]); });
+    const denom = hangarList.length + ADA_SKINS.length + hangarHulls.length + hangarWorld.length || 1;
+    let done = 0;
+    function tick(label) {
+      done++;
+      if (onProg) onProg(done / denom, label);
+    }
+    ADA.skins = ADA.skins || {};
+    await mapPool(hangarList, FETCH_CONCURRENCY, async function (row) {
+      if (IM[row[0]]) { tick(row[0]); return; }
+      try { IM[row[0]] = await loadImage(row[1]); } catch (e) { IM[row[0]] = null; }
+      tick(row[0]);
+    });
+    await mapPool(ADA_SKINS, 2, async function (def) {
+      if (ADA.skins[def.id] && ADA.skins[def.id].canvas) { tick(def.id); return; }
+      let raw = null;
+      try { raw = await loadImage(def.src); } catch (e) {}
+      applyAdaSkin(def, raw);
+      tick(def.id);
+    });
+    await mapPool(hangarHulls, FETCH_CONCURRENCY, async function (job) {
+      const label = (job.skin ? job.skin + "-" : job.faction + "-") + "t" + job.tier;
+      try {
+        const raw = await loadImage(job.src);
+        assignHull(job, raw);
+      } catch (e) {}
+      tick(label);
+    });
+    await mapPool(hangarWorld, FETCH_CONCURRENCY, async function (row) {
+      const key = row[0], src = row[1], punch = row[2];
+      if (IM[key]) { tick(key); return; }
+      try {
+        const raw = await loadImage(src);
+        placeWorldRaw(key, src, punch, raw, jobs.STREET_CLEAR_KEYS);
+      } catch (e) { IM[key] = null; }
+      tick(key);
+    });
+    finishHangarStamps();
+  }
+
+  async function loadAssetsRest(onProg, jobs) {
+    if (!jobs) return;
+    const restList = jobs.list.filter(function (row) { return !isHangarListKey(row[0]) && !IM[row[0]]; });
+    const restHulls = jobs.hullJobs.filter(function (j) {
+      if (j.faction === "ada") {
+        const skin = ADA.skins[j.skin];
+        return !(skin && skin.tiers && skin.tiers[j.tier]);
+      }
+      return !(HULLS[j.faction] && HULLS[j.faction][j.tier]);
+    });
+    const restWorld = jobs.worldList.filter(function (row) { return !IM[row[0]]; });
+    await mapPool(restList, FETCH_CONCURRENCY, async function (row) {
+      try { IM[row[0]] = await loadImage(row[1]); } catch (e) { IM[row[0]] = null; }
+    });
+    await mapPool(restHulls, FETCH_CONCURRENCY, async function (job) {
+      try {
+        const raw = await loadImage(job.src);
+        assignHull(job, raw);
+      } catch (e) {}
+    });
+    await mapPool(restWorld, FETCH_CONCURRENCY, async function (row) {
+      const key = row[0], src = row[1], punch = row[2];
+      try {
+        const raw = await loadImage(src);
+        placeWorldRaw(key, src, punch, raw, jobs.STREET_CLEAR_KEYS);
+      } catch (e) { IM[key] = null; }
+    });
+    const streetKeys = jobs.STREET_V2_KEYS || [];
+    const streetClear = jobs.STREET_CLEAR_KEYS || [];
+    for (let sk = 0; sk < streetKeys.length; sk++) {
+      const skey = streetKeys[sk];
+      try {
+        if (!IM[skey]) continue;
+        if (streetClear.indexOf(skey) >= 0 || isClearAsset(skey) || alreadyClear(IM[skey]) || IM[skey]._streetPunched) {
+          IM[skey]._streetPunched = true;
+          continue;
+        }
+        IM[skey] = punchStreetWalker(IM[skey]);
+      } catch (e) {}
+      if ((sk & 3) === 3) await bootYield();
+    }
+    finishWorldMaps(jobs);
   }
 
   function punchHosky(img) {
@@ -26865,10 +27016,27 @@
     requestAnimationFrame(loop);
   }
 
+  function setLoadProgress(frac, label) {
+    const f = Math.max(0, Math.min(1, frac || 0));
+    const fill = $("loadFill");
+    if (fill) fill.style.width = (f * 100) + "%";
+    const pct = $("loadPct");
+    if (pct) pct.textContent = Math.round(f * 100) + "%";
+    const st = $("loadStatus");
+    if (st) {
+      if (!label || label === "art") st.textContent = "Loading art…";
+      else if (label === "ready" || label === "hangar") st.textContent = "Opening hangar…";
+      else if (label === "continuing") st.textContent = "Opening hangar (art still warming)…";
+      else st.textContent = "Loading " + label + "…";
+    }
+    const lines = document.querySelectorAll("#loadStack p");
+    const shown = Math.min(lines.length, Math.floor(f * lines.length + 0.001) + 1);
+    for (let i = 0; i < shown; i++) lines[i].classList.add("on");
+  }
+
   async function boot() {
-    // Cosmetic 2s bar used to finish, then await loadAssets() with no timeout.
-    // Hung Image() (no onload/onerror) or a throw in unguarded punch left the
-    // lockup up forever. Hard deadline + per-image timeout always reach select.
+    // Real bar from hangar-phase onProg. No fake 2s fill. Select opens as soon
+    // as logos / T1 hulls / skins are in; the rest punches in the background.
     let entered = false;
     let loopStarted = false;
     function enterSelect() {
@@ -26884,42 +27052,29 @@
         try { requestAnimationFrame(loop); } catch (e) {}
       }
     }
-    const HARD_MS = 22000;
-    const hardTimer = setTimeout(enterSelect, HARD_MS);
+    setLoadProgress(0, "art");
+    const hangar = loadAssets(function (frac, label) {
+      setLoadProgress(frac, label || "art");
+    }, "hangar").catch(function (err) {
+      try { console.warn("loadAssets hangar", err); } catch (e) {}
+    });
+    HANGAR_DONE = hangar;
+    const HARD_MS = 12000;
+    const hardTimer = setTimeout(function () {
+      setLoadProgress(1, "continuing");
+      enterSelect();
+    }, HARD_MS);
     try {
-      const assets = loadAssets(function () {}).catch(function (err) {
-        try { console.warn("loadAssets", err); } catch (e) {}
-      });
-      const start = performance.now();
-      const DURATION = 2000;
-      while (true) {
-        const t = Math.min(1, (performance.now() - start) / DURATION);
-        const e = 1 - Math.pow(1 - t, 2.2);
-        const fill = $("loadFill");
-        if (fill) fill.style.width = (e * 100) + "%";
-        const lines = document.querySelectorAll("#loadStack p");
-        const shown = Math.min(lines.length, Math.floor(t * lines.length + 0.001) + 1);
-        for (let i = 0; i < shown; i++) lines[i].classList.add("on");
-        if (t >= 1) break;
-        await Promise.race([
-          new Promise(function (r) { requestAnimationFrame(r); }),
-          new Promise(function (r) { setTimeout(r, 50); })
-        ]);
-      }
-      const fillDone = $("loadFill");
-      if (fillDone) fillDone.style.width = "100%";
-      const linesDone = document.querySelectorAll("#loadStack p");
-      for (let i = 0; i < linesDone.length; i++) linesDone[i].classList.add("on");
-      const ASSET_BUDGET_MS = 18000;
-      await Promise.race([
-        assets,
-        new Promise(function (resolve) { setTimeout(resolve, ASSET_BUDGET_MS); })
-      ]);
+      await hangar;
+      setLoadProgress(1, "hangar");
     } catch (e) {
       try { console.warn("boot", e); } catch (e2) {}
     }
     clearTimeout(hardTimer);
     enterSelect();
+    loadAssets(function () {}, "rest").catch(function (err) {
+      try { console.warn("loadAssets rest", err); } catch (e) {}
+    });
   }
 
   window.CV = { get mode(){ return mode; }, get G(){ return G; }, launch: launch, acceptMission: acceptMission, openDock: openDock, undock: undock, keys: keys, selectedId: function(){ return selectedId; }, ADA: ADA, MARKET: MARKET, money: money, FACTION_IDS: FACTION_IDS };

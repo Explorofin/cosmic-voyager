@@ -240,7 +240,28 @@ html:fullscreen, html:-webkit-full-screen, body:fullscreen, body:-webkit-full-sc
   background: linear-gradient(90deg, #1a6bff, var(--cyan));
   box-shadow: 0 0 10px var(--cyan);
 }
-.load-status { display: none; }
+.load-pct {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  opacity: 0.9;
+}
+.load-status {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  opacity: 0.65;
+  min-height: 1.2em;
+}
+.load-note {
+  margin: 12px auto 0;
+  max-width: min(360px, 86vw);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  opacity: 0.45;
+}
 .load-stack { margin-top: 16px; min-height: 7.6em; }
 .load-stack p {
   font-size: 12px;

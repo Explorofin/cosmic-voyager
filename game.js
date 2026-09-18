@@ -24996,10 +24996,8 @@
       }
       else if (MARKET.shopNear === "clerk") line = "TALK  ·  E";
       else if (MARKET.shopNear && String(MARKET.shopNear).indexOf("mid") === 0) line = "TALK  ·  E";
-      else if (MARKET.secretAnnex && MARKET.secretReturn && MARKET.secretReturn.from === "towerBalcony") {
-        doTowerBalcony();
-        return;
-      }
+      // NOTE: never call doTowerBalcony() here — this is the per-frame prompt painter.
+      // Action stays on E (shopNear towerBalcony / counter) via the interact handler.
       if (MARKET.shopNear === "counter") {
         if (kind === "secret" && MARKET.secretReturn && MARKET.secretReturn.from === "towerBalcony") {
           line = "NOTE  ·  E";

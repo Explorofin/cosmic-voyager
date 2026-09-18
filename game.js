@@ -3057,8 +3057,10 @@
         if (pid === "cardano" && (kind === "cafe" || kind === "meme")) continue;
         worldList.push(["room_" + pid + "_" + kind + "_v2", "assets/images/world/interior_" + pid + "_" + kind + "_v2.png", false]);
         if (kind !== "loft") {
-          worldList.push(["facade_" + pid + "_" + kind + "_v3", "assets/images/world/facade_" + pid + "_" + kind + "_v3.png", true]);
-          worldList.push(["facade_" + pid + "_" + kind + "_v2", "assets/images/world/facade_" + pid + "_" + kind + "_v2.png", true]);
+          // Sand keeps are already alpha-painted — never re-punch (was falling back to yellow stub ellipse).
+          const punchFacade = (kind !== "sand");
+          worldList.push(["facade_" + pid + "_" + kind + "_v3", "assets/images/world/facade_" + pid + "_" + kind + "_v3.png", punchFacade]);
+          worldList.push(["facade_" + pid + "_" + kind + "_v2", "assets/images/world/facade_" + pid + "_" + kind + "_v2.png", punchFacade]);
         }
       }
     }
@@ -3402,7 +3404,8 @@
     IM.facade = {
       hangar: IM.facadeHangar, arcade: IM.facadeArcade, crane: IM.facadeCrane,
       cantilever: IM.facadeCantilever, hexface: IM.facadeHexface, sails: IM.facadeSails,
-      sand: IM.facadeSand
+      // facade_sand.png is a locked classic stub — never a street winner.
+      sand: null
     };
     IM.kitHat = {
       none: null,
@@ -20529,6 +20532,11 @@
     }
     if (kind === "crane")
       return { key: "facadeCrane", img: IM.facadeCrane || F.crane || null };
+    if (kind === "sand") {
+      const sand = "facade_" + pid + "_sand_v2";
+      if (IM[sand] && !isStubArt(IM[sand])) return { key: sand, img: IM[sand] };
+      return null; // never facade_sand stub
+    }
     const v3 = "facade_" + pid + "_" + kind + "_v3";
     if (IM[v3] && !isStubArt(IM[v3])) return { key: v3, img: IM[v3] };
     const v2 = "facade_" + pid + "_" + kind + "_v2";
@@ -20543,11 +20551,18 @@
     const used = MARKET.usedFacadeKeys || (MARKET.usedFacadeKeys = {});
     function take(key, img) {
       if (!key || !img || used[key] || isStubArt(img)) return null;
+      // Never hang the classic sand stub ellipse.
+      if (img === IM.facadeSand || key === "facadeSand" || key === "classic:sand") return null;
       const hung = hungLockForImg(img) || hungLockById(key);
       const shown = ensureFacadePunched(img);
       if (!shown || isStubArt(shown)) return null;
       // Locked skipPunch / noFallback (Cardano REFIT solid) must never fail facadeMayShow.
       if (hung && (hung.skipPunch || hung.noFallback)) {
+        used[key] = 1;
+        return shown;
+      }
+      // Planet sand_v2 (and other large non-stub fronts): show even if color-bucket gate is picky.
+      if (String(key).indexOf("_sand_v2") >= 0 || String(key).indexOf("sand_v2") >= 0) {
         used[key] = 1;
         return shown;
       }
@@ -21164,27 +21179,8 @@
       g.strokeRect(doorX - 11, 0, 22, hh + 2);
       g.globalAlpha = 1;
     } else if (shape === "sand") {
-      g.fillStyle = neon;
-      g.globalAlpha = 0.55;
-      g.beginPath(); g.ellipse(0, hh - 2, hw * 0.92, 7, 0, 0, 6.28); g.fill();
-      g.globalAlpha = 1;
-      g.fillStyle = "#d4b06a";
-      g.fillRect(-hw + 16, -rise + 36, s.w - 32, rise + hh - 28);
-      g.fillStyle = "#c4a058";
-      g.fillRect(-hw * 0.28, -rise + 4, s.w * 0.36, rise * 0.42);
-      g.fillStyle = "#b8944a";
-      g.fillRect(-10, -rise - 8, 20, 22);
-      g.fillStyle = "#e8c878";
-      for (let i = 0; i < 5; i++) g.fillRect(-hw + 20 + i * 16, -rise + 28, 8, 8);
-      g.fillStyle = "#6a4a20";
-      g.fillRect(-8, 2, 16, hh);
-      g.fillStyle = "#c4a058";
-      g.fillRect(-hw + 4, -6, 16, hh + 4);
-      g.fillRect(hw - 20, -6, 16, hh + 4);
-      if (lod >= 2) {
-        g.fillStyle = "rgba(245,215,110,0.28)";
-        g.beginPath(); g.arc(0, -rise * 0.35, 16, 0, 6.28); g.fill();
-      }
+      // No procedural yellow ellipse / stub keep — painted facade_pid_sand_v2 only.
+      return;
     } else {
       g.fillStyle = wall;
       g.fillRect(-hw + 6, -rise + 16, s.w - 12, rise + hh - 12);
@@ -23146,12 +23142,11 @@
     if (shopType === "fuel") return F.sails || IM.facadeSails || null;
     if (shopType === "meme") return F.arcade || IM.facadeArcade || null;
     if (shopType === "sand") {
-      if ((MARKET.planetId || "") === "cardano") {
-        const v2 = IM["facade_cardano_sand_v2"];
-        if (v2 && !isStubArt(v2)) return v2;
-        return null;
-      }
-      return F.sand || IM.facadeSand || null;
+      // Never classic facade_sand stub — planet sand_v2 only.
+      const pid = MARKET.planetId || "cardano";
+      const v2 = IM["facade_" + pid + "_sand_v2"] || (pid === "cardano" ? IM["facade_cardano_sand_v2"] : null);
+      if (v2 && !isStubArt(v2)) return v2;
+      return null;
     }
     if (shopType === "mechanic" || shape === "hangar") {
       if ((MARKET.planetId || "") === "cardano") {
@@ -23211,7 +23206,12 @@
     if (shape === "sails") return F.sails || IM.facadeSails || null;
     if (shape === "arcade") return F.arcade || IM.facadeArcade || null;
     if (shape === "crane") return F.crane || IM.facadeCrane || null;
-    if (shape === "sand") return F.sand || IM.facadeSand || null;
+    if (shape === "sand") {
+      const pid = MARKET.planetId || "cardano";
+      const v2 = IM["facade_" + pid + "_sand_v2"];
+      if (v2 && !isStubArt(v2)) return v2;
+      return null;
+    }
     if (shape === "vendorA") return F.hangar || IM.facadeHangar || null;
     if (shape === "vendorB") return F.sails || IM.facadeSails || null;
     return F[shape] || null;
@@ -23270,8 +23270,8 @@
       const led = IM["facade_avalanche_ledger_v1"];
       if (led && !isStubArt(led)) return led;
     }
-    if (pid === "cardano" && (shopType === "sand" || shape === "sand")) {
-      const v2 = IM["facade_cardano_sand_v2"];
+    if (shopType === "sand" || shape === "sand") {
+      const v2 = IM["facade_" + pid + "_sand_v2"];
       if (v2 && !isStubArt(v2)) return v2;
       return null;
     }
@@ -24673,25 +24673,9 @@
     const thIn = dockTheme((here && here.id) || "cardano");
     mctx.fillStyle = "rgba(" + thIn.ground[0] + "," + thIn.ground[1] + "," + thIn.ground[2] + "," + (thIn.haze * 0.22) + ")";
     mctx.fillRect(0, 0, roomW, roomH);
-    if (kind === "sand") {
-      mctx.fillStyle = streetStyle((here && here.id) || "cardano").neon;
-      mctx.globalAlpha = 0.40;
-      mctx.beginPath(); mctx.ellipse(cx - 80, counterY + 8, 70, 16, 0, 0, 6.28); mctx.fill();
-      mctx.globalAlpha = 1;
-    }
-    // Street flavor props stay on the street — not inside ledgers/secrets/refit/fuel.
-    const inKit = flavorKit((here && here.id) || "cardano");
-    const skipInRoomProps = (kind === "secret" || kind === "ledger" || kind === "mechanic" || kind === "fuel");
-    if (!skipInRoomProps && inKit[0]) {
-      mctx.save(); mctx.translate(78, roomH - 86);
-      drawProp(mctx, { kind: inKit[0].kind, label: inKit[0].label, x: 0, y: 0 }, accent);
-      mctx.restore();
-    }
-    if (!skipInRoomProps && inKit[1]) {
-      mctx.save(); mctx.translate(roomW - 78, roomH - 96);
-      drawProp(mctx, { kind: inKit[1].kind, label: inKit[1].label, x: 0, y: 0 }, accent);
-      mctx.restore();
-    }
+    // No interior sand glow-ellipse stub. No lower-left/right corner flavor stubs in shops.
+    // Street flavor props stay on the street only.
+
 
     // Floor hotspots: ledger vault glow + starship hatch ring
     if (kind === "ledger" && !MARKET.secretAnnex) {

@@ -27175,27 +27175,15 @@
 
   async function boot() {
     setLoadProgress(0, "art");
-    // Full warm before select so ships / you / Epoch aren't stubs.
-    // Skip-punch on clears still keeps this much faster than the old CPU bake.
-    const LOAD_BUDGET_MS = 90000;
-    let timedOut = false;
-    await Promise.race([
-      loadAssets(function (frac, label) {
-        setLoadProgress(frac, label || "art");
-      }, "all").catch(function (err) {
-        try { console.warn("loadAssets", err); } catch (e) {}
-      }),
-      new Promise(function (resolve) {
-        setTimeout(function () {
-          timedOut = true;
-          const st = $("loadStatus");
-          if (st) st.textContent = "Still warming — opening hangar with what loaded…";
-          resolve();
-        }, LOAD_BUDGET_MS);
-      })
-    ]);
+    // Full warm before select — no timeout early-open (avoids stub ships / you / Epoch).
+    // Skip-punch on clears still keeps this faster than the old CPU bake.
+    await loadAssets(function (frac, label) {
+      setLoadProgress(frac, label || "art");
+    }, "all").catch(function (err) {
+      try { console.warn("loadAssets", err); } catch (e) {}
+    });
     const st = $("loadStatus");
-    if (st) st.textContent = timedOut ? "Hangar open — some art may still be catching up." : "Hangar ready.";
+    if (st) st.textContent = "Hangar ready.";
     setLoadProgress(1, "ready");
     try { loadGame(); } catch (e) { try { console.warn("loadGame", e); } catch (e2) {} }
     try { paintEpochLog(); } catch (e) {}
